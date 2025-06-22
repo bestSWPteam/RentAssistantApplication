@@ -53,7 +53,7 @@ fun SubscriptionChoosingScreen(
         color = WhiteBase
     ){
         Column (
-            modifier = Modifier.verticalScroll(scrollState)
+            modifier = Modifier.verticalScroll(scrollState).padding(bottom = 32.dp)
         ){
             Text(
                 text = "Варианты подписки",
@@ -63,7 +63,7 @@ fun SubscriptionChoosingScreen(
                 modifier = Modifier.padding(start = 24.dp, top = 84.dp)
             )
             // Lite subscription
-            SubscriptionTypeSquare(modifier,
+            SubscriptionTypeSquare(modifier ,
                 name = "Лайт",
                 shortDescription = "для себя",
                 fullDescription = "Подходит для повседневных личных задач: записи к врачу, поиск подарков, бронирование билетов, напоминания, оформление заказов, помощь \n" +
@@ -190,7 +190,7 @@ fun SubscriptionTypeSquare(
                 lineHeight = 16.sp,
                 modifier = Modifier.padding(
                     start = 20.dp,
-                    top = 24.dp)
+                    top = 20.dp)
             )
 
             // "Subscribe" button
