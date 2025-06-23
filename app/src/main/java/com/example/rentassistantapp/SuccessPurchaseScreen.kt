@@ -46,7 +46,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.Font
 import com.example.rentassistantapp.ui.theme.Red1
-import com.example.rentassistantapp.ui.theme.SubscriptionChoosingScreen
 
 
 @Composable

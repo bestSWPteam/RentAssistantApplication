@@ -1,4 +1,4 @@
-package com.example.rentassistantapp.ui.theme
+package com.example.rentassistantapp
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.Image
