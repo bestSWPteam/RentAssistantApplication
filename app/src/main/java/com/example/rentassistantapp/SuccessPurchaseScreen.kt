@@ -1,4 +1,4 @@
-package com.example.rentassistantapp
+/*package com.example.rentassistantapp
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.Image
@@ -46,6 +46,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.Font
 import com.example.rentassistantapp.ui.theme.Red1
+import com.example.rentassistantapp.
 
 
 @Composable
@@ -124,4 +125,4 @@ fun SuccessPurchasePreview(modifier: Modifier = Modifier) {
     RentAssistantAppTheme {
         SuccessPurchaseScreen()
     }
-}
+}*/

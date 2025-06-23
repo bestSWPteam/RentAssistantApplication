@@ -1,29 +1,91 @@
 package com.example.rentassistantapp
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.rentassistantapp.ui.theme.Grey1
+import androidx.compose.runtime.LaunchedEffect
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.browser.customtabs.CustomTabsIntent
+import com.example.rentassistantapp.ui.login.StartingScreen
+import com.example.rentassistantapp.ui.welcome.WelcomeScreen
 import com.example.rentassistantapp.ui.theme.RentAssistantAppTheme
+import com.example.rentassistantapp.util.Config
+import android.util.Log
+import androidx.compose.runtime.*
+import androidx.navigation.NavHostController
+import com.example.rentassistantapp.ui.subscription.SubscriptionChoosingScreen
 
 class MainActivity : ComponentActivity() {
+    private val botId = Config.TELEGRAM_BOT_ID
+    private val origin = Config.TELEGRAM_ORIGIN
+    private val redirectUri = Config.TELEGRAM_REDIRECT
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             RentAssistantAppTheme {
-                GreetingPreview()
+                val nav = rememberNavController()
+                RedirectHandler(nav, intent.data)
 
+                NavHost(navController = nav, startDestination = "start") {
+                    composable("start") {
+                        StartingScreen(
+                            onLogin = {
+                                val url = Uri.Builder()
+                                    .scheme("https")
+                                    .authority("oauth.telegram.org")
+                                    .appendPath("auth")
+                                    .appendQueryParameter("bot_id", botId)
+                                    .appendQueryParameter("origin", origin)
+                                    .appendQueryParameter("redirect_url", redirectUri)
+                                    .appendQueryParameter("request_access", "write")
+                                    .build()
+                                    .toString()
+                                CustomTabsIntent.Builder().build()
+                                    .launchUrl(this@MainActivity, Uri.parse(url))
+                            },
+                            onDocsClick = TODO(),
+                            modifier = TODO()
+                        )
+                    }
+                    composable("welcome") {
+                        WelcomeScreen(onContinue = {
+                            nav.navigate("subscription")
+                        })
+                    }
+
+                    /*composable("subscription") {
+                        SubscriptionChoosingScreen { plan ->
+                            // TODO: оплатить выбранный план
+                        }
+                    }*/
+                }
             }
         }
     }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+    }
 }
 
+@Composable
+private fun RedirectHandler(
+    nav: NavHostController,
+    incomingUri: Uri?
+) {
+    var handled by remember { mutableStateOf(false) }
+
+    LaunchedEffect(incomingUri) {
+        if (incomingUri != null && !handled) {
+            Log.d("MAIN", "RedirectHandler fired, URI = $incomingUri")
+            handled = true
+            nav.navigate("welcome")
+        }
+    }
+}

@@ -1,4 +1,4 @@
-package com.example.rentassistantapp
+package com.example.rentassistantapp.ui.welcome
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,6 +26,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.rentassistantapp.R
+import com.example.rentassistantapp.ui.theme.Grey2
 import com.example.rentassistantapp.ui.theme.RentAssistantAppTheme
 import com.example.rentassistantapp.ui.theme.WhiteBase
 import com.example.rentassistantapp.ui.theme.Red2
@@ -33,22 +35,25 @@ import com.example.rentassistantapp.ui.theme.Grey3
 import com.example.rentassistantapp.ui.theme.White
 
 @Composable
-fun WelcomeScreen(modifier: Modifier = Modifier) {
-    var logotype = painterResource(R.drawable.logo)
+fun WelcomeScreen(
+    onContinue: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val logotype = painterResource(R.drawable.logo)
 
     Surface(
         modifier = modifier.fillMaxSize(),
-        color = WhiteBase) {
-
-        // logotype
+        color = WhiteBase
+    ) {
         Image(
             painter = logotype,
             contentDescription = "Logo \"Rent Assistant\"",
-            modifier = Modifier.size(20.dp).padding(vertical = 80.dp, horizontal = 100.dp),
+            modifier = Modifier
+                .size(20.dp)
+                .padding(vertical = 80.dp, horizontal = 100.dp),
             alignment = Alignment.TopStart
         )
 
-        // Other UI elements
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -56,8 +61,6 @@ fun WelcomeScreen(modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-
-            // Heading
             Text(
                 text = "Добро пожаловать!",
                 fontWeight = FontWeight.Bold,
@@ -65,10 +68,7 @@ fun WelcomeScreen(modifier: Modifier = Modifier) {
                 fontSize = 32.sp,
                 color = Red2
             )
-
             Spacer(modifier = Modifier.height(24.dp))
-
-            // Description
             Text(
                 text = "Сервис поможет делегировать повседневные задачи — от личных до рабочих — чтобы освободить время для более важных дел.",
                 style = MaterialTheme.typography.bodyLarge,
@@ -77,19 +77,20 @@ fun WelcomeScreen(modifier: Modifier = Modifier) {
             )
         }
 
-        Box (){
-            // "Continue" button
+        Box(modifier = Modifier.fillMaxSize()) {
             Button(
-                onClick = { /* TODO вызов кнопки продолжить на приветсвенном экране*/ },
-                modifier = Modifier.fillMaxWidth().padding(52.dp).align(Alignment.BottomEnd),
+                onClick = onContinue,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(52.dp)
+                    .align(Alignment.BottomEnd),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Red2,
                     contentColor = White
                 ),
                 shape = RoundedCornerShape(50)
             ) {
-                Text(text = "Продолжить →",
-                    fontSize = 20.sp)
+                Text(text = "Продолжить →", fontSize = 20.sp)
             }
         }
     }
@@ -97,8 +98,8 @@ fun WelcomeScreen(modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun GreetingPreview(modifier: Modifier = Modifier) {
+fun WelcomePreview() {
     RentAssistantAppTheme {
-        WelcomeScreen()
+        WelcomeScreen(onContinue = {})
     }
 }
