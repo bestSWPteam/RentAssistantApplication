@@ -1,4 +1,4 @@
-package com.example.rentassistantapp
+package com.example.rentassistantapp.ui.profile
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -34,6 +34,7 @@ import com.example.rentassistantapp.ui.theme.WhiteBase
 import com.example.rentassistantapp.ui.theme.Red2
 import com.example.rentassistantapp.ui.theme.Grey3
 import com.example.rentassistantapp.ui.theme.White
+import com.example.rentassistantapp.R
 
 @Composable
 fun UsersScreen(modifier: Modifier = Modifier) {
