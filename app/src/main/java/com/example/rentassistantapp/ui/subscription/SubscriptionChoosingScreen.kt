@@ -29,18 +29,24 @@ import com.example.rentassistantapp.ui.theme.Red2
 import com.example.rentassistantapp.ui.theme.White
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.draw.clip
 
 @Composable
 fun SubscriptionChoosingScreen(
     modifier: Modifier = Modifier
 ) {
+    val scrollState = rememberScrollState()
     Surface (
         modifier = modifier.fillMaxSize(),
         color = WhiteBase
     ){
-        Column {
+        Column (
+            modifier = Modifier.verticalScroll(scrollState).padding(bottom = 32.dp)
+        ){
             Text(
                 text = "Варианты подписки",
                 fontSize = 28.sp,
@@ -48,13 +54,42 @@ fun SubscriptionChoosingScreen(
                 textAlign = TextAlign.Left,
                 modifier = Modifier.padding(start = 24.dp, top = 84.dp)
             )
-            SubscriptionTypeSquare(modifier,
+            // Lite subscription
+            SubscriptionTypeSquare(modifier ,
                 name = "Лайт",
                 shortDescription = "для себя",
                 fullDescription = "Подходит для повседневных личных задач: записи к врачу, поиск подарков, бронирование билетов, напоминания, оформление заказов, помощь \n" +
                         "в планировании и мелких делах.",
-                variantDescription = "pipa",
+                variantDescription = "Варианты тарифа:     \n" +
+                        "– 15 000 ₽ / месяц — 2 часа работы в день        \n" +
+                        "– 30 000 ₽ / месяц — 5 часов работы в день        \n" +
+                        "– 50 000 ₽ / месяц — 8 часов работы в день",
                 price = "15.000")
+
+            // Business subscription
+            SubscriptionTypeSquare(modifier,
+                name = "Бизнес",
+                shortDescription = "для бизнеса",
+                fullDescription = "Подходит для бизнес-коммуникаций, аналитических запросов," +
+                        " организации встреч, ведения переписки, составления документов и других рабочих задач.",
+                variantDescription = "Варианты тарифа:     \n" +
+                        "– 30 000 ₽ / месяц — 2 часа работы в день        \n" +
+                        "– 60 000 ₽ / месяц — 5 часов работы в день        \n" +
+                        "– 80 000 ₽ / месяц — 8 часов работы в день",
+                price = "30.000")
+
+            // Extra subscription
+            SubscriptionTypeSquare(modifier,
+                name = "Экстра",
+                shortDescription = "максимум пользы",
+                fullDescription = "Подходит для комплексной поддержки: бизнес-коммуникации, " +
+                        "организация встреч, аналитика, а также личные дела — записи, напоминания," +
+                        " бронирования, заказы и повседневная рутина.",
+                variantDescription = "Варианты тарифа:     \n" +
+                        "– 40 000 ₽ / месяц — 2 часа работы в день        \n" +
+                        "– 80 000 ₽ / месяц — 5 часов работы в день        \n" +
+                        "– 100 000 ₽ / месяц — 8 часов работы в день",
+                price = "40.000")
         }
     }
 }
@@ -132,10 +167,22 @@ fun SubscriptionTypeSquare(
                 } // end of column for left triangle elements
             } // end of row for upper elements
             Text(
-                text = fullDescription
+                text = fullDescription,
+                fontSize = 16.sp,
+                lineHeight = 16.sp,
+                color = Grey3,
+                modifier = Modifier.padding(
+                    start = 20.dp,
+                    top = 8.dp)
             )
             Text(
-                text = variantDescription
+                text = variantDescription,
+                fontSize = 14.sp,
+                color = Grey3,
+                lineHeight = 16.sp,
+                modifier = Modifier.padding(
+                    start = 20.dp,
+                    top = 20.dp)
             )
 
             // "Subscribe" button
