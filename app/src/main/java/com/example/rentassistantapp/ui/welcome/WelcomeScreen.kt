@@ -1,7 +1,6 @@
 package com.example.rentassistantapp.ui.welcome
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,12 +26,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.rentassistantapp.R
-import com.example.rentassistantapp.ui.theme.Grey2
 import com.example.rentassistantapp.ui.theme.RentAssistantAppTheme
-import com.example.rentassistantapp.ui.theme.WhiteBase
-import com.example.rentassistantapp.ui.theme.Red2
-import com.example.rentassistantapp.ui.theme.Grey3
-import com.example.rentassistantapp.ui.theme.White
+import com.example.rentassistantapp.ui.theme.*
 
 @Composable
 fun WelcomeScreen(
