@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -21,49 +22,82 @@ import com.example.rentassistantapp.ui.theme.*
 @Composable
 fun StartingScreen(
     onLogin: () -> Unit,
+    onDocsClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Surface(modifier = modifier.fillMaxSize(), color = WhiteBase) {
+    val logotype = painterResource(R.drawable.logo)
+
+    Surface(
+        modifier = modifier
+            .fillMaxSize(),
+        color = WhiteBase
+    ) {
+        Image(
+            painter = logotype,
+            contentDescription = "Logo \"Rent Assistant\"",
+            modifier = Modifier
+                .size(20.dp)
+                .padding(vertical = 80.dp, horizontal = 100.dp),
+            alignment = Alignment.TopStart
+        )
+
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
         ) {
-            Image(
-                painter = painterResource(R.drawable.logo),
-                contentDescription = "Logo",
-                modifier = Modifier.size(120.dp)
-            )
-            Spacer(modifier = Modifier.height(32.dp))
             Text(
                 text = "Войдите в свой аккаунт с помощью Telegram",
                 textAlign = TextAlign.Center,
                 fontSize = 20.sp,
                 color = Grey3,
-                modifier = Modifier.padding(horizontal = 24.dp)
+                modifier = Modifier.padding(horizontal = 72.dp)
             )
-            Spacer(modifier = Modifier.height(32.dp))
+
+            Spacer(modifier = Modifier.height(24.dp))
+
             Button(
                 onClick = onLogin,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 52.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Red2,
                     contentColor = White
                 ),
-                shape = RoundedCornerShape(50),
-                modifier = Modifier
-                    .fillMaxWidth(0.6f)
-                    .height(48.dp)
+                shape = RoundedCornerShape(50)
             ) {
-                Text(text = "Войти", fontSize = 18.sp)
+                Text(text = "Войти", fontSize = 20.sp)
             }
+        }
+
+        Column(
+            verticalArrangement = Arrangement.Bottom,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxSize().padding(bottom = 40.dp)
+        ) {
+            Text(
+                text = "Документация",
+                textAlign = TextAlign.Center,
+                fontSize = 20.sp,
+                color = Grey2,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(8.dp)
+            )
+            Text(
+                text = "Что-то пошло не так? Напишите нам",
+                textAlign = TextAlign.Center,
+                fontSize = 16.sp,
+                color = Grey2
+            )
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun StartingPreview() {
     RentAssistantAppTheme {
-        StartingScreen(onLogin = {})
+        StartingScreen(onLogin = {}, onDocsClick = {})
     }
 }

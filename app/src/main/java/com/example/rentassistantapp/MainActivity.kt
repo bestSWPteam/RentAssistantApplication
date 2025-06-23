@@ -17,7 +17,62 @@ import com.example.rentassistantapp.util.Config
 import android.util.Log
 import androidx.compose.runtime.*
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import com.example.rentassistantapp.ui.subscription.SubscriptionChoosingScreen
+
+class MainActivity : ComponentActivity() {
+    private val botId = Config.TELEGRAM_BOT_ID
+    private val origin = Config.TELEGRAM_ORIGIN
+    private val redirectUri = Config.TELEGRAM_REDIRECT
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            RentAssistantAppTheme {
+                val nav = rememberNavController()
+                RedirectHandler(nav, intent.data)
+
+                NavHost(navController = nav, startDestination = "start") {
+                    composable("start") {
+                        StartingScreen(
+                            onLogin = {
+                                val url = Uri.Builder()
+                                    .scheme("https")
+                                    .authority("oauth.telegram.org")
+                                    .appendPath("auth")
+                                    .appendQueryParameter("bot_id", botId)
+                                    .appendQueryParameter("origin", origin)
+                                    .appendQueryParameter("redirect_url", redirectUri)
+                                    .appendQueryParameter("request_access", "write")
+                                    .build()
+                                    .toString()
+                                CustomTabsIntent.Builder().build()
+                                    .launchUrl(this@MainActivity, Uri.parse(url))
+                            },
+                            onDocsClick = TODO(),
+                            modifier = TODO()
+                        )
+                    }
+                    composable("welcome") {
+                        WelcomeScreen(onContinue = {
+                            nav.navigate("subscription")
+                        })
+                    }
+
+                    /*composable("subscription") {
+                        SubscriptionChoosingScreen { plan ->
+                            // TODO: оплатить выбранный план
+                        }
+                    }*/
+                }
+            }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+    }
+}
 
 @Composable
 private fun RedirectHandler(
@@ -34,51 +89,3 @@ private fun RedirectHandler(
         }
     }
 }
-
-class MainActivity : ComponentActivity() {
-    private val botId = Config.TELEGRAM_BOT_ID
-    private val origin = Config.TELEGRAM_ORIGIN
-    private val redirectUri = Config.TELEGRAM_REDIRECT
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            RentAssistantAppTheme {
-                val nav = rememberNavController()
-
-                RedirectHandler(nav, intent.data)
-
-                NavHost(navController = nav, startDestination = "start") {
-                    composable("start") {
-                        StartingScreen(onLogin = {
-                            val url = Uri.Builder()
-                                .scheme("https")
-                                .authority("oauth.telegram.org")
-                                .appendPath("auth")
-                                .appendQueryParameter("bot_id", botId)
-                                .appendQueryParameter("origin", origin)
-                                .appendQueryParameter("redirect_url", redirectUri)
-                                .appendQueryParameter("request_access", "write")
-                                .build()
-                                .toString()
-                            CustomTabsIntent.Builder().build()
-                                .launchUrl(this@MainActivity, Uri.parse(url))
-                        })
-                    }
-                    composable("welcome") {
-                        WelcomeScreen(onContinue = {
-                            // TODO: navigate to main app screen
-                        })
-                    }
-                }
-            }
-        }
-    }
-
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        setIntent(intent)
-    }
-}
-
-
