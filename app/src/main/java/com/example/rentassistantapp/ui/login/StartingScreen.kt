@@ -1,6 +1,7 @@
 package com.example.rentassistantapp.ui.login
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -82,7 +83,7 @@ fun StartingScreen(
                 fontSize = 20.sp,
                 color = Grey2,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(8.dp)
+                modifier = Modifier.clickable(onClick = onDocsClick).padding(8.dp)
             )
             Text(
                 text = "Что-то пошло не так? Напишите нам",
