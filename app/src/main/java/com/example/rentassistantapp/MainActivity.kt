@@ -106,9 +106,13 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable("tasks") {
-                        TasksScreen(onFilter = {
-                            // TODO: открыть фильтр задач
-                        })
+                        TasksScreen(
+                            isSubscription = false,
+                            onGoToSubscription = { /* TODO: переход на подписку */ },
+                            onFilter = {
+                                // TODO: открыть фильтр задач
+                            }
+                        ))
                     }
                 }
             }
