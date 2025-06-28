@@ -112,7 +112,7 @@ class MainActivity : ComponentActivity() {
                             onFilter = {
                                 // TODO: открыть фильтр задач
                             }
-                        ))
+                        )
                     }
                 }
             }
