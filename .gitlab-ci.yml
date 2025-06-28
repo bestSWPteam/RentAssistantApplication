@@ -1,0 +1,28 @@
+stages:
+  - build
+  - test
+
+build:
+  stage: build
+  image: openjdk:17
+  before_script:
+    - chmod +x ./gradlew
+  script:
+    - ./gradlew assembleDebug
+  only:
+    - main
+    - merge_requests
+
+test:
+  stage: test
+  image: openjdk:17
+  before_script:
+    - chmod +x ./gradlew
+  script:
+    - ./gradlew testDebugUnitTest
+  artifacts:
+    reports:
+      junit: app/build/test-results/testDebugUnitTest/TEST-*.xml
+  only:
+    - main
+    - merge_requests
