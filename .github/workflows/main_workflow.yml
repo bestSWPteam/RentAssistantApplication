@@ -29,7 +29,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_PAT }}
+          password: ${{ secrets.CI_CD_Token }}
 
       # Шаг 3: Извлечение метаданных (тегов и меток) для Docker
       # Этот шаг возьмет ваше имя репозитория, автоматически приведет его
