@@ -126,6 +126,7 @@ class MainActivity : ComponentActivity() {
             .authority("oauth.telegram.org")
             .appendPath("auth")
             .appendQueryParameter("bot_id", botId)
+            .appendQueryParameter("origin", origin)
             .appendQueryParameter("redirect_url", redirectUri)
             .appendQueryParameter("request_access", "write")
             .build()
@@ -140,7 +141,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-private fun RedirectHandler(nav: NavHostController, incomingUri: Uri?) {
+fun RedirectHandler(nav: NavHostController, incomingUri: Uri?) {
     var handled by remember { mutableStateOf(false) }
     LaunchedEffect(incomingUri) {
         if (incomingUri != null && !handled) {
