@@ -78,3 +78,33 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: 'trivy-results.sarif'
+
+  deploy:
+    name: Deploy to Production
+    # Запускать только после успешного сканирования
+    needs: scan_image
+    # ВАЖНО: Указываем, что эту задачу нужно выполнять на нашем собственном "работнике"
+    # Укажите здесь те метки (labels), которые вы видели при настройке.
+    runs-on: self-hosted
+
+    steps:
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PAT }}
+
+      # Выполнение команд на нашем сервере
+      # Это аналог script блока в deploy-задаче GitLab
+      - name: Deploy application
+        run: |
+          # Останавливаем и удаляем контейнер с таким же именем, если он существует.
+          # `|| true` предотвращает ошибку, если контейнера еще нет.
+          docker stop my-nginx-app || true
+          docker rm my-nginx-app || true
+          
+          # Скачиваем последнюю версию образа из реестра
+          docker pull ${{ env.IMAGE_NAME }}:latest
+          
+          docker run -d --name my-nginx-app -p 80:80 ${{ env.IMAGE_NAME }}:latest
