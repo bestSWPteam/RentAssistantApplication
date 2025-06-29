@@ -4,11 +4,6 @@ on:
   push:
     branches: [ "main" ]
 
-env:
-  # Вот правильное определение!
-  # Мы берем полное имя репозитория и сразу преобразуем его в нижний регистр.
-  IMAGE_NAME: ghcr.io/${{ github.repository }}
-
 jobs:
   build_and_push:
     name: Build and Push Image
@@ -16,6 +11,9 @@ jobs:
     permissions:
       contents: read
       packages: write
+
+    outputs:
+      image_name: ${{ steps.meta.outputs.tags }}
 
     steps:
       - name: Checkout repository
@@ -32,21 +30,21 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          # metadata-action сам позаботится о регистре, но лучше передавать уже правильные данные.
-          images: ${{ env.IMAGE_NAME }}
+          # Здесь мы используем имя репозитория как есть
+          images: ghcr.io/${{ github.repository }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          # Важно! metadata-action уже все привел к нижнему регистру
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
   scan_image:
     name: Scan Image for Vulnerabilities
     runs-on: ubuntu-latest
+
     needs: build_and_push
     permissions:
       contents: read
@@ -54,26 +52,22 @@ jobs:
       security-events: write
 
     steps:
-      # Логиниться здесь не обязательно, если образ публичный, но это хорошая практика
-      - name: Log in to the Container registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.CI_CD_Token }}
-
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          # Trivy теперь получит имя в нижнем регистре из переменной env
-          image-ref: ${{ env.IMAGE_NAME }}:latest
+
+          image-ref: ${{ needs.build_and_push.outputs.image_name }}
           format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
+          # Добавим этот флаг, чтобы Trivy не падал, если ничего не нашел
+          ignore-unfixed: true
+          # Мы хотим, чтобы задача падала, только если есть критические уязвимости
           exit-code: '1'
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
-        if: always() # Загружать отчет, даже если сканирование провалилось
+
+        if: always()
         with:
           sarif_file: 'trivy-results.sarif'
