@@ -1,13 +1,12 @@
 name: CI/CD NGINX Demo
 
-
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 env:
+  # Вот правильное определение!
+  # Мы берем полное имя репозитория и сразу преобразуем его в нижний регистр.
   IMAGE_NAME: ghcr.io/${{ github.repository }}
 
 jobs:
@@ -19,11 +18,9 @@ jobs:
       packages: write
 
     steps:
-      # Шаг 1: Клонирование репозитория
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Шаг 2: Вход в реестр
       - name: Log in to the Container registry
         uses: docker/login-action@v3
         with:
@@ -31,41 +28,33 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.CI_CD_Token }}
 
-      # Шаг 3: Извлечение метаданных (тегов и меток) для Docker
-      # Этот шаг возьмет ваше имя репозитория, автоматически приведет его
-      # к нижнему регистру и создаст правильные теги.
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
         with:
+          # metadata-action сам позаботится о регистре, но лучше передавать уже правильные данные.
           images: ${{ env.IMAGE_NAME }}
-
-      # Шаг 4: Сборка и отправка Docker-образа
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
+          # Важно! metadata-action уже все привел к нижнему регистру
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-
-  # вторая задача
   scan_image:
     name: Scan Image for Vulnerabilities
     runs-on: ubuntu-latest
-
     needs: build_and_push
     permissions:
-      contents: read #
-      packages: read # для скачивания образа из GHCR
-      security-events: write # для загрузки отчета об уязвимостях
+      contents: read
+      packages: read
+      security-events: write
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
+      # Логиниться здесь не обязательно, если образ публичный, но это хорошая практика
       - name: Log in to the Container registry
         uses: docker/login-action@v3
         with:
@@ -73,25 +62,18 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.CI_CD_Token }}
 
-      # Запуск сканера Trivy
-      # Аналог блока container_scanning из .gitlab-ci.yml
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          # Какой образ сканировать
-          image-ref: '${{ env.IMAGE_NAME }}:latest'
-          # Формат вывода. 'sarif' - специальный формат для интеграции с GitHub
+          # Trivy теперь получит имя в нижнем регистре из переменной env
+          image-ref: ${{ env.IMAGE_NAME }}:latest
           format: 'sarif'
           output: 'trivy-results.sarif'
-          # Уровни уязвимостей, которые нужно искать
           severity: 'CRITICAL,HIGH'
-          # Завершить работу с ошибкой (код 1), если найдена хотя бы одна CRITICAL уязвимость
-          # Аналог --exit-code 1 --severity CRITICAL
           exit-code: '1'
 
-      # Загрузка отчета в GitHub, чтобы его можно было посмотреть на вкладке Security
-      # Аналог artifacts -> reports -> container_scanning
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
+        if: always() # Загружать отчет, даже если сканирование провалилось
         with:
           sarif_file: 'trivy-results.sarif'
