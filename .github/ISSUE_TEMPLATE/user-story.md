@@ -1,38 +1,42 @@
 name: User Story
-description: Describe a user feature or requirement.
-title: "[Story] "
-labels: [user-story]
-assignees: []
-
+description: Describe a new user-facing feature with acceptance criteria.
+title: "[User Story] "
+labels: [user story]
 body:
-  - type: markdown
-    attributes:
-      value: |
-        ## User Story
-        Describe the user need and motivation.
-
   - type: textarea
-    id: story
+    id: task-checklist
     attributes:
-      label: As a ...
-      description: "Example: As a user, I want to log in, so that I can access my dashboard"
-      placeholder: As a ...
-    validations:
-      required: true
-
-  - type: markdown
-    attributes:
-      value: |
-        ## Acceptance Criteria (GIVEN / WHEN / THEN)
-        Define what must be true for the story to be considered complete.
-
-  - type: textarea
-    id: acceptance
-    attributes:
-      label: Acceptance Criteria
+      label: Task Checklist
+      description: List the steps needed to implement this story.
       placeholder: |
-        GIVEN ...
-        WHEN ...
-        THEN ...
-    validations:
-      required: true
+        - [ ] Step one
+        - [ ] Step two
+        - [ ] Step three
+
+  - type: textarea
+    id: what-to-consider
+    attributes:
+      label: What to consider
+      description: What functional or technical points should be considered during implementation?
+      placeholder: |
+        - The feature should...
+        - The UI must...
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria (GIVEN / WHEN / THEN)
+      description: Describe user-facing scenarios using the GIVEN / WHEN / THEN format.
+      placeholder: |
+        - [ ] **GIVEN** ...  
+              **WHEN** ...  
+              **THEN** ...
+
+        - [ ] **GIVEN** ...  
+              **WHEN** ...  
+              **THEN** ...
+
+  - type: markdown
+    attributes:
+      value: |
+        ✅ Please check the [Definition of Done](https://github.com/bestSWPteam/RentAssistantApplication/blob/main/CONTRIBUTING.md) before moving this issue to **Close**.
