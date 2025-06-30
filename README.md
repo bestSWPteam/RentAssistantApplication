@@ -30,6 +30,13 @@ Frontend-related tasks for the app UI (Android).
 Bot feature development.
 **Entry criteria:** Task is related to bot logic, requirements are clarified, and it’s ready to be picked up.
 
-#### 🟣 Done
-Finished and reviewed tasks.
-**Entry criteria:** Task is implemented, tested, reviewed, and merged if needed.
+#### 🟣 Done 
+Tasks that are fully completed and meet the [Definition of Done](https://github.com/your-org/your-repo/blob/main/CONTRIBUTING.md).
+
+**Entry criteria:**  
+The task must satisfy **all** of the following:
+- All features work as intended.  
+- No critical bugs or issues remain after testing.  
+- Code is committed and pushed to the repository.  
+- Discussed and approved by the team lead in Telegram.  
+- Moved manually to the **Close** column on the board.
