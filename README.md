@@ -4,6 +4,7 @@ Used stack:
 - Kotlin
 - Jetpack Compose
 
+
 ### Kanban board
 We use a GitHub Project (Kanban board) to manage all development tasks.  
 🔗 [View our Kanban board](https://github.com/orgs/bestSWPteam/projects/2)
