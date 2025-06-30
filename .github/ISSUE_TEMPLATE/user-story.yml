@@ -1,0 +1,38 @@
+name: User Story
+description: Describe a new user-facing feature with acceptance criteria.
+title: "[User Story] "
+labels: [user story]
+body:
+  - type: textarea
+    id: task-checklist
+    attributes:
+      label: Task Checklist
+      description: List the steps needed to implement this story.
+      placeholder: |
+        - [ ] Step one
+        - [ ] Step two
+        - [ ] Step three
+
+  - type: textarea
+    id: what-to-consider
+    attributes:
+      label: What to consider
+      description: What functional or technical points should be considered during implementation?
+      placeholder: |
+        - The feature should...
+        - The UI must...
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria (GIVEN / WHEN / THEN)
+      description: Describe user-facing scenarios using the GIVEN / WHEN / THEN format.
+      placeholder: |
+        - [ ] **GIVEN** ...
+              **WHEN** ...
+              **THEN** ...
+
+  - type: markdown
+    attributes:
+      value: |
+        ✅ Please check the [Definition of Done](https://github.com/bestSWPteam/RentAssistantApplication/blob/main/CONTRIBUTING.md) before moving this issue to Close.
