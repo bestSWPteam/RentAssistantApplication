@@ -31,7 +31,7 @@ Bot feature development.
 **Entry criteria:** Task is related to bot logic, requirements are clarified, and it’s ready to be picked up.
 
 #### 🟣 Done 
-Tasks that are fully completed and meet the [Definition of Done](https://github.com/your-org/your-repo/blob/main/CONTRIBUTING.md).
+Tasks that are fully completed and meet the [Definition of Done](https://github.com/bestSWPteam/RentAssistantApplication/blob/main/CONTRIBUTING.md).
 
 **Entry criteria:**  
 The task must satisfy **all** of the following:
