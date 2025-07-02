@@ -218,3 +218,6 @@ Our team identified the most critical parts of the system that need to be tested
 
 We plan to extend testing to the Telegram bot and backend API in future development cycles.
 
+---
+
+## Build and deployment
