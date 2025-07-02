@@ -95,27 +95,22 @@ This ensures clear responsibility, prevents duplication, and keeps sprint progre
 
 #### Creating, Naming and Merging Branches
 
-We follow a consistent branching strategy to keep the repository organized and readable.
+We currently use three main branches in our project:
 
-**Base branch:**
-- [TBD]
-
-**Branch types and naming conventions:**
-- `feature/<...>` — [TBD]
-- `fix/<...>` — [TBD]
-- `hotfix/<...>` — [TBD]
-- `refactor/<...>` — [TBD]
-- Other types (if any): [TBD]
+- `main`: the production-ready codebase
+- `frontend`: all frontend-related development
+- `backend`: all backend-related development
 
 **Branching rules:**
-- All branches must be created from [TBD].
-- Branch names should be short, lowercase, and use dashes if needed.
+- New features and fixes are currently developed directly within `frontend` and `backend` branches.
+- No feature branches (`feature/...`) are used at this stage.
+- Branch naming conventions for features may be introduced later as the project scales.
 
 **Merging rules:**
-- Merges are done via pull requests.
-- Merge method: [TBD: squash / rebase / merge commit]
-- Who can merge: [TBD]
-- Branches are [TBD: automatically / manually] deleted after merge.
+- All merges are performed via **pull requests**.
+- The merge method used is **Merge Commit** (to preserve commit history).
+- **Any team member** can create and merge a pull request after review.
+- Branches are **not deleted** after merging, as development in `frontend` and `backend` is ongoing.
 
 #### Commit Message Format (TBD)
 
@@ -141,35 +136,32 @@ We use a [pull request template](https://github.com/bestSWPteam/RentAssistantApp
 
 #### Code Reviews
 
-All pull requests must be reviewed before merging.
+All pull requests must go through at least **one review** before being merged.
 
-**Review rules:**
-- Each PR must be approved by at least [TBD] reviewer(s)
-- Self-approvals are [TBD: allowed / not allowed]
-- Code reviews take place in [TBD: GitHub / other tool]
+**Rules and process:**
+- PRs should be reviewed by **at least one team member** (excluding the author).
+- **Self-approval is allowed**, since our team is small and sometimes only one person is available.
+- Reviews are typically done **in GitHub comments** and optionally discussed **in Telegram calls**.
+- There is no formal checklist enforced, but the team generally checks:
+  - Code does what the task describes
+  - No obvious bugs
+  - Commit messages are understandable
+  - Code does not break the app
 
-**Review checklist:**
-- [ ] Code is clean and follows project style
-- [ ] Functionality matches the issue/task description
-- [ ] Tests are present and correct (if applicable)
-- [ ] Variable and function names are clear
-- [ ] No unnecessary code or comments
-- [ ] Documentation is updated (if needed)
-
-Code reviews are essential for ensuring quality, sharing knowledge, and preventing regressions.
+> Note: our team members work on different parts of the codebase, so reviews are more lightweight and focused on visibility and tracking than on deep inspection.  
+> As the project grows, we plan to introduce a more structured review process with stricter rules and review checklists.
 
 #### Merging Pull Requests
 
 All changes are merged into the `main` branch through pull requests.
 
 **Merge rules:**
-- Only [TBD: team leads / reviewers / any member] are allowed to merge PRs.
-- Merges require [TBD: approval / no approval / optional approval].
-- Merge method: [TBD: squash / rebase / merge commit].
-- Branches are [TBD: automatically / manually / not] deleted after merge.
-- Conflicts must be resolved before merging.
+- **Any team member** is allowed to merge a PR once it's reviewed.
+- We use the **Merge Commit** method to preserve individual commit history.
+- **Branches are not deleted** after merge, since ongoing development continues in them.
+- There is currently **no restriction** on merging without approval, but the team aims to review changes before merge whenever possible.
 
-This ensures a clean and consistent history and prevents unreviewed code from reaching the main branch.
+> As the project evolves, we may introduce stricter merge protections or branch policies to improve quality control.
 
 #### Resolving Issues
 
