@@ -117,4 +117,55 @@ We follow a consistent branching strategy to keep the repository organized and r
 
 #### Commit Message Format (TBD)
 
+#### Creating a Pull Request
+
+All changes must go through a pull request (PR) before being merged into the `main` branch.
+
+We use a [pull request template](https://github.com/bestSWPteam/RentAssistantApplication/blob/main/.github/pull_request_template.md) to keep our process consistent and to help reviewers quickly assess the change.
+
+**PR requirements:**
+- PR must include a link to the related issue using `Closes #issue_number`.
+- Description of what has changed must be provided under **What's Changed**.
+- The default checklist in the template must be reviewed and completed before submission:
+  - ✅ Linked to a GitHub issue
+  - ✅ Code follows style guidelines
+  - ✅ Tests were added or updated (if applicable)
+  - ✅ Documentation was updated (if needed)
+  - ✅ Feature was tested manually
+
+**Review process:**
+- Each PR must be reviewed and approved by **at least one team member**.
+- Reviewers check for code clarity, adherence to style, and functionality.
+
+#### Code Reviews
+
+All pull requests must be reviewed before merging.
+
+**Review rules:**
+- Each PR must be approved by at least [TBD] reviewer(s)
+- Self-approvals are [TBD: allowed / not allowed]
+- Code reviews take place in [TBD: GitHub / other tool]
+
+**Review checklist:**
+- [ ] Code is clean and follows project style
+- [ ] Functionality matches the issue/task description
+- [ ] Tests are present and correct (if applicable)
+- [ ] Variable and function names are clear
+- [ ] No unnecessary code or comments
+- [ ] Documentation is updated (if needed)
+
+Code reviews are essential for ensuring quality, sharing knowledge, and preventing regressions.
+
+#### Merging Pull Requests
+
+All changes are merged into the `main` branch through pull requests.
+
+**Merge rules:**
+- Only [TBD: team leads / reviewers / any member] are allowed to merge PRs.
+- Merges require [TBD: approval / no approval / optional approval].
+- Merge method: [TBD: squash / rebase / merge commit].
+- Branches are [TBD: automatically / manually / not] deleted after merge.
+- Conflicts must be resolved before merging.
+
+This ensures a clean and consistent history and prevents unreviewed code from reaching the main branch.
 
