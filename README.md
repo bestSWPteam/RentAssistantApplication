@@ -169,3 +169,13 @@ All changes are merged into the `main` branch through pull requests.
 
 This ensures a clean and consistent history and prevents unreviewed code from reaching the main branch.
 
+#### Resolving Issues
+
+We do not use auto-closing keywords like `Closes #X` in pull request descriptions.
+
+**Issue closure process:**
+- Issues can be closed **before or after the merge**, depending on when the task is fully complete.
+- It is **preferred** that the author of the pull request closes the related issue manually.
+- If the author forgets, the **team lead** is responsible for closing it during sprint wrap-up.
+
+This approach ensures flexibility and clarity, especially when a task is completed outside of a pull request context.
