@@ -41,3 +41,13 @@ The task must satisfy **all** of the following:
 - Code is committed and pushed to the repository.  
 - Discussed and approved by the team lead in Telegram.  
 - Moved manually to the **Close** column on the board.
+
+### Git workflow
+
+We chose **GitHub Flow** because it is:
+- Simple and developer-friendly.
+- Suitable for short sprints with many small tasks.
+- Focused on quality through pull requests and reviews.
+- Fully supported by GitHub’s interface.
+
+It allows us to move fast without sacrificing stability or collaboration.
