@@ -51,3 +51,17 @@ We chose **GitHub Flow** because it is:
 - Fully supported by GitHub’s interface.
 
 It allows us to move fast without sacrificing stability or collaboration.
+
+#### Creating Issues from Templates
+
+We use our issue templates to ensure consistency and clarity across all tasks.
+
+Our templates:
+- [Bug Report](.github/ISSUE_TEMPLATE/bug-report.md)  
+  Used to report bugs with clear reproduction steps and expected behavior.
+- [Technical Task](.github/ISSUE_TEMPLATE/technical-task.md)  
+  For backend, refactoring, or implementation-related work broken down into subtasks.
+- [User Story](.github/ISSUE_TEMPLATE/user-story.md)  
+  Describes user-facing functionality with acceptance criteria.
+
+All team members are required to use one of these templates when creating new issues.
