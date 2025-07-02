@@ -4,7 +4,11 @@ Used stack:
 - Kotlin
 - Jetpack Compose
 
+---
+
 ## Development
+
+---
 
 ### Kanban board
 We use a GitHub Project (Kanban board) to manage all development tasks.  
@@ -177,6 +181,17 @@ This approach ensures flexibility and clarity, especially when a task is complet
 ---
 
 ### Secrets management
+
+To protect sensitive data such as tokens, API keys, and credentials, we follow these practices:
+
+- The `.env` file is used for local development and is **added to `.gitignore`**, so it is not tracked in the repository.
+- **CI/CD secrets** (such as tokens for GitHub Actions) are stored securely in **GitHub Secrets** and referenced in workflow files.
+- Some configuration values may be defined in **project-level config files or inline YAML**, depending on developer preference.
+- Team members are encouraged to avoid hardcoding secrets in the codebase.
+
+> Note: Secrets management is a shared team responsibility, and we aim to improve consistency across developers in future sprints.
+
+---
 
 ## Quality assurance
 
