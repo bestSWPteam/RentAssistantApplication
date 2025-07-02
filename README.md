@@ -42,6 +42,8 @@ The task must satisfy **all** of the following:
 - Discussed and approved by the team lead in Telegram.  
 - Moved manually to the **Close** column on the board.
 
+---
+
 ### Git workflow
 
 We chose **GitHub Flow** because it is:
@@ -179,3 +181,33 @@ We do not use auto-closing keywords like `Closes #X` in pull request description
 - If the author forgets, the **team lead** is responsible for closing it during sprint wrap-up.
 
 This approach ensures flexibility and clarity, especially when a task is completed outside of a pull request context.
+
+---
+
+### Secrets management
+
+## Quality assurance
+
+### Quality attribute scenarios
+
+We selected three key quality attributes based on the ISO 25010 model: Availability, User Assistance, and Adaptability. These were confirmed with the client as essential for user satisfaction and system reliability.
+
+Each attribute is described in detail in the file using the structured scenario format (stimulus, environment, artifact, response, response measure). These scenarios help us clearly define what it means for the system to meet quality expectations and how we plan to test those expectations.
+
+See the full quality attribute scenarios in  
+[docs/quality-assurance/quality-attribute-scenarios.md](docs/quality-assurance/quality-attribute-scenarios.md)
+
+---
+
+### Automated tests
+
+Our team identified the most critical parts of the system that need to be tested to ensure a stable user experience:
+
+- Telegram authentication flow — the main entry point for users. We simulate Telegram login callbacks, check token handling, and validate navigation intents. We use JUnit5, MockK, and Espresso for this.
+  
+- Task filtering logic — core business logic responsible for displaying tasks correctly. We test different filtering conditions using unit tests with JUnit5 and MockK.
+  
+- Screen navigation — making sure users are sent to the correct screen after login or interaction. We use Espresso to simulate user clicks and validate screen transitions.
+
+We plan to extend testing to the Telegram bot and backend API in future development cycles.
+
