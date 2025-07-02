@@ -4,6 +4,7 @@ Used stack:
 - Kotlin
 - Jetpack Compose
 
+## Development
 
 ### Kanban board
 We use a GitHub Project (Kanban board) to manage all development tasks.  
