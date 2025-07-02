@@ -57,11 +57,64 @@ It allows us to move fast without sacrificing stability or collaboration.
 We use our issue templates to ensure consistency and clarity across all tasks.
 
 Our templates:
-- [Bug Report](.github/ISSUE_TEMPLATE/bug-report.md)  
+- [Bug Report](https://github.com/bestSWPteam/RentAssistantApplication/blob/main/.github/ISSUE_TEMPLATE/bug-report.yml)  
   Used to report bugs with clear reproduction steps and expected behavior.
-- [Technical Task](.github/ISSUE_TEMPLATE/technical-task.md)  
+- [Technical Task](https://github.com/bestSWPteam/RentAssistantApplication/blob/main/.github/ISSUE_TEMPLATE/technical-task.yml)  
   For backend, refactoring, or implementation-related work broken down into subtasks.
-- [User Story](.github/ISSUE_TEMPLATE/user-story.md)  
+- [User Story](https://github.com/bestSWPteam/RentAssistantApplication/blob/main/.github/ISSUE_TEMPLATE/user-story.yml)  
   Describes user-facing functionality with acceptance criteria.
 
 All team members are required to use one of these templates when creating new issues.
+
+#### Labelling Issues
+
+We use a set of predefined GitHub issue labels to help organize and filter tasks.
+
+Common labels include:
+- **app**, **bot**, **backend**, **frontend** — to indicate the area or component.
+- **ux/ui**, **customer feedback** — to highlight design or user-reported issues.
+- **assX** — corresponds to assignment number (e.g., `ass3`, `ass5`).
+- **sp:X** — indicates story points for planning (e.g., `sp:2`, `sp:5`).
+
+Labels are chosen from an existing list during issue creation or triage.  
+Adding labels is **optional but recommended** to keep the board organized and to improve team visibility.
+
+Note: label colors are assigned automatically and may vary.
+
+#### Assigning Issues to Team Members
+
+Issue assignment is handled by the **Team Lead** during sprint planning.
+
+- Each issue must be assigned to a responsible developer before implementation begins.
+- No work should be started on unassigned issues.
+- If an issue is unassigned and someone wants to work on it, they must first confirm it with the team lead.
+
+This ensures clear responsibility, prevents duplication, and keeps sprint progress visible.
+
+#### Creating, Naming and Merging Branches
+
+We follow a consistent branching strategy to keep the repository organized and readable.
+
+**Base branch:**
+- [TBD]
+
+**Branch types and naming conventions:**
+- `feature/<...>` — [TBD]
+- `fix/<...>` — [TBD]
+- `hotfix/<...>` — [TBD]
+- `refactor/<...>` — [TBD]
+- Other types (if any): [TBD]
+
+**Branching rules:**
+- All branches must be created from [TBD].
+- Branch names should be short, lowercase, and use dashes if needed.
+
+**Merging rules:**
+- Merges are done via pull requests.
+- Merge method: [TBD: squash / rebase / merge commit]
+- Who can merge: [TBD]
+- Branches are [TBD: automatically / manually] deleted after merge.
+
+#### Commit Message Format (TBD)
+
+
