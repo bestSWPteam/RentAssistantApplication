@@ -194,26 +194,10 @@ We do not use auto-closing keywords like `Closes #X` in pull request description
 
 This approach ensures flexibility and clarity, especially when a task is completed outside of a pull request context.
 
-#### Gitgraph diagram
+### Gitgraph diagram
 
-To view the Gitgraph diagram in case it's not rendered below, [open it in Mermaid Live Editor](https://mermaid.live/).
-
-```mermaid
-gitGraph
-   commit id: "Initial commit"
-   branch backend
-   checkout backend
-   commit id: "Backend: API for task"
-   commit id: "Backend: Push notifications"
-   checkout main
-   merge backend
-
-   branch frontend
-   checkout frontend
-   commit id: "Frontend: UI screen"
-   commit id: "Frontend: Polish UI"
-   checkout main
-   merge frontend
+You can view the Git workflow diagram here:  
+👉 [Gitgraph (Mermaid Live)](https://mermaid.live/edit#pako:eNqFUUuLgzAQ_ithwJsUNVXb3Ha77CLsoZdeFi9Ro4ZqUmJkH-J_38TWtrKFZU7zzfeCGSCXBQMCjjMgLrgmaEApVFy_KXqqUzjvXS0_d7JtuX6nGWssrFXP0GjHcVJxFQiEUD4xES-IkSbGlNPmAqYwMTJFRV6jjOZHJoqzqGb5UfZ6Cd47PZ8PBD3tE1RKhTTtjhfDx8R939VISM1LnlPNpehm-hzWUi4mpGWqYnO2ca6s0QK00vvypZJC_2m_RO9bvV4uBB0S1OWKMfGo_I22lw03_Q_JP6XnyGXraxEAFyrFCyD2Za49GwOzwmBNUtA1a5l9aQoFK2nfTF8ajexExYeU7axUsq9qICVtOrP1p4Jq9sJppeiNYhKZ2sleaCDBejN5ABngy6wbvMLYi9exF4fe1sORC99AfB-vvCBahzgOgyCMAjy68DPFeqvIj32ji_zAi_DWx-MvtMvgYg)
 
 ---
 
