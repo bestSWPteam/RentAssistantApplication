@@ -242,6 +242,10 @@ We plan to extend testing to the Telegram bot and backend API in future developm
 
 ### User acceptance tests
 
+All user acceptance tests (UAT) are documented in the following file:
+
+👉 [User Acceptance Tests](https://github.com/bestSWPteam/RentAssistantApplication/blob/main/docs/quality-assurance/user-acceptance-tests.md)
+
 ---
 
 ## Usage
