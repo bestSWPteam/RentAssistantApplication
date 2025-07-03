@@ -17,6 +17,7 @@ import com.example.rentassistantapp.ui.subscription.SubscriptionChoosingScreen
 import com.example.rentassistantapp.ui.subscription.SubscriptionConfirmationScreen
 import com.example.rentassistantapp.ui.subscription.SuccessPurchaseScreen
 import com.example.rentassistantapp.ui.profile.UsersScreen
+import com.example.rentassistantapp.ui.tasks.Task
 import com.example.rentassistantapp.ui.tasks.TasksScreen
 import com.example.rentassistantapp.ui.theme.RentAssistantAppTheme
 import com.example.rentassistantapp.util.Config
@@ -107,12 +108,40 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable("tasks") {
+                        val sampleTasks = listOf(
+                            Task("12.05.25", "Выполнено", "Бронь в ресторан", "Иванова Екатерина"),
+                            Task("13.05.25", "В процессе", "Отчет по проекту", "Петрова Анна"),
+                            Task("14.05.25", "Не выполнено", "Встреча с клиентом", "Сидоров Алексей"),
+                            Task("15.05.25", "Выполнено", "Подготовка презентации", "Кузнецова Мария"),
+                            Task("16.05.25", "В процессе", "Обновление документации", "Федоров Дмитрий"),
+                            Task("17.05.25", "Не выполнено", "Проверка отчетов", "Смирнова Ольга"),
+                            Task("18.05.25", "Выполнено", "Организация мероприятия", "Зайцева Наталья"),
+                            Task("19.05.25", "В процессе", "Анализ данных", "Морозов Сергей"),
+                            Task(
+                                "20.05.25",
+                                "Не выполнено",
+                                "Разработка нового функционала",
+                                "Лебедев Андрей"
+                            ),
+                            Task("21.05.25", "Выполнено", "Согласование бюджета", "Ковалев Ирина"),
+                            Task("22.05.25", "В процессе", "Подбор персонала", "Григорьева Светлана"),
+                            Task("23.05.25", "Не выполнено", "Проведение тренинга", "Соловьев Николай"),
+                            Task(
+                                "24.05.25",
+                                "Выполнено",
+                                "Создание рекламной кампании",
+                                "Тихонов Виктория"
+                            ),
+                            Task("25.05.25", "В процессе", "Обсуждение стратегии", "Павлов Игорь"),
+                            Task("26.05.25", "Не выполнено", "Координация проекта", "Семенова Дарья"),
+                            Task("27.05.25", "Выполнено", "Подготовка отчета", "Кириллова Анастасия")
+                        )
                         TasksScreen(
                             isSubscription = true,
                             onGoToSubscription = {},
-                            onFilter = {},
 
-                            navController = nav
+                            navController = nav,
+                            taskList = sampleTasks
                         )
                     }
                 }
