@@ -116,7 +116,23 @@ We currently use three main branches in our project:
 - **Any team member** can create and merge a pull request after review.
 - Branches are **not deleted** after merging, as development in `frontend` and `backend` is ongoing.
 
-#### Commit Message Format (TBD)
+### Commit messages format
+
+We follow a simplified commit message format inspired by Conventional Commits:
+
+<type>: <short summary>
+
+Where `type` is one of:
+- feat – for new features
+- fix – for bug fixes
+- docs – for documentation
+- refactor – for refactoring code
+- style – for formatting or naming changes
+- test – for tests
+- chore – for everything else
+
+Example:
+feat: add subscription upgrade option
 
 #### Creating a Pull Request
 
@@ -192,6 +208,10 @@ To protect sensitive data such as tokens, API keys, and credentials, we follow t
 > Note: Secrets management is a shared team responsibility, and we aim to improve consistency across developers in future sprints.
 
 ---
+## Build and deployment
+---
+## Architecture
+---
 
 ## Quality assurance
 
@@ -220,4 +240,8 @@ We plan to extend testing to the Telegram bot and backend API in future developm
 
 ---
 
-## Build and deployment
+### User acceptance tests
+
+---
+
+## Usage
