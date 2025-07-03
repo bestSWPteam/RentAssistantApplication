@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
                 val nav = rememberNavController()
                 RedirectHandler(nav, intent.data)
 
-                NavHost(navController = nav, startDestination = "start") {
+                NavHost(navController = nav, startDestination = "profile") {
                     composable("start") {
                         StartingScreen(
                             onLogin = { startTelegramAuth() },
@@ -101,14 +101,19 @@ class MainActivity : ComponentActivity() {
                             onDocumentation = { openDocs() },
                             onTelegramBot = { startTelegramAuth() },
                             onAboutUs = { /* TODO */ },
-                            onDeleteAccount = { /* TODO */ }
+                            onDeleteAccount = { /* TODO */ },
+                            navController = nav
                         )
                     }
 
                     composable("tasks") {
-                        TasksScreen(onFilter = {
-                            // TODO: открыть фильтр задач
-                        })
+                        TasksScreen(
+                            isSubscription = true,
+                            onGoToSubscription = {},
+                            onFilter = {},
+
+                            navController = nav
+                        )
                     }
                 }
             }

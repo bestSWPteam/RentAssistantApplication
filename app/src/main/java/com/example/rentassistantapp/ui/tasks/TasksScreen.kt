@@ -42,65 +42,93 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 
+import com.example.rentassistantapp.ui.navigationBackend.BottomNavigationBar
 
 @Composable
 fun TasksScreen(modifier: Modifier = Modifier,
                 isSubscription: Boolean,
                 onGoToSubscription: () -> Unit,
-                onFilter: () -> Unit) {
+                onFilter: () -> Unit,
+
+                navController: NavController) {
     var filterImage: Painter = painterResource(R.drawable.filter)
 
-    Column(
-        modifier = Modifier.fillMaxSize().background(color = WhiteBase)
+
+    Scaffold (
+        bottomBar = {BottomNavigationBar(navController)}
     ) {
-        Row(
-            modifier = modifier.fillMaxWidth().padding(top = 72.dp, start = 28.dp, end = 20.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+        innerPadding ->
+        Column(
+            modifier = Modifier.fillMaxSize().background(color = WhiteBase).padding(innerPadding)
         ) {
-            Text(
-                text = "Мои задачи",
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Medium,
-                color = Color(0xFF616163),
-                modifier = Modifier.padding(bottom = 12.dp)
-            )
-            Image(
-                painter = filterImage,
-                contentDescription = "Filter",
-                modifier.size(28.dp, 28.dp).clickable(
-                    onClick = onFilter
+            Row(
+                modifier = modifier.fillMaxWidth().padding(top = 24.dp, start = 28.dp, end = 20.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "Мои задачи",
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = Color(0xFF616163),
+                    modifier = Modifier.padding(bottom = 12.dp)
                 )
-            )
-        }
+                Image(
+                    painter = filterImage,
+                    contentDescription = "Filter",
+                    modifier.size(28.dp, 28.dp).clickable(
+                        onClick = onFilter
+                    )
+                )
+            }
 
-        // condition to print tasks or message about NO SUBSCRIPTION
-        if (isSubscription) {
-            val sampleTasks = listOf(
-                Task("12.05.25", "Выполнено", "Бронь в ресторан", "Иванова Екатерина"),
-                Task("13.05.25", "В процессе", "Отчет по проекту", "Петрова Анна"),
-                Task("14.05.25", "Не выполнено", "Встреча с клиентом", "Сидоров Алексей"),
-                Task("15.05.25", "Выполнено", "Подготовка презентации", "Кузнецова Мария"),
-                Task("16.05.25", "В процессе", "Обновление документации", "Федоров Дмитрий"),
-                Task("17.05.25", "Не выполнено", "Проверка отчетов", "Смирнова Ольга"),
-                Task("18.05.25", "Выполнено", "Организация мероприятия", "Зайцева Наталья"),
-                Task("19.05.25", "В процессе", "Анализ данных", "Морозов Сергей"),
-                Task("20.05.25", "Не выполнено", "Разработка нового функционала", "Лебедев Андрей"),
-                Task("21.05.25", "Выполнено", "Согласование бюджета", "Ковалев Ирина"),
-                Task("22.05.25", "В процессе", "Подбор персонала", "Григорьева Светлана"),
-                Task("23.05.25", "Не выполнено", "Проведение тренинга", "Соловьев Николай"),
-                Task("24.05.25", "Выполнено", "Создание рекламной кампании", "Тихонов Виктория"),
-                Task("25.05.25", "В процессе", "Обсуждение стратегии", "Павлов Игорь"),
-                Task("26.05.25", "Не выполнено", "Координация проекта", "Семенова Дарья"),
-                Task("27.05.25", "Выполнено", "Подготовка отчета", "Кириллова Анастасия")
-            )
-            TaskList(sampleTasks)
-        } else {
-            NoSubscriptionCard(
-                onGoToSubscription = onGoToSubscription
-            )
-        }
+            // condition to print tasks or message about NO SUBSCRIPTION
+            if (isSubscription) {
+                val sampleTasks = listOf(
+                    Task("12.05.25", "Выполнено", "Бронь в ресторан", "Иванова Екатерина"),
+                    Task("13.05.25", "В процессе", "Отчет по проекту", "Петрова Анна"),
+                    Task("14.05.25", "Не выполнено", "Встреча с клиентом", "Сидоров Алексей"),
+                    Task("15.05.25", "Выполнено", "Подготовка презентации", "Кузнецова Мария"),
+                    Task("16.05.25", "В процессе", "Обновление документации", "Федоров Дмитрий"),
+                    Task("17.05.25", "Не выполнено", "Проверка отчетов", "Смирнова Ольга"),
+                    Task("18.05.25", "Выполнено", "Организация мероприятия", "Зайцева Наталья"),
+                    Task("19.05.25", "В процессе", "Анализ данных", "Морозов Сергей"),
+                    Task(
+                        "20.05.25",
+                        "Не выполнено",
+                        "Разработка нового функционала",
+                        "Лебедев Андрей"
+                    ),
+                    Task("21.05.25", "Выполнено", "Согласование бюджета", "Ковалев Ирина"),
+                    Task("22.05.25", "В процессе", "Подбор персонала", "Григорьева Светлана"),
+                    Task("23.05.25", "Не выполнено", "Проведение тренинга", "Соловьев Николай"),
+                    Task(
+                        "24.05.25",
+                        "Выполнено",
+                        "Создание рекламной кампании",
+                        "Тихонов Виктория"
+                    ),
+                    Task("25.05.25", "В процессе", "Обсуждение стратегии", "Павлов Игорь"),
+                    Task("26.05.25", "Не выполнено", "Координация проекта", "Семенова Дарья"),
+                    Task("27.05.25", "Выполнено", "Подготовка отчета", "Кириллова Анастасия")
+                )
+                TaskList(sampleTasks)
+            } else {
+                NoSubscriptionCard(
+                    onGoToSubscription = onGoToSubscription
+                )
+            }
 
+        }
     }
 }
 
@@ -239,11 +267,14 @@ fun NoSubscriptionCard(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun TasksScreenPreview() {
+    val nav = rememberNavController()
+
     RentAssistantAppTheme {
         TasksScreen(
             onFilter = {},
             onGoToSubscription = {},
-            isSubscription = true
+            isSubscription = true,
+            navController = nav
         )
     }
 }
