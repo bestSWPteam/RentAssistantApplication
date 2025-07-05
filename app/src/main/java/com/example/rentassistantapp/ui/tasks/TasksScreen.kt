@@ -10,13 +10,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -38,10 +38,6 @@ import com.example.rentassistantapp.ui.theme.RentAssistantAppTheme
 import com.example.rentassistantapp.ui.theme.*
 import com.example.rentassistantapp.R
 import androidx.compose.ui.graphics.Color
-import com.example.rentassistantapp.ui.profile.UsersScreen
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Checkbox
@@ -97,7 +93,7 @@ fun TasksScreen(
                         contentDescription = "Filter",
                         modifier = Modifier
                             .size(28.dp)
-                            .clickable { showFilterMenu = true } // Исправлено здесь
+                            .clickable { showFilterMenu = true }
                     )
                 }
 
@@ -109,7 +105,7 @@ fun TasksScreen(
             }
         }
 
-        // Затемнение фона
+        // Make background darker
         if (showFilterMenu) {
             Box(
                 modifier = Modifier
@@ -120,7 +116,7 @@ fun TasksScreen(
             )
         }
 
-        // Фильтр поверх всего контента
+        // Filter on the top of all content
         FilterBottomSheet(
             visible = showFilterMenu,
             onDismiss = { showFilterMenu = false },
@@ -199,7 +195,8 @@ fun UnitTask(
 
 @Composable
 fun TaskList(tasks: List<Task>) {
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
+    LazyColumn(modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(bottom = 16.dp)) {
         items(tasks) { task ->
             UnitTask(
                 date = task.date,

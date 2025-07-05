@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,7 +21,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.NavigationBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,18 +37,7 @@ import com.example.rentassistantapp.ui.theme.*
 import com.example.rentassistantapp.R
 import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
 
@@ -88,7 +76,11 @@ fun UsersScreen(
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxWidth().background(color = WhiteBase).padding(innerPadding).padding(top = 16.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = WhiteBase)
+                .padding(innerPadding)
+                .padding(top = 16.dp)
                 .verticalScroll(scrollState)
         ) {
             Image(  // avatar
@@ -164,7 +156,7 @@ fun UsersScreen(
                     onClick = onUpgrade,
                     modifier = Modifier
                         .height(36.dp)
-                        .width(160.dp),
+                        .width(152.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Red2,
                         contentColor = White
@@ -177,7 +169,7 @@ fun UsersScreen(
                     onClick = onProlong,
                     modifier = Modifier
                         .height(36.dp)
-                        .width(160.dp),
+                        .width(152.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Red2,
                         contentColor = White
@@ -214,12 +206,13 @@ fun UsersScreen(
                 onClick = onAboutUs
             )
 
-            Button(  // Red button prolong subscription
+            Button(  // Button delete the account
                 onClick = onDeleteAccount,
                 modifier = Modifier
                     .height(36.dp)
                     .width(200.dp)
-                    .border(BorderStroke(1.dp, Grey2), shape = RoundedCornerShape(24.dp)),
+                    .border(BorderStroke(1.dp, Grey2), shape = RoundedCornerShape(24.dp))
+                    .padding(end = 8.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = WhiteBase, // todo make border thinker
                     contentColor = Grey2
@@ -228,6 +221,8 @@ fun UsersScreen(
             ) {
                 Text(text = "Удалить аккаунт", fontSize = 18.sp)
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
