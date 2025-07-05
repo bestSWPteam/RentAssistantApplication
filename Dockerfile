@@ -1,4 +1,4 @@
-FROM nginx:alpine
+FROM debian:11-slim
 
 COPY . /usr/share/nginx/html
 
