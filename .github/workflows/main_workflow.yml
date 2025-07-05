@@ -1,4 +1,4 @@
-name: CI/CD NGINX Demo
+name: Basic CI
 
 on:
   push:
@@ -40,6 +40,33 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
+  ### ADDED: New job for static analysis of Dockerfile ###
+  scan_config:
+    name: Scan Dockerfile with Checkov
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # нужно для скачивания кода
+      security-events: write # нужно для загрузки отчета
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Checkov scan
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          framework: dockerfile # Сканируем только Dockerfile
+          output_format: sarif
+          output_file_path: checkov-results.sarif
+          # По умолчанию (soft_fail: false) работа провалится, если будут найдены проблемы.
+          # Это гарантирует, что "новый тест" остановит pipeline при ошибке.
+
+      - name: Upload Checkov scan results to GitHub Security tab
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'checkov-results.sarif'
+  
   scan_image:
     name: Scan Image for Vulnerabilities
     runs-on: ubuntu-latest
@@ -65,7 +92,7 @@ jobs:
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
           ignore-unfixed: true
-          exit-code: '1'
+          exit-code: '1' # Этот "старый тест" уже настроен на провал при ошибке
           github-pat: ${{ secrets.CI_CD_Token }}
 
       - name: Upload Trivy scan results to GitHub Security tab
@@ -74,25 +101,26 @@ jobs:
         with:
           sarif_file: 'trivy-results.sarif'
 
-  # the stage doesn't work, when app is not hosted
-  deploy:
-    name: Deploy to Production
-    needs: scan_image
-    runs-on: self-hosted
+  # deploy:
+  #   name: Deploy to Production
+  #   ### CHANGED: Now depends on both scans completing successfully ###
+  #   needs: [scan_image, scan_config]
+  #   runs-on: self-hosted
 
-    steps:
-      - name: Log in to the Container registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_PAT }}
+  #   steps:
+  #     - name: Log in to the Container registry
+  #       uses: docker/login-action@v3
+  #       with:
+  #         registry: ghcr.io
+  #         username: ${{ github.actor }}
+  #         password: ${{ secrets.GHCR_PAT }}
 
-      - name: Deploy application
-        run: |
-          docker stop my-nginx-app || true
-          docker rm my-nginx-app || true
+  #     - name: Deploy application
+  #       run: |
+  #         docker stop my-nginx-app || true
+  #         docker rm my-nginx-app || true
           
-          docker pull ${{ env.IMAGE_NAME }}:latest
+  #         # May be mistake
+  #         docker pull ${{ env.IMAGE_NAME }}:latest
           
-          docker run -d --name my-nginx-app -p 80:80 ${{ env.IMAGE_NAME }}:latest
+  #         docker run -d --name my-nginx-app -p 80:80 ${{ env.IMAGE_NAME }}:latest
