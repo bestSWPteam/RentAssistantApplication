@@ -12,6 +12,7 @@ import com.example.rentassistantapp.ui.subscription.SubscriptionChoosingScreen
 import com.example.rentassistantapp.ui.subscription.SubscriptionConfirmationScreen
 import com.example.rentassistantapp.ui.subscription.SuccessPurchaseScreen
 import com.example.rentassistantapp.ui.welcome.WelcomeScreen
+import com.example.rentassistantapp.util.RedirectHandler
 import org.junit.Rule
 import org.junit.Test
 
@@ -47,7 +48,7 @@ class AppNavigationTests {
             val nav = rememberNavController()
             NavHost(nav, startDestination="subscription") {
                 composable("subscription"){
-                    SubscriptionChoosingScreen(onPlanSelected={nav.navigate("confirm/$it")})
+                    SubscriptionChoosingScreen(onPlanSelected ={nav.navigate("confirm/$it")})
                 }
                 composable("confirm/{planType}"){
                     Text("Confirm screen")

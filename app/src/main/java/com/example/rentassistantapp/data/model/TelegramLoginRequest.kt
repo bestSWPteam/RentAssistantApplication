@@ -1,6 +1,6 @@
 package com.example.rentassistantapp.data.model
 
-data class TelegramAuthRequest(
+data class TelegramLoginRequest(
     val id: String,
     val first_name: String,
     val username: String,

@@ -1,11 +1,12 @@
 package com.example.rentassistantapp
 
-import android.net.Uri
+import com.example.rentassistantapp.data.model.PaymentStatusResponse
 import com.example.rentassistantapp.util.buildTelegramAuthUrl
 import com.example.rentassistantapp.util.getFullDescription
 import com.example.rentassistantapp.util.pollUntilPaid
 import com.example.rentassistantapp.util.filterTasks
 import kotlinx.coroutines.runBlocking
+import retrofit2.Response
 import org.junit.Assert.*
 import org.junit.Test
 import java.net.URI
@@ -46,8 +47,15 @@ class AppUnitTests {
 
     @Test
     fun `pollUntilPaid stops when status becomes PAID`() = runBlocking {
-        val responses = listOf("PENDING", "PAID").iterator()
-        val fakeApi: suspend (String) -> String = { responses.next() }
+        var callCount = 0
+        val fakeApi: suspend (String) -> Response<PaymentStatusResponse> = { _ ->
+            if (callCount++ == 0) {
+                Response.success(PaymentStatusResponse("PENDING"))
+            } else {
+                Response.success(PaymentStatusResponse("PAID"))
+            }
+        }
+
         val result = pollUntilPaid(fakeApi, paymentId = "abc", checkIntervalMs = 1)
         assertEquals("PAID", result)
     }

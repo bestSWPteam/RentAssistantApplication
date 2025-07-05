@@ -107,7 +107,7 @@ fun SubscriptionConfirmationScreen(
                 // Buttons
                 // "Subscribe" button
                 Button(
-                    onClick = {onEnter},
+                    onClick = onEnter,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 16.dp, start = 16.dp, end = 16.dp)
@@ -125,7 +125,7 @@ fun SubscriptionConfirmationScreen(
                 }
                 // Cancel button
                 Button(
-                    onClick = {onBack},
+                    onClick = onBack,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 12.dp, end = 28.dp, top = 0.dp),
@@ -155,8 +155,8 @@ fun SubscriptionConfirmationPreview(modifier: Modifier = Modifier) {
         SubscriptionConfirmationScreen(
             subscriptionType = "Лайт",
             cost = "30 000 ₽",
-            onEnter = {}, // todo переход к оплате тарифа
-            onBack = {} // todo кнопка назад
+            onEnter = {},
+            onBack = {}
         )
     }
 }

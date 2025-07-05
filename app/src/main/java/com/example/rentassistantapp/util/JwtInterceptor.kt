@@ -7,11 +7,11 @@ import okhttp3.Response
 class JwtInterceptor(private val ctx: Context) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val token = PrefsHelper.getJwt(ctx)
-        val req = if (token != null) {
-            chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer $token")
-                .build()
-        } else chain.request()
-        return chain.proceed(req)
+        val request = chain.request().newBuilder().apply {
+            if (!token.isNullOrEmpty()) {
+                header("X-Auth-Token", token)
+            }
+        }.build()
+        return chain.proceed(request)
     }
 }

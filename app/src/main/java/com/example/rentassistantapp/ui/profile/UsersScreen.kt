@@ -36,6 +36,8 @@ import com.example.rentassistantapp.ui.theme.RentAssistantAppTheme
 import com.example.rentassistantapp.ui.theme.*
 import com.example.rentassistantapp.R
 import androidx.compose.ui.graphics.Color
+import com.example.rentassistantapp.MainActivity
+import com.example.rentassistantapp.util.PrefsHelper
 
 @Composable
 fun UsersScreen(
@@ -45,7 +47,7 @@ fun UsersScreen(
     subscriptionType: String,
     subscriptionStatus: String,
     expireDate: String,
-    // functions
+
     onChangeProfile: () -> Unit,
     onUpgrade: () -> Unit,
     onProlong: () -> Unit,
@@ -288,8 +290,8 @@ fun ButtonWithArrow( // very sufferable thing. Change with extremal cautious
 fun UsersScreenPreview() {
     RentAssistantAppTheme {
         UsersScreen(
-            surname = "Агафонова",
-            name = "Арина Кирилловна",
+            surname = "",
+            name = "",
             subscriptionType = "Лайт",
             expireDate = "07.07.25",
             subscriptionStatus = "Активна",

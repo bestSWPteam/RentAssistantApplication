@@ -10,7 +10,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkModule {
-    private const val BASE_URL = "${Config.API_BASE_URL}"
+    private const val BASE_URL = Config.API_BASE_URL
 
     private fun retrofit(ctx: Context): Retrofit {
         val client = OkHttpClient.Builder()
