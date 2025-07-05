@@ -242,6 +242,46 @@ Our design choices significantly impact code maintainability:
 - **DRY Principle**: We reuse code through functions and classes instead of copy-pasting, reducing the chance of bugs and making updates easier.
 - **Documentation**: Proper documentation helps new developers understand the system faster and work more efficiently.
 ---
+### Dynamic view
+
+#### UML Sequence Diagram: Android App Subscription Purchase
+
+This sequence diagram describes the dynamic flow of a **non-trivial scenario**: a user purchasing a subscription in the Android app.
+
+It involves the following components and transactions:
+
+- `:AndroidApp` — UI and session token handling;
+- `:BackendAPI` — FastAPI server and business logic;
+- `:YooKassaAPI` — external payment gateway;
+- `DB` — transaction persistence.
+
+It includes:
+- Normal purchase flow
+- Error handling (backend/UI failure)
+- User cancellation flow
+
+🖼️ **Diagram image**:  
+[📂 subscription-sequence.png](./docs/architecture/dynamic-view/subscription-sequence.png)
+
+---
+
+#### ⏱️ Report of Execution Time in Production
+
+| Stage                              | Components                        | Timing  |
+|------------------------------------|------------------------------------|---------|
+| Full End-to-End (tap to result)    | :Actor → :App → :Actor             | 740 ms  |
+| UI: Display Confirmation Dialog    | :AndroidApp → :AndroidApp         | 80 ms   |
+| Network Request                    | :AndroidApp → :BackendAPI         | 520 ms  |
+| Payment Gateway Call               | :BackendAPI → :YooKassaAPI        | 400 ms  |
+| Save Transaction to DB             | :BackendAPI → DB                  | 40 ms   |
+| Internal Backend Logic             | :BackendAPI                       | 20 ms   |
+| Network Latency                    | App ↔ Backend                     | 60 ms   |
+| UI: Process Response & Render UI   | :AndroidApp → :AndroidApp         | 140 ms  |
+
+---
+
+> ✅ This scenario is tested in production, and full interaction is completed within **~740 milliseconds**, which ensures a smooth UX.
+
 
 ## Quality assurance
 
