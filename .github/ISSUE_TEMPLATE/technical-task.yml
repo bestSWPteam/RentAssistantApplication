@@ -1,0 +1,33 @@
+name: Technical Task
+description: Break down a technical implementation or refactor into actionable steps.
+title: "[Tech Task] "
+labels: [technical]
+body:
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: What is the purpose of this task? What system or component is involved?
+      placeholder: Describe the context or background here...
+
+  - type: textarea
+    id: implementation
+    attributes:
+      label: Implementation Plan
+      description: Describe how the task will be implemented or structured.
+      placeholder: Mention technical details, tools, or files to be modified...
+
+  - type: checkboxes
+    id: subtasks
+    attributes:
+      label: Subtasks
+      description: Break this task down into smaller steps, or link related issues.
+      options:
+        - label: Step 1
+        - label: Step 2
+        - label: Step 3
+
+  - type: markdown
+    attributes:
+      value: |
+        ✅ Please check the [Definition of Done](https://github.com/bestSWPteam/RentAssistantApplication/blob/main/CONTRIBUTING.md) before closing the issue.
