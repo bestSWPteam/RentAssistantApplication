@@ -217,6 +217,31 @@ To protect sensitive data such as tokens, API keys, and credentials, we follow t
 ---
 ## Architecture
 ---
+### Static view
+
+#### UML Component Diagram
+
+The static view of the system is illustrated using a UML Component Diagram. It shows the main components of the system — Bots, Android App, and Database API — and how they interact with each other through adapters and HTTP requests.
+
+![Component Diagram](./docs/architecture/static-view/component-diagram.jpeg)
+
+#### Coupling and Cohesion
+
+- The project applies **loose coupling** — modules communicate through well-defined interfaces (e.g., HTTP API, function calls). This makes it easier to update or replace modules without affecting others.
+- We maintain **high cohesion** — each class or module is focused on a single responsibility (e.g., `DatabaseAdapter`, `MainBot`, etc.). This improves code readability, debugging, testing, and maintainability.
+
+#### Maintainability and Design Decisions
+
+Our design choices significantly impact code maintainability:
+
+- **Clear naming and structure**: Developers can understand the code faster, which reduces time spent on fixing bugs or adding features.
+- **Modular structure**: While the file structure is clear and logical, we're still working on increasing modularity by splitting the logic into smaller, reusable packages.
+- **Coupling & Cohesion**: Loose coupling and high cohesion ensure that:
+  - Each module (e.g., `Database`, `Bot`, `App`) is self-contained and focused.
+  - Debugging and refactoring are easier due to better separation of concerns.
+- **DRY Principle**: We reuse code through functions and classes instead of copy-pasting, reducing the chance of bugs and making updates easier.
+- **Documentation**: Proper documentation helps new developers understand the system faster and work more efficiently.
+---
 
 ## Quality assurance
 
