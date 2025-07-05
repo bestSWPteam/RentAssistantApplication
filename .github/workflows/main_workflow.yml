@@ -2,7 +2,7 @@ name: CI/CD NGINX Demo
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "RishatShay-patch-1" ]
 
 jobs:
   code-analysis:
