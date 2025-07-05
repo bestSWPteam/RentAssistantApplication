@@ -259,9 +259,8 @@ It includes:
 - Normal purchase flow
 - Error handling (backend/UI failure)
 - User cancellation flow
-
-🖼️ **Diagram image**:  
-[📂 subscription-sequence.png](./docs/architecture/dynamic-view/subscription-sequence.png)
+  
+![Purchase Flow Diagram](./docs/architecture/dynamic-view/uml.png)
 
 ---
 
