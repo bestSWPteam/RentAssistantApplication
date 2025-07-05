@@ -260,7 +260,7 @@ It includes:
 - Error handling (backend/UI failure)
 - User cancellation flow
   
-![Purchase Flow Diagram](./docs/architecture/dynamic-view/uml.png)
+![Purchase Flow Diagram](./docs/architecture/dynamic-view/subscription-sequence.png)
 
 ---
 
