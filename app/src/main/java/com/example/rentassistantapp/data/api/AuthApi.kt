@@ -12,3 +12,4 @@ interface AuthApi {
         @Body body: TelegramAuthRequest
     ): Response<AuthResponse>
 }
+

@@ -17,6 +17,7 @@ import com.example.rentassistantapp.ui.subscription.SubscriptionChoosingScreen
 import com.example.rentassistantapp.ui.subscription.SubscriptionConfirmationScreen
 import com.example.rentassistantapp.ui.subscription.SuccessPurchaseScreen
 import com.example.rentassistantapp.ui.profile.UsersScreen
+import com.example.rentassistantapp.ui.tasks.Task
 import com.example.rentassistantapp.ui.tasks.TasksScreen
 import com.example.rentassistantapp.ui.theme.RentAssistantAppTheme
 import com.example.rentassistantapp.util.Config
@@ -33,7 +34,7 @@ class MainActivity : ComponentActivity() {
                 val nav = rememberNavController()
                 RedirectHandler(nav, intent.data)
 
-                NavHost(navController = nav, startDestination = "start") {
+                NavHost(navController = nav, startDestination = "profile") {
                     composable("start") {
                         StartingScreen(
                             onLogin = { startTelegramAuth() },
@@ -101,17 +102,46 @@ class MainActivity : ComponentActivity() {
                             onDocumentation = { openDocs() },
                             onTelegramBot = { startTelegramAuth() },
                             onAboutUs = { /* TODO */ },
-                            onDeleteAccount = { /* TODO */ }
+                            onDeleteAccount = { /* TODO */ },
+                            navController = nav
                         )
                     }
 
                     composable("tasks") {
+                        val sampleTasks = listOf(
+                            Task("12.05.25", "Выполнено", "Бронь в ресторан", "Иванова Екатерина"),
+                            Task("13.05.25", "В процессе", "Отчет по проекту", "Петрова Анна"),
+                            Task("14.05.25", "Не выполнено", "Встреча с клиентом", "Сидоров Алексей"),
+                            Task("15.05.25", "Выполнено", "Подготовка презентации", "Кузнецова Мария"),
+                            Task("16.05.25", "В процессе", "Обновление документации", "Федоров Дмитрий"),
+                            Task("17.05.25", "Не выполнено", "Проверка отчетов", "Смирнова Ольга"),
+                            Task("18.05.25", "Выполнено", "Организация мероприятия", "Зайцева Наталья"),
+                            Task("19.05.25", "В процессе", "Анализ данных", "Морозов Сергей"),
+                            Task(
+                                "20.05.25",
+                                "Не выполнено",
+                                "Разработка нового функционала",
+                                "Лебедев Андрей"
+                            ),
+                            Task("21.05.25", "Выполнено", "Согласование бюджета", "Ковалев Ирина"),
+                            Task("22.05.25", "В процессе", "Подбор персонала", "Григорьева Светлана"),
+                            Task("23.05.25", "Не выполнено", "Проведение тренинга", "Соловьев Николай"),
+                            Task(
+                                "24.05.25",
+                                "Выполнено",
+                                "Создание рекламной кампании",
+                                "Тихонов Виктория"
+                            ),
+                            Task("25.05.25", "В процессе", "Обсуждение стратегии", "Павлов Игорь"),
+                            Task("26.05.25", "Не выполнено", "Координация проекта", "Семенова Дарья"),
+                            Task("27.05.25", "Выполнено", "Подготовка отчета", "Кириллова Анастасия")
+                        )
                         TasksScreen(
-                            isSubscription = false,
-                            onGoToSubscription = { /* TODO: переход на подписку */ },
-                            onFilter = {
-                                // TODO: открыть фильтр задач
-                            }
+                            isSubscription = true,
+                            onGoToSubscription = {},
+
+                            navController = nav,
+                            taskList = sampleTasks
                         )
                     }
                 }
@@ -130,6 +160,7 @@ class MainActivity : ComponentActivity() {
             .authority("oauth.telegram.org")
             .appendPath("auth")
             .appendQueryParameter("bot_id", botId)
+            .appendQueryParameter("origin", origin)
             .appendQueryParameter("redirect_url", redirectUri)
             .appendQueryParameter("request_access", "write")
             .build()
@@ -144,7 +175,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-private fun RedirectHandler(nav: NavHostController, incomingUri: Uri?) {
+fun RedirectHandler(nav: NavHostController, incomingUri: Uri?) {
     var handled by remember { mutableStateOf(false) }
     LaunchedEffect(incomingUri) {
         if (incomingUri != null && !handled) {

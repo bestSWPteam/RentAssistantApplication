@@ -47,7 +47,7 @@ fun SubscriptionConfirmationScreen(
                 .height(360.dp)
                 .background(color = White)
                 .clip(RoundedCornerShape(16.dp))
-                .border(BorderStroke(1.dp, color = Red1), shape = RoundedCornerShape(16.dp)), // todo change color of the border to White
+                .border(BorderStroke(2.dp, color = Red1), shape = RoundedCornerShape(16.dp)), // todo change color of the border to White
             contentAlignment = Alignment.Center
         ) {
             Column() {
@@ -107,7 +107,7 @@ fun SubscriptionConfirmationScreen(
                 // Buttons
                 // "Subscribe" button
                 Button(
-                    onClick = {onEnter},
+                    onClick = onEnter,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 16.dp, start = 16.dp, end = 16.dp)
@@ -125,7 +125,7 @@ fun SubscriptionConfirmationScreen(
                 }
                 // Cancel button
                 Button(
-                    onClick = {onBack},
+                    onClick = onBack,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 12.dp, end = 28.dp, top = 0.dp),
@@ -150,7 +150,7 @@ fun SubscriptionConfirmationScreen(
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun SubscriptionConfirmationPreview(modifier: Modifier = Modifier) {
+fun SubscriptionConfirmationPreview() {
     RentAssistantAppTheme {
         SubscriptionConfirmationScreen(
             subscriptionType = "Лайт",
