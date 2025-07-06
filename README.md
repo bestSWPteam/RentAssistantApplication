@@ -332,3 +332,37 @@ All user acceptance tests (UAT) are documented in the following file:
 ---
 
 ## Usage
+
+This section explains how to launch and use the MVP v2 version of our app.
+
+### App Installation
+
+1. Download the APK file: [Download APK](https://your-link-to-apk.com)
+2. Install the app on your Android device.
+   - You may need to enable **“Install from unknown sources”** in your device settings.
+3. Launch the app from your home screen.
+
+---
+
+### Authentication
+
+- The app uses **Telegram authentication**.
+- On launch, you’ll be redirected to authorize via Telegram.
+- If you encounter login issues:  
+  ⚠️ Some features may not work as expected due to current limitations in Telegram-based authentication (see [Deployment Note](https://docs.google.com/spreadsheets/d/17Lzh71TNYh9bJ2iMPZaI3bB_qQElKKTp-nbI8IE8AdA/edit?usp=sharing)).
+
+---
+
+### What you can test in MVP v2
+
+✅ Available Features:
+- App landing screen  
+- Telegram-based login  
+- Bot payment system flow (interface only)  
+- Frontend UI for profile & assistant assignment  
+- UI responses and navigation
+
+🚧 Not yet available:
+- Actual payment processing  
+- Assistant assignment logic  
+- Data persistence after logout
