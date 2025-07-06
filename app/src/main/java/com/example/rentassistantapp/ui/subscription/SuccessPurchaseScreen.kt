@@ -57,10 +57,8 @@ fun SuccessPurchaseScreen(modifier: Modifier = Modifier,
             contentAlignment = Alignment.Center
         ) {
             IconButton(
-                onClick = onClose,
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(8.dp)
+                onClick = {onClose},
+                modifier = modifier.align(Alignment.TopEnd).padding(8.dp)
             ) {
                 Icon(
                     painter = closingCross,
