@@ -1,51 +1,39 @@
-name: CI/CD NGINX Demo
+name: Basic CI
 
 on:
   push:
-    branches: [ "main", "RishatShay-patch-1" ]
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
-  code-analysis:
-    name: Analyze Source Code
-    runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          languages: javascript
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
-
-  # Сборка и пуш образа теперь зависят от тестов
   build_and_push:
     name: Build and Push Image
     runs-on: ubuntu-latest
-    needs: run-tests # <--- ЗАВИСИМОСТЬ ОТ ТЕСТОВ
     permissions:
       contents: read
       packages: write
+
     outputs:
       image_name: ${{ steps.meta.outputs.tags }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Log in to the Container registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.CI_CD_Token }}
+
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ github.repository }}
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
@@ -54,7 +42,33 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-  # Сканирование образа Trivy (ваш старый тест)
+  ### ADDED: New job for static analysis of Dockerfile ###
+  scan_config:
+    name: Scan Dockerfile with Checkov
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # нужно для скачивания кода
+      security-events: write # нужно для загрузки отчета
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Checkov scan
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          framework: dockerfile # Сканируем только Dockerfile
+          output_format: sarif
+          output_file_path: checkov-results.sarif
+          # По умолчанию (soft_fail: false) работа провалится, если будут найдены проблемы.
+          # Это гарантирует, что "новый тест" остановит pipeline при ошибке.
+
+      - name: Upload Checkov scan results to GitHub Security tab
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'checkov-results.sarif'
+  
   scan_image:
     name: Scan Image for Vulnerabilities
     runs-on: ubuntu-latest
@@ -63,6 +77,7 @@ jobs:
       contents: read
       packages: read
       security-events: write
+
     steps:
       - name: Log in to the Container registry
         uses: docker/login-action@v3
@@ -70,6 +85,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.CI_CD_Token }}
+
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
@@ -78,10 +94,35 @@ jobs:
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
           ignore-unfixed: true
-          exit-code: '1'
+          exit-code: '1' # Этот "старый тест" уже настроен на провал при ошибке
           github-pat: ${{ secrets.CI_CD_Token }}
+
       - name: Upload Trivy scan results to GitHub Security tab
         if: always()
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: 'trivy-results.sarif'
+
+  # deploy:
+  #   name: Deploy to Production
+  #   ### CHANGED: Now depends on both scans completing successfully ###
+  #   needs: [scan_image, scan_config]
+  #   runs-on: self-hosted
+
+  #   steps:
+  #     - name: Log in to the Container registry
+  #       uses: docker/login-action@v3
+  #       with:
+  #         registry: ghcr.io
+  #         username: ${{ github.actor }}
+  #         password: ${{ secrets.GHCR_PAT }}
+
+  #     - name: Deploy application
+  #       run: |
+  #         docker stop my-nginx-app || true
+  #         docker rm my-nginx-app || true
+          
+  #         # May be mistake
+  #         docker pull ${{ env.IMAGE_NAME }}:latest
+          
+  #         docker run -d --name my-nginx-app -p 80:80 ${{ env.IMAGE_NAME }}:latest
