@@ -13,7 +13,7 @@ fun buildTelegramAuthUrl(
 ): String {
     val params = mutableListOf<String>().apply {
         add("bot_id=${URLEncoder.encode(botId, StandardCharsets.UTF_8.name())}")
-        add("redirect_url=${URLEncoder.encode(redirect, StandardCharsets.UTF_8.name())}")
+        add("redirect_uri=${URLEncoder.encode(redirect, StandardCharsets.UTF_8.name())}")
         origin?.let {
             add("origin=${URLEncoder.encode(it, StandardCharsets.UTF_8.name())}")
         }

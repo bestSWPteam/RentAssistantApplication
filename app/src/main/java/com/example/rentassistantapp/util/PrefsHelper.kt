@@ -1,63 +1,66 @@
 package com.example.rentassistantapp.util
 
 import android.content.Context
-import com.example.rentassistantapp.MainActivity
+import android.content.SharedPreferences
 
 object PrefsHelper {
-    private const val PREFS_NAME = "rent_assistant_prefs"
-    private const val KEY_JWT = "jwt_token"
-    private const val KEY_TELEGRAM_ID = "telegram_id"
-    private const val KEY_FIRST_NAME = "first_name"
-    private const val KEY_USERNAME = "username"
+    private const val KEY_JWT = "jwt"
     private const val KEY_FIRST_LAUNCH = "first_launch"
+    private const val KEY_FIRST_NAME = "first_name"
+    private const val KEY_TG_ID = "telegram_id"
+    private const val KEY_SUBSCRIPTION_TYPE = "subscription_type"
+    private const val KEY_EXPIRE_DATE = "expire_date"
 
-    fun saveJwt(ctx: Context, jwt: String) {
-        ctx.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            .edit()
-            .putString(KEY_JWT, jwt)
-            .apply()
+    fun saveJwt(context: Context, token: String) {
+        prefs(context).edit().putString(KEY_JWT, token).apply()
     }
 
-    fun getJwt(ctx: Context): String? =
-        ctx.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            .getString(KEY_JWT, null)
+    fun getJwt(context: Context): String? =
+        prefs(context).getString(KEY_JWT, null)
 
-    fun saveTelegramUser(ctx: Context, id: String, firstName: String, username: String) {
-        ctx.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            .edit()
-            .putString(KEY_TELEGRAM_ID, id)
-            .putString(KEY_FIRST_NAME, firstName)
-            .putString(KEY_USERNAME, username)
-            .apply()
+    fun saveSubscriptionType(context: Context, type: String) {
+        prefs(context).edit().putString(KEY_SUBSCRIPTION_TYPE, type).apply()
     }
 
-    fun getTelegramId(ctx: Context): String? =
-        ctx.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            .getString(KEY_TELEGRAM_ID, null)
+    fun getSubscriptionType(context: Context): String? =
+        prefs(context).getString(KEY_SUBSCRIPTION_TYPE, null)
 
-    fun getFirstName(ctx: Context): String? =
-        ctx.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            .getString(KEY_FIRST_NAME, null)
-
-    fun getUsername(ctx: Context): String? =
-        ctx.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            .getString(KEY_USERNAME, null)
-
-    fun isFirstLaunch(ctx: Context): Boolean =
-        ctx.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            .getBoolean(KEY_FIRST_LAUNCH, true)
-
-    fun markLaunched(ctx: Context) {
-        ctx.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            .edit()
-            .putBoolean(KEY_FIRST_LAUNCH, false)
-            .apply()
+    fun saveExpireDate(context: Context, date: String) {
+        prefs(context).edit().putString(KEY_EXPIRE_DATE, date).apply()
     }
 
-    fun clearAll(ctx: Context) {
-        ctx.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            .edit()
-            .clear()
-            .apply()
+    fun getExpireDate(context: Context): String? =
+        prefs(context).getString(KEY_EXPIRE_DATE, null)
+
+    fun markLaunched(context: Context) {
+        prefs(context).edit().putBoolean(KEY_FIRST_LAUNCH, false).apply()
     }
+
+    fun isFirstLaunch(context: Context): Boolean =
+        prefs(context).getBoolean(KEY_FIRST_LAUNCH, true)
+
+    fun clearAll(context: Context) {
+        prefs(context).edit().clear().apply()
+    }
+
+    fun resetLaunchFlag(context: Context) {
+        prefs(context).edit().putBoolean(KEY_FIRST_LAUNCH, true).apply()
+    }
+
+    fun saveFirstName(context: Context, name: String) {
+        prefs(context).edit().putString(KEY_FIRST_NAME, name).apply()
+    }
+
+    fun getFirstName(context: Context): String? =
+        prefs(context).getString(KEY_FIRST_NAME, null)
+
+    fun saveTelegramId(context: Context, id: String) {
+        prefs(context).edit().putString(KEY_TG_ID, id).apply()
+    }
+
+    fun getTelegramId(context: Context): String? =
+        prefs(context).getString(KEY_TG_ID, null)
+
+    private fun prefs(context: Context): SharedPreferences =
+        context.getSharedPreferences("prefs", Context.MODE_PRIVATE)
 }

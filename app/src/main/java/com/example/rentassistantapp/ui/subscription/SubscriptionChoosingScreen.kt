@@ -29,7 +29,8 @@ import com.example.rentassistantapp.ui.theme.WhiteBase
 
 @Composable
 fun SubscriptionChoosingScreen(
-    onPlanSelected: (planType: String) -> Unit,
+    onPlanSelected: (planType: String, hours: Int) -> Unit,
+    onBack: () -> Unit,
     modifier: Modifier.Companion = Modifier
 ) {
     val scrollState = rememberScrollState()
@@ -46,6 +47,14 @@ fun SubscriptionChoosingScreen(
                 .padding(bottom = 32.dp)
         ) {
             Text(
+                text = "← Назад",
+                fontSize = 16.sp,
+                color = Red2,
+                modifier = Modifier
+                    .padding(start = 24.dp, top = 32.dp)
+                    .clickable { onBack() }
+            )
+            Text(
                 text = "Варианты подписки",
                 fontSize = 28.sp,
                 color = Grey3,
@@ -57,19 +66,32 @@ fun SubscriptionChoosingScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            val plans = listOf(
-                Triple("Лайт", "для себя", "15 000 ₽"),
-                Triple("Бизнес", "для бизнеса", "30 000 ₽"),
-                Triple("Экстра", "максимум пользы", "40 000 ₽")
-            )
-
-            plans.forEach { (name, shortDesc, price) ->
-                SubscriptionTypeCard(
-                    name = name,
-                    shortDescription = shortDesc,
-                    price = price,
-                    onClick = { onPlanSelected(name) }
-                )
+            listOf(
+                Triple("Лайт", "для себя", listOf(
+                    2 to "15 000 ₽",
+                    5 to "30 000 ₽",
+                    8 to "50 000 ₽"
+                )),
+                Triple("Бизнес", "для бизнеса", listOf(
+                    2 to "30 000 ₽",
+                    5 to "60 000 ₽",
+                    8 to "80 000 ₽"
+                )),
+                Triple("Экстра", "максимум пользы", listOf(
+                    2 to "40 000 ₽",
+                    5 to "80 000 ₽",
+                    8 to "100 000 ₽"
+                ))
+            ).forEach { (name, shortDesc, options) ->
+                options.forEach { (hours, price) ->
+                    SubscriptionTypeCard(
+                        name = name,
+                        shortDescription = shortDesc,
+                        price = price,
+                        hours = hours,
+                        onClick = { onPlanSelected(name, hours) }
+                    )
+                }
             }
         }
     }
@@ -80,6 +102,7 @@ fun SubscriptionTypeCard(
     name: String,
     shortDescription: String,
     price: String,
+    hours: Int,
     period: String = "ежемесячно",
     onClick: () -> Unit
 ) {
@@ -87,7 +110,7 @@ fun SubscriptionTypeCard(
         modifier = Modifier
             .padding(horizontal = 24.dp, vertical = 12.dp)
             .fillMaxWidth()
-            .height(200.dp)
+            .height(220.dp)
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(16.dp),
         border = BorderStroke(1.dp, Grey2)
@@ -113,13 +136,13 @@ fun SubscriptionTypeCard(
                 }
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
-                        text = "от $price",
+                        text = "$price",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = Red2
                     )
                     Text(
-                        text = period,
+                        text = "$hours ч/день",
                         fontSize = 14.sp,
                         color = Grey2
                     )
@@ -167,6 +190,6 @@ private fun getFullDescription(planName: String): String {
 @Composable
 fun SubscriptionChoosingPreview() {
     RentAssistantAppTheme {
-        SubscriptionChoosingScreen(onPlanSelected = {})
+        SubscriptionChoosingScreen(onPlanSelected = { _, _ -> }, onBack = {})
     }
 }

@@ -1,5 +1,6 @@
 package com.example.rentassistantapp.ui.subscription
 
+import android.content.Context
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -27,13 +28,19 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.ui.draw.clip
 import com.example.rentassistantapp.ui.theme.*
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun SubscriptionConfirmationScreen(
     modifier: Modifier = Modifier,
     subscriptionType: String,
     cost: String,
-    onEnter: () -> Unit,
+    onEnter: suspend (Context) -> Unit,
     onBack: () -> Unit
 ) {
     Box( // box to put inner box to screen center
@@ -104,10 +111,14 @@ fun SubscriptionConfirmationScreen(
                     )
                 )
 
-                // Buttons
-                // "Subscribe" button
+                val context = LocalContext.current
+
                 Button(
-                    onClick = onEnter,
+                    onClick = {
+                        CoroutineScope(Dispatchers.Main).launch {
+                            onEnter(context)
+                        }
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 16.dp, start = 16.dp, end = 16.dp)
