@@ -37,9 +37,11 @@ import androidx.compose.ui.draw.clip
 
 @Composable
 fun SubscriptionChoosingScreen(
-    modifier: Modifier.Companion = Modifier
+    modifier: Modifier = Modifier,
+    onPlanSelected: (String) -> Unit
 ) {
     val scrollState = rememberScrollState()
+    
     Surface (
         modifier = modifier.fillMaxSize(),
         color = WhiteBase
@@ -64,7 +66,8 @@ fun SubscriptionChoosingScreen(
                         "– 15 000 ₽ / месяц — 2 часа работы в день        \n" +
                         "– 30 000 ₽ / месяц — 5 часов работы в день        \n" +
                         "– 50 000 ₽ / месяц — 8 часов работы в день",
-                price = "15.000")
+                price = "15.000",
+                onClickFunction = {onPlanSelected("Лайт")})
 
             // Business subscription
             SubscriptionTypeSquare(modifier,
@@ -76,8 +79,8 @@ fun SubscriptionChoosingScreen(
                         "– 30 000 ₽ / месяц — 2 часа работы в день        \n" +
                         "– 60 000 ₽ / месяц — 5 часов работы в день        \n" +
                         "– 80 000 ₽ / месяц — 8 часов работы в день",
-                price = "30.000")
-
+                price = "30.000",
+                onClickFunction = {onPlanSelected("Бизнес")})
 // Extra subscription
             SubscriptionTypeSquare(modifier,
                 name = "Экстра",
@@ -89,7 +92,8 @@ fun SubscriptionChoosingScreen(
                         "– 40 000 ₽ / месяц — 2 часа работы в день        \n" +
                         "– 80 000 ₽ / месяц — 5 часов работы в день        \n" +
                         "– 100 000 ₽ / месяц — 8 часов работы в день",
-                price = "40.000")
+                price = "40.000",
+                onClickFunction = {onPlanSelected("Экстра")})
         }
     }
 }
@@ -103,7 +107,7 @@ fun SubscriptionTypeSquare(
     variantDescription: String,
     price: String,
     period: String = "ежемесячно",
-    onClickFunction: () -> Unit = {}
+    onClickFunction: () -> Unit
 
 ){
     Box(
@@ -184,9 +188,10 @@ fun SubscriptionTypeSquare(
                     start = 20.dp,
                     top = 20.dp)
             )
+
 // "Subscribe" button
             Button(
-                onClick = {onClickFunction},
+                onClick = onClickFunction,
                 modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp, horizontal = 16.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Red2,
@@ -203,10 +208,10 @@ fun SubscriptionTypeSquare(
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun SubscriptionChoosingPreview(modifier: Modifier = Modifier) {
+fun SubscriptionChoosingPreview() {
     RentAssistantAppTheme {
         SubscriptionChoosingScreen(
-
+            onPlanSelected = {}
         )
     }
 }
