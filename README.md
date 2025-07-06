@@ -333,6 +333,102 @@ It includes:
 
 > ✅ This scenario is tested in production, and full interaction is completed within **~740 milliseconds**, which ensures a smooth UX.
 
+---
+
+### Deployment View
+
+#### System Overview
+
+This system consists of three primary components:
+
+- Telegram Bot — the main interface used by both administrators and users
+- Android Application — an alternative interface with the same functional capabilities
+- Cloud Backend — FastAPI server with an adapter layer and PostgreSQL database
+
+Each component is deployed independently, ensuring flexibility and scalability.
+
+---
+#### 1. Telegram Bot
+
+- Deployed on: Remote server or cloud VM with public internet access  
+- Role:  
+  The bot serves as the main interface for interacting with the system.  
+  It provides full functionality to users and administrators, such as viewing and managing tasks or subscriptions.  
+  Communication with the backend is done via HTTPS requests with an admin token to access privileged endpoints (e.g., user listing, subscription control).
+
+---
+
+#### 2. Android Application
+
+- Deployed on: User’s Android device  
+- Role:  
+  The mobile app offers an alternative way to use the system, replicating the bot's functionality.  
+  It communicates with the backend using RESTful HTTP over HTTPS.  
+  Although JWT tokens are designed for request authorization, the backend currently doesn’t validate them.  
+  The app handles tasks, subscription management, and payment flows similarly to the bot.
+
+---
+
+#### 3. Backend API (FastAPI)
+
+- Deployed on: Cloud VM or containerized environment (e.g., Docker on DigitalOcean or AWS EC2)  
+- Role:  
+  The FastAPI backend acts as the system orchestrator:
+  - Processes requests from both the Telegram Bot and the Android App
+  - Executes business logic for subscriptions, users, and tasks
+  - Communicates with the PostgreSQL database
+  - Integrates with YooKassa for payments
+
+---
+
+#### 4. Database (PostgreSQL)
+
+- Deployed on: Managed cloud PostgreSQL service (e.g., Supabase, Railway, Render)  
+- Role:  
+  Stores persistent data: users, tasks, subscription types, and payment logs.  
+  The FastAPI backend interacts with the DB asynchronously using asyncpg.
+
+---
+
+#### 5. Payment Gateway (YooKassa)
+
+- Deployed on: External third-party infrastructure  
+- Role:  
+  Handles all payment-related operations.  
+  The backend sends HTTPS requests to YooKassa to create and verify payments.  
+  All sensitive information and card processing are handled securely on YooKassa’s side.
+
+---
+
+#### Deployment Rationale
+
+- Primary interface as Telegram bot:  
+  Most user interaction happens through the bot. The Android app is fully functional but designed as an alternative channel.
+
+- Separation of responsibilities:  
+  Clear boundaries between UI layers, backend processing, and data storage reduce coupling and simplify maintenance.
+
+- Security:  
+  All traffic goes over HTTPS. Admin-only features are protected using a special token in bot requests.
+
+- Scalability:
+  - Backend can be scaled horizontally
+  - Database is cloud-managed and backed up
+  - Bot and app are stateless and easily redeployable
+
+- Reliability:  
+  Cloud-based hosting and managed services ensure high availability.
+
+- Maintainability:  
+  Modular structure allows independent development of the bot, app, and server components.
+
+---
+
+#### Deployment Diagram
+
+![Deployment Diagram](./docs/architecture/deployment-view/deployment_view.png)
+
+---
 
 ## Quality assurance
 
