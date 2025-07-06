@@ -215,6 +215,20 @@ To protect sensitive data such as tokens, API keys, and credentials, we follow t
 ---
 ## Build and deployment
 ---
+### Continuous Integration
+
+We use GitHub Actions to build, scan, and validate our Docker image on every push and pull request to `main`.
+
+- **Workflow file:** [`main_workflow.yml`](https://github.com/bestSWPteam/RentAssistantApplication/blob/main/.github/workflows/main_workflow.yml)
+- **Static analysis tools:**
+  - **Checkov** – scans the Dockerfile for security and configuration issues.
+  - **Trivy** – scans the built Docker image for known vulnerabilities (CRITICAL and HIGH severity).
+- **CI Workflow run results:** [GitHub Actions tab](https://github.com/bestSWPteam/RentAssistantApplication/actions)
+
+Each tool will fail the pipeline if issues are detected, ensuring that only secure and properly configured code is pushed.
+
+---
+
 ## Architecture
 ---
 ### Static view
