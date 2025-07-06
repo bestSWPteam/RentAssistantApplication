@@ -6,6 +6,7 @@ import com.example.rentassistantapp.util.getFullDescription
 import com.example.rentassistantapp.util.pollUntilPaid
 import com.example.rentassistantapp.util.filterTasks
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.fail
 import retrofit2.Response
 import org.junit.Assert.*
 import org.junit.Test
@@ -67,4 +68,46 @@ class AppUnitTests {
         assertTrue(pending.all { !it.isDone })
         assertEquals(2, pending.size)
     }
+
+
+    @Test
+    fun `Auth URL builder uses correct scheme`() {
+        val url = buildTelegramAuthUrl("bot", "myapp://callback", "origin")
+        assertTrue(url.startsWith("https://t.me/"))
+    }
+
+    @Test
+    fun `getFullDescription handles lowercase plan`() {
+        val result = getFullDescription("лайт")
+        assertEquals("", result)
+    }
+
+    @Test
+    fun `pollUntilPaid returns PENDING if never paid`() = runBlocking {
+        val fakeApi: suspend (String) -> Response<PaymentStatusResponse> = { _ ->
+            Response.success(PaymentStatusResponse("PENDING"))
+        }
+        val result = pollUntilPaid(fakeApi, "123", checkIntervalMs = 1)
+        assertEquals("PENDING", result)
+    }
+
+    @Test
+    fun `filterTasks returns all when onlyPending is false`() {
+        val tasks = listOf(Task(1, false), Task(2, true))
+        val result = filterTasks(tasks, onlyPending = false) { it.isDone }
+        assertEquals(2, result.size)
+    }
+
+    @Test
+    fun `buildTelegramAuthUrl returns valid URI`() {
+        val url = buildTelegramAuthUrl("bot", "myapp://callback", "origin")
+        try {
+            URI(url)
+        } catch (e: Exception) {
+            fail("URL is not a valid URI: ${e.message}")
+        }
+    }
+
+
+
 }

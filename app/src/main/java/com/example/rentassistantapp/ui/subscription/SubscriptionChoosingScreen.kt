@@ -29,7 +29,7 @@ import com.example.rentassistantapp.ui.theme.WhiteBase
 
 @Composable
 fun SubscriptionChoosingScreen(
-    onPlanSelected: (planType: String, hours: Int) -> Unit,
+    onPlanSelected: (Any?, Any?) -> Unit,
     onBack: () -> Unit,
     modifier: Modifier.Companion = Modifier
 ) {
