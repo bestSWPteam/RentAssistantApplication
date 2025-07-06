@@ -44,6 +44,169 @@ This section explains how to launch and use the MVP v2 version of our app.
 
 ---
 
+## Architecture
+---
+### Static view
+
+#### UML Component Diagram
+
+The static view of the system is illustrated using a UML Component Diagram. It shows the main components of the system — Bots, Android App, and Database API — and how they interact with each other through adapters and HTTP requests.
+
+![Component Diagram](./docs/architecture/static-view/component-diagram.jpeg)
+
+#### Coupling and Cohesion
+
+- The project applies **loose coupling** — modules communicate through well-defined interfaces (e.g., HTTP API, function calls). This makes it easier to update or replace modules without affecting others.
+- We maintain **high cohesion** — each class or module is focused on a single responsibility (e.g., `DatabaseAdapter`, `MainBot`, etc.). This improves code readability, debugging, testing, and maintainability.
+
+#### Maintainability and Design Decisions
+
+Our design choices significantly impact code maintainability:
+
+- **Clear naming and structure**: Developers can understand the code faster, which reduces time spent on fixing bugs or adding features.
+- **Modular structure**: While the file structure is clear and logical, we're still working on increasing modularity by splitting the logic into smaller, reusable packages.
+- **Coupling & Cohesion**: Loose coupling and high cohesion ensure that:
+  - Each module (e.g., `Database`, `Bot`, `App`) is self-contained and focused.
+  - Debugging and refactoring are easier due to better separation of concerns.
+- **DRY Principle**: We reuse code through functions and classes instead of copy-pasting, reducing the chance of bugs and making updates easier.
+- **Documentation**: Proper documentation helps new developers understand the system faster and work more efficiently.
+---
+### Dynamic view
+
+#### UML Sequence Diagram: Android App Subscription Purchase
+
+This sequence diagram describes the dynamic flow of a **non-trivial scenario**: a user purchasing a subscription in the Android app.
+
+It involves the following components and transactions:
+
+- `:AndroidApp` — UI and session token handling;
+- `:BackendAPI` — FastAPI server and business logic;
+- `:YooKassaAPI` — external payment gateway;
+- `DB` — transaction persistence.
+
+It includes:
+- Normal purchase flow
+- Error handling (backend/UI failure)
+- User cancellation flow
+  
+![Purchase Flow Diagram](./docs/architecture/dynamic-view/subscription-sequence.png)
+
+---
+
+#### ⏱️ Report of Execution Time in Production
+
+| Stage                              | Components                        | Timing  |
+|------------------------------------|------------------------------------|---------|
+| Full End-to-End (tap to result)    | :Actor → :App → :Actor             | 740 ms  |
+| UI: Display Confirmation Dialog    | :AndroidApp → :AndroidApp         | 80 ms   |
+| Network Request                    | :AndroidApp → :BackendAPI         | 520 ms  |
+| Payment Gateway Call               | :BackendAPI → :YooKassaAPI        | 400 ms  |
+| Save Transaction to DB             | :BackendAPI → DB                  | 40 ms   |
+| Internal Backend Logic             | :BackendAPI                       | 20 ms   |
+| Network Latency                    | App ↔ Backend                     | 60 ms   |
+| UI: Process Response & Render UI   | :AndroidApp → :AndroidApp         | 140 ms  |
+
+---
+
+> ✅ This scenario is tested in production, and full interaction is completed within **~740 milliseconds**, which ensures a smooth UX.
+
+---
+
+### Deployment View
+
+#### System Overview
+
+This system consists of three primary components:
+
+- Telegram Bot — the main interface used by both administrators and users
+- Android Application — an alternative interface with the same functional capabilities
+- Cloud Backend — FastAPI server with an adapter layer and PostgreSQL database
+
+Each component is deployed independently, ensuring flexibility and scalability.
+
+---
+#### 1. Telegram Bot
+
+- Deployed on: Remote server or cloud VM with public internet access  
+- Role:  
+  The bot serves as the main interface for interacting with the system.  
+  It provides full functionality to users and administrators, such as viewing and managing tasks or subscriptions.  
+  Communication with the backend is done via HTTPS requests with an admin token to access privileged endpoints (e.g., user listing, subscription control).
+
+---
+
+#### 2. Android Application
+
+- Deployed on: User’s Android device  
+- Role:  
+  The mobile app offers an alternative way to use the system, replicating the bot's functionality.  
+  It communicates with the backend using RESTful HTTP over HTTPS.  
+  Although JWT tokens are designed for request authorization, the backend currently doesn’t validate them.  
+  The app handles tasks, subscription management, and payment flows similarly to the bot.
+
+---
+
+#### 3. Backend API (FastAPI)
+
+- Deployed on: Cloud VM or containerized environment (e.g., Docker on DigitalOcean or AWS EC2)  
+- Role:  
+  The FastAPI backend acts as the system orchestrator:
+  - Processes requests from both the Telegram Bot and the Android App
+  - Executes business logic for subscriptions, users, and tasks
+  - Communicates with the PostgreSQL database
+  - Integrates with YooKassa for payments
+
+---
+
+#### 4. Database (PostgreSQL)
+
+- Deployed on: Managed cloud PostgreSQL service (e.g., Supabase, Railway, Render)  
+- Role:  
+  Stores persistent data: users, tasks, subscription types, and payment logs.  
+  The FastAPI backend interacts with the DB asynchronously using asyncpg.
+
+---
+
+#### 5. Payment Gateway (YooKassa)
+
+- Deployed on: External third-party infrastructure  
+- Role:  
+  Handles all payment-related operations.  
+  The backend sends HTTPS requests to YooKassa to create and verify payments.  
+  All sensitive information and card processing are handled securely on YooKassa’s side.
+
+---
+
+#### Deployment Rationale
+
+- Primary interface as Telegram bot:  
+  Most user interaction happens through the bot. The Android app is fully functional but designed as an alternative channel.
+
+- Separation of responsibilities:  
+  Clear boundaries between UI layers, backend processing, and data storage reduce coupling and simplify maintenance.
+
+- Security:  
+  All traffic goes over HTTPS. Admin-only features are protected using a special token in bot requests.
+
+- Scalability:
+  - Backend can be scaled horizontally
+  - Database is cloud-managed and backed up
+  - Bot and app are stateless and easily redeployable
+
+- Reliability:  
+  Cloud-based hosting and managed services ensure high availability.
+
+- Maintainability:  
+  Modular structure allows independent development of the bot, app, and server components.
+
+---
+
+#### Deployment Diagram
+
+![Deployment Diagram](./docs/architecture/deployment-view/deployment_view.png)
+
+---
+
 ## Development
 
 ---
@@ -251,184 +414,6 @@ To protect sensitive data such as tokens, API keys, and credentials, we follow t
 > Note: Secrets management is a shared team responsibility, and we aim to improve consistency across developers in future sprints.
 
 ---
-## Build and deployment
----
-### Continuous Integration
-
-We use GitHub Actions to build, scan, and validate our Docker image on every push and pull request to `main`.
-
-- **Workflow file:** [`main_workflow.yml`](https://github.com/bestSWPteam/RentAssistantApplication/blob/main/.github/workflows/main_workflow.yml)
-- **Static analysis tools:**
-  - **Checkov** – scans the Dockerfile for security and configuration issues.
-  - **Trivy** – scans the built Docker image for known vulnerabilities (CRITICAL and HIGH severity).
-- **CI Workflow run results:** [GitHub Actions tab](https://github.com/bestSWPteam/RentAssistantApplication/actions)
-
-Each tool will fail the pipeline if issues are detected, ensuring that only secure and properly configured code is pushed.
-
----
-
-## Architecture
----
-### Static view
-
-#### UML Component Diagram
-
-The static view of the system is illustrated using a UML Component Diagram. It shows the main components of the system — Bots, Android App, and Database API — and how they interact with each other through adapters and HTTP requests.
-
-![Component Diagram](./docs/architecture/static-view/component-diagram.jpeg)
-
-#### Coupling and Cohesion
-
-- The project applies **loose coupling** — modules communicate through well-defined interfaces (e.g., HTTP API, function calls). This makes it easier to update or replace modules without affecting others.
-- We maintain **high cohesion** — each class or module is focused on a single responsibility (e.g., `DatabaseAdapter`, `MainBot`, etc.). This improves code readability, debugging, testing, and maintainability.
-
-#### Maintainability and Design Decisions
-
-Our design choices significantly impact code maintainability:
-
-- **Clear naming and structure**: Developers can understand the code faster, which reduces time spent on fixing bugs or adding features.
-- **Modular structure**: While the file structure is clear and logical, we're still working on increasing modularity by splitting the logic into smaller, reusable packages.
-- **Coupling & Cohesion**: Loose coupling and high cohesion ensure that:
-  - Each module (e.g., `Database`, `Bot`, `App`) is self-contained and focused.
-  - Debugging and refactoring are easier due to better separation of concerns.
-- **DRY Principle**: We reuse code through functions and classes instead of copy-pasting, reducing the chance of bugs and making updates easier.
-- **Documentation**: Proper documentation helps new developers understand the system faster and work more efficiently.
----
-### Dynamic view
-
-#### UML Sequence Diagram: Android App Subscription Purchase
-
-This sequence diagram describes the dynamic flow of a **non-trivial scenario**: a user purchasing a subscription in the Android app.
-
-It involves the following components and transactions:
-
-- `:AndroidApp` — UI and session token handling;
-- `:BackendAPI` — FastAPI server and business logic;
-- `:YooKassaAPI` — external payment gateway;
-- `DB` — transaction persistence.
-
-It includes:
-- Normal purchase flow
-- Error handling (backend/UI failure)
-- User cancellation flow
-  
-![Purchase Flow Diagram](./docs/architecture/dynamic-view/subscription-sequence.png)
-
----
-
-#### ⏱️ Report of Execution Time in Production
-
-| Stage                              | Components                        | Timing  |
-|------------------------------------|------------------------------------|---------|
-| Full End-to-End (tap to result)    | :Actor → :App → :Actor             | 740 ms  |
-| UI: Display Confirmation Dialog    | :AndroidApp → :AndroidApp         | 80 ms   |
-| Network Request                    | :AndroidApp → :BackendAPI         | 520 ms  |
-| Payment Gateway Call               | :BackendAPI → :YooKassaAPI        | 400 ms  |
-| Save Transaction to DB             | :BackendAPI → DB                  | 40 ms   |
-| Internal Backend Logic             | :BackendAPI                       | 20 ms   |
-| Network Latency                    | App ↔ Backend                     | 60 ms   |
-| UI: Process Response & Render UI   | :AndroidApp → :AndroidApp         | 140 ms  |
-
----
-
-> ✅ This scenario is tested in production, and full interaction is completed within **~740 milliseconds**, which ensures a smooth UX.
-
----
-
-### Deployment View
-
-#### System Overview
-
-This system consists of three primary components:
-
-- Telegram Bot — the main interface used by both administrators and users
-- Android Application — an alternative interface with the same functional capabilities
-- Cloud Backend — FastAPI server with an adapter layer and PostgreSQL database
-
-Each component is deployed independently, ensuring flexibility and scalability.
-
----
-#### 1. Telegram Bot
-
-- Deployed on: Remote server or cloud VM with public internet access  
-- Role:  
-  The bot serves as the main interface for interacting with the system.  
-  It provides full functionality to users and administrators, such as viewing and managing tasks or subscriptions.  
-  Communication with the backend is done via HTTPS requests with an admin token to access privileged endpoints (e.g., user listing, subscription control).
-
----
-
-#### 2. Android Application
-
-- Deployed on: User’s Android device  
-- Role:  
-  The mobile app offers an alternative way to use the system, replicating the bot's functionality.  
-  It communicates with the backend using RESTful HTTP over HTTPS.  
-  Although JWT tokens are designed for request authorization, the backend currently doesn’t validate them.  
-  The app handles tasks, subscription management, and payment flows similarly to the bot.
-
----
-
-#### 3. Backend API (FastAPI)
-
-- Deployed on: Cloud VM or containerized environment (e.g., Docker on DigitalOcean or AWS EC2)  
-- Role:  
-  The FastAPI backend acts as the system orchestrator:
-  - Processes requests from both the Telegram Bot and the Android App
-  - Executes business logic for subscriptions, users, and tasks
-  - Communicates with the PostgreSQL database
-  - Integrates with YooKassa for payments
-
----
-
-#### 4. Database (PostgreSQL)
-
-- Deployed on: Managed cloud PostgreSQL service (e.g., Supabase, Railway, Render)  
-- Role:  
-  Stores persistent data: users, tasks, subscription types, and payment logs.  
-  The FastAPI backend interacts with the DB asynchronously using asyncpg.
-
----
-
-#### 5. Payment Gateway (YooKassa)
-
-- Deployed on: External third-party infrastructure  
-- Role:  
-  Handles all payment-related operations.  
-  The backend sends HTTPS requests to YooKassa to create and verify payments.  
-  All sensitive information and card processing are handled securely on YooKassa’s side.
-
----
-
-#### Deployment Rationale
-
-- Primary interface as Telegram bot:  
-  Most user interaction happens through the bot. The Android app is fully functional but designed as an alternative channel.
-
-- Separation of responsibilities:  
-  Clear boundaries between UI layers, backend processing, and data storage reduce coupling and simplify maintenance.
-
-- Security:  
-  All traffic goes over HTTPS. Admin-only features are protected using a special token in bot requests.
-
-- Scalability:
-  - Backend can be scaled horizontally
-  - Database is cloud-managed and backed up
-  - Bot and app are stateless and easily redeployable
-
-- Reliability:  
-  Cloud-based hosting and managed services ensure high availability.
-
-- Maintainability:  
-  Modular structure allows independent development of the bot, app, and server components.
-
----
-
-#### Deployment Diagram
-
-![Deployment Diagram](./docs/architecture/deployment-view/deployment_view.png)
-
----
 
 ## Quality assurance
 
@@ -464,3 +449,17 @@ All user acceptance tests (UAT) are documented in the following file:
 👉 [User Acceptance Tests](https://github.com/bestSWPteam/RentAssistantApplication/blob/main/docs/quality-assurance/user-acceptance-tests.md)
 
 ---
+
+## Build and deployment
+---
+### Continuous Integration
+
+We use GitHub Actions to build, scan, and validate our Docker image on every push and pull request to `main`.
+
+- **Workflow file:** [`main_workflow.yml`](https://github.com/bestSWPteam/RentAssistantApplication/blob/main/.github/workflows/main_workflow.yml)
+- **Static analysis tools:**
+  - **Checkov** – scans the Dockerfile for security and configuration issues.
+  - **Trivy** – scans the built Docker image for known vulnerabilities (CRITICAL and HIGH severity).
+- **CI Workflow run results:** [GitHub Actions tab](https://github.com/bestSWPteam/RentAssistantApplication/actions)
+
+Each tool will fail the pipeline if issues are detected, ensuring that only secure and properly configured code is pushed.
