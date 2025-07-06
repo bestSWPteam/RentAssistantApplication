@@ -2,6 +2,8 @@ name: Basic CI
 
 on:
   push:
+    branches: [ "main", "RishatShay-patch-1" ]
+  pull_request:
     branches: [ "main" ]
 
 jobs:
