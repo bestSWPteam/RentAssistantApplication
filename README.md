@@ -280,6 +280,89 @@ It includes:
 ---
 
 > ✅ This scenario is tested in production, and full interaction is completed within **~740 milliseconds**, which ensures a smooth UX.
+> 
+### Deployment view
+### System Overview
+This system consists of three primary components:
+
+Android Application — the main user interface;
+
+Telegram Bot — an additional communication and admin tool;
+
+Cloud Backend — FastAPI server with an adapter layer and PostgreSQL database.
+
+Each component is deployed independently, ensuring flexibility and scalability.
+
+1. Android Application
+Deployed on: User’s Android device
+
+Role:
+The mobile app provides the primary interface for end users. It interacts with the backend over HTTPS using REST API. All requests carry a user-specific JWT for authorization. It allows users to manage tasks, view or purchase subscriptions, and interact with assistants.
+
+2. Telegram Bot
+Deployed on: Remote server or cloud VM with public internet access
+
+Role:
+The bot acts as an additional interface, primarily used for administrative tasks and simplified assistant interactions. It communicates with the backend via HTTPS using an admin token, enabling operations such as user lookup and subscription management.
+
+3. Backend API (FastAPI)
+Deployed on: Cloud-hosted virtual machine or Docker container (e.g., Render, DigitalOcean)
+
+Role:
+The backend serves as the core orchestrator of the system. It:
+
+Validates JWT and admin tokens
+
+Handles business logic (subscriptions, tasks, account management)
+
+Interacts with the PostgreSQL database via an adapter layer
+
+Sends requests to the YooKassa payment gateway to create and verify payments
+
+4. Database (PostgreSQL)
+Deployed on: Cloud-managed PostgreSQL service 
+
+Role:
+Stores persistent data such as:
+
+Users and authentication metadata
+
+Task and subscription records
+
+Payment logs and assistant activity
+Communication is handled via the async asyncpg library from the backend.
+
+5. Payment Gateway (YooKassa)
+Deployed on: External third-party infrastructure
+
+Role:
+Handles secure payment processing. The backend creates and verifies payments through the YooKassa API over HTTPS. Sensitive data and card processing are offloaded to YooKassa to ensure PCI-DSS compliance.
+
+### Deployment Rationale
+Separation of concerns:
+Each component (App, Bot, API, DB, Payment) handles a specific responsibility, improving modularity and easing development.
+
+Security:
+JWTs are used for mobile app requests; a separate admin token is used for bot authorization. All communication is over secure HTTPS channels.
+
+Scalability:
+
+The backend and bot are stateless and horizontally scalable.
+
+The database is managed and backed up by a cloud provider.
+
+The app can be deployed to millions of users via the RUstore.
+
+Reliability:
+
+Using managed services for database and external payment APIs ensures high availability.
+
+Cloud deployment enables automated recovery and scaling when traffic increases.
+
+Maintainability:
+The system is cleanly separated: frontend logic is confined to the app, admin operations are isolated in the bot, and the backend can be updated without impacting clients.
+
+![Deployment Diagram](docs/architecture/deployment-view/deployment.png)
 
 
 ## Quality assurance
