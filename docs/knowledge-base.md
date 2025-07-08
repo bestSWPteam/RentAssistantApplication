@@ -8,6 +8,6 @@ This document serves as the single source of truth for the Rent Assistant projec
 
 **Project Name:** Rent Assistant
 
-![Logo](../docs/assets/logo.png)
+![Logo](../docs/assets/logo.jpeg)
 
 ---
