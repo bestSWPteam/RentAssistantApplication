@@ -11,3 +11,14 @@ This document serves as the single source of truth for the Rent Assistant projec
 ![Logo](../docs/assets/logo.jpeg)
 
 ---
+
+### 🔹 One-liner Description
+
+A cross-platform app to rent personal assistants via Telegram or Android — fast, simple, and secure.
+
+---
+
+### 🔹 Links
+
+- ✅ **Deployed version:** []()  
+- 🎥 **Demo Video:** []()
