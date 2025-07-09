@@ -21,7 +21,7 @@ body:
     id: subtasks
     attributes:
       label: Subtasks
-      description: Write subtasks in markdown format. Example: `- [ ] Do something`
+      description: "Write subtasks in markdown format. Example: `- [ ] Do something`"
       placeholder: |
         - [ ] Subtask one
         - [ ] Subtask two
