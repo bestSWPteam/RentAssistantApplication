@@ -17,15 +17,15 @@ body:
       description: Describe how the task will be implemented or structured.
       placeholder: Mention technical details, tools, or files to be modified...
 
-  - type: checkboxes
+  - type: textarea
     id: subtasks
     attributes:
       label: Subtasks
-      description: Break this task down into smaller steps, or link related issues.
-      options:
-        - label: Step 1
-        - label: Step 2
-        - label: Step 3
+      description: Write subtasks in markdown format. Example: `- [ ] Do something`
+      placeholder: |
+        - [ ] Subtask one
+        - [ ] Subtask two
+        - [ ] Subtask three
 
   - type: markdown
     attributes:
