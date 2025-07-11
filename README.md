@@ -415,6 +415,158 @@ To protect sensitive data such as tokens, API keys, and credentials, we follow t
 
 ---
 
+## Build and deployment
+---
+## Architecture
+---
+### Static view
+
+#### UML Component Diagram
+
+The static view of the system is illustrated using a UML Component Diagram. It shows the main components of the system — Bots, Android App, and Database API — and how they interact with each other through adapters and HTTP requests.
+
+![Component Diagram](./docs/architecture/static-view/component-diagram.jpeg)
+
+#### Coupling and Cohesion
+
+- The project applies **loose coupling** — modules communicate through well-defined interfaces (e.g., HTTP API, function calls). This makes it easier to update or replace modules without affecting others.
+- We maintain **high cohesion** — each class or module is focused on a single responsibility (e.g., `DatabaseAdapter`, `MainBot`, etc.). This improves code readability, debugging, testing, and maintainability.
+
+#### Maintainability and Design Decisions
+
+Our design choices significantly impact code maintainability:
+
+- **Clear naming and structure**: Developers can understand the code faster, which reduces time spent on fixing bugs or adding features.
+- **Modular structure**: While the file structure is clear and logical, we're still working on increasing modularity by splitting the logic into smaller, reusable packages.
+- **Coupling & Cohesion**: Loose coupling and high cohesion ensure that:
+  - Each module (e.g., `Database`, `Bot`, `App`) is self-contained and focused.
+  - Debugging and refactoring are easier due to better separation of concerns.
+- **DRY Principle**: We reuse code through functions and classes instead of copy-pasting, reducing the chance of bugs and making updates easier.
+- **Documentation**: Proper documentation helps new developers understand the system faster and work more efficiently.
+---
+### Dynamic view
+
+#### UML Sequence Diagram: Android App Subscription Purchase
+
+This sequence diagram describes the dynamic flow of a **non-trivial scenario**: a user purchasing a subscription in the Android app.
+
+It involves the following components and transactions:
+
+- `:AndroidApp` — UI and session token handling;
+- `:BackendAPI` — FastAPI server and business logic;
+- `:YooKassaAPI` — external payment gateway;
+- `DB` — transaction persistence.
+
+It includes:
+- Normal purchase flow
+- Error handling (backend/UI failure)
+- User cancellation flow
+  
+![Purchase Flow Diagram](./docs/architecture/dynamic-view/subscription-sequence.png)
+
+---
+
+#### ⏱️ Report of Execution Time in Production
+
+| Stage                              | Components                        | Timing  |
+|------------------------------------|------------------------------------|---------|
+| Full End-to-End (tap to result)    | :Actor → :App → :Actor             | 740 ms  |
+| UI: Display Confirmation Dialog    | :AndroidApp → :AndroidApp         | 80 ms   |
+| Network Request                    | :AndroidApp → :BackendAPI         | 520 ms  |
+| Payment Gateway Call               | :BackendAPI → :YooKassaAPI        | 400 ms  |
+| Save Transaction to DB             | :BackendAPI → DB                  | 40 ms   |
+| Internal Backend Logic             | :BackendAPI                       | 20 ms   |
+| Network Latency                    | App ↔ Backend                     | 60 ms   |
+| UI: Process Response & Render UI   | :AndroidApp → :AndroidApp         | 140 ms  |
+
+---
+
+> ✅ This scenario is tested in production, and full interaction is completed within **~740 milliseconds**, which ensures a smooth UX.
+> 
+### Deployment view
+### System Overview
+This system consists of three primary components:
+
+Android Application — the main user interface;
+
+Telegram Bot — an additional communication and admin tool;
+
+Cloud Backend — FastAPI server with an adapter layer and PostgreSQL database.
+
+Each component is deployed independently, ensuring flexibility and scalability.
+
+1. Android Application
+Deployed on: User’s Android device
+
+Role:
+The mobile app provides the primary interface for end users. It interacts with the backend over HTTPS using REST API. All requests carry a user-specific JWT for authorization. It allows users to manage tasks, view or purchase subscriptions, and interact with assistants.
+
+2. Telegram Bot
+Deployed on: Remote server or cloud VM with public internet access
+
+Role:
+The bot acts as an additional interface, primarily used for administrative tasks and simplified assistant interactions. It communicates with the backend via HTTPS using an admin token, enabling operations such as user lookup and subscription management.
+
+3. Backend API (FastAPI)
+Deployed on: Cloud-hosted virtual machine or Docker container (e.g., Render, DigitalOcean)
+
+Role:
+The backend serves as the core orchestrator of the system. It:
+
+Validates JWT and admin tokens
+
+Handles business logic (subscriptions, tasks, account management)
+
+Interacts with the PostgreSQL database via an adapter layer
+
+Sends requests to the YooKassa payment gateway to create and verify payments
+
+4. Database (PostgreSQL)
+Deployed on: Cloud-managed PostgreSQL service 
+
+Role:
+Stores persistent data such as:
+
+Users and authentication metadata
+
+Task and subscription records
+
+Payment logs and assistant activity
+Communication is handled via the async asyncpg library from the backend.
+
+5. Payment Gateway (YooKassa)
+Deployed on: External third-party infrastructure
+
+Role:
+Handles secure payment processing. The backend creates and verifies payments through the YooKassa API over HTTPS. Sensitive data and card processing are offloaded to YooKassa to ensure PCI-DSS compliance.
+
+### Deployment Rationale
+Separation of concerns:
+Each component (App, Bot, API, DB, Payment) handles a specific responsibility, improving modularity and easing development.
+
+Security:
+JWTs are used for mobile app requests; a separate admin token is used for bot authorization. All communication is over secure HTTPS channels.
+
+Scalability:
+
+The backend and bot are stateless and horizontally scalable.
+
+The database is managed and backed up by a cloud provider.
+
+The app can be deployed to millions of users via the RUstore.
+
+Reliability:
+
+Using managed services for database and external payment APIs ensures high availability.
+
+Cloud deployment enables automated recovery and scaling when traffic increases.
+
+Maintainability:
+The system is cleanly separated: frontend logic is confined to the app, admin operations are isolated in the bot, and the backend can be updated without impacting clients.
+
+![Deployment Diagram](docs/architecture/deployment-view/deployment.png)
+
+
 ## Quality assurance
 
 ### Quality attribute scenarios
