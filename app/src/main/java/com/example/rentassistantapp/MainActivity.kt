@@ -87,7 +87,7 @@ class MainActivity : ComponentActivity() {
                         })
                     }
 
-                    composable("profile") {
+                        composable("profile") {
                         UsersScreen(
                             surname = "Гиззатуллин",
                             name = "Камиль",
