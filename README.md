@@ -512,6 +512,34 @@ All user acceptance tests (UAT) are documented in the following file:
 
 ---
 
+## Documentation Links
+
+The following documentation files provide more details on specific areas of the project:
+
+### Development
+- [CONTRIBUTING.md](CONTRIBUTING.md)
+- [Kanban Board](https://github.com/orgs/bestSWPteam/projects/2)
+- [Git workflow](#git-workflow) 
+- [Secrets management](#secrets-management)
+
+### Quality Characteristics
+- [Quality Attribute Scenarios](docs/quality-attributes/quality-attribute-scenarios.md)
+
+### Quality Assurance
+- [Automated Tests](docs/quality-assurance/automated-tests.md)
+- [User Acceptance Tests](docs/quality-assurance/user-acceptance-tests.md)
+
+### Build & Deployment Automation
+- [Continuous Integration](docs/automation/continuous-integration.md)
+
+### Architecture
+- [Static View](docs/architecture/static-view)
+- [Dynamic View](docs/architecture/dynamic-view)
+- [Deployment View](docs/architecture/deployment-view)
+- [Tech Stack](docs/architecture/architecture.md)
+
+---
+
 ## Build and deployment
 ---
 ### Continuous Integration
