@@ -523,7 +523,7 @@ The following documentation files provide more details on specific areas of the 
 - [Secrets management](#secrets-management)
 
 ### Quality Characteristics
-- [Quality Attribute Scenarios](docs/quality-attributes/quality-attribute-scenarios.md)
+- [Quality Attribute Scenarios](docs/quality-assurance/quality-attribute-scenarios.md)
 
 ### Quality Assurance
 - [Automated Tests](docs/quality-assurance/automated-tests.md)
