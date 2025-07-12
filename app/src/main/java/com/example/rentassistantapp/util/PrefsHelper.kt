@@ -10,6 +10,9 @@ object PrefsHelper {
     private const val KEY_TG_ID = "telegram_id"
     private const val KEY_SUBSCRIPTION_TYPE = "subscription_type"
     private const val KEY_EXPIRE_DATE = "expire_date"
+    private const val KEY_USERNAME = "username"
+    private const val KEY_LAST_NAME = "last_name"
+    private const val KEY_AVATAR_URL = "avatar_url"
 
     fun saveJwt(context: Context, token: String) {
         prefs(context).edit().putString(KEY_JWT, token).apply()
@@ -27,6 +30,22 @@ object PrefsHelper {
 
     fun saveExpireDate(context: Context, date: String) {
         prefs(context).edit().putString(KEY_EXPIRE_DATE, date).apply()
+    }
+
+    fun saveLastName(ctx: Context, lastName: String) {
+        prefs(ctx).edit().putString(KEY_LAST_NAME, lastName).apply()
+    }
+
+    fun getLastName(ctx: Context): String? {
+        return prefs(ctx).getString(KEY_LAST_NAME, null)
+    }
+
+    fun saveAvatarUrl(ctx: Context, avatarUrl: String) {
+        prefs(ctx).edit().putString(KEY_AVATAR_URL, avatarUrl).apply()
+    }
+
+    fun getAvatarUrl(ctx: Context): String? {
+        return prefs(ctx).getString(KEY_AVATAR_URL, null)
     }
 
     fun getExpireDate(context: Context): String? =
@@ -60,6 +79,20 @@ object PrefsHelper {
 
     fun getTelegramId(context: Context): String? =
         prefs(context).getString(KEY_TG_ID, null)
+
+    fun saveUsername(ctx: Context, username: String) {
+        prefs(ctx).edit().putString(KEY_USERNAME, username).apply()
+    }
+
+    fun getUsername(ctx: Context): String? {
+        return prefs(ctx).getString(KEY_USERNAME, null)
+    }
+
+    fun saveTelegramUser(ctx: Context, id: String, firstName: String, username: String) {
+        saveTelegramId(ctx, id)
+        saveFirstName(ctx, firstName)
+        saveUsername(ctx, username)
+    }
 
     private fun prefs(context: Context): SharedPreferences =
         context.getSharedPreferences("prefs", Context.MODE_PRIVATE)

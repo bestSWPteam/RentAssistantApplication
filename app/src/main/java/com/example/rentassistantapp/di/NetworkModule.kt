@@ -24,6 +24,9 @@ object NetworkModule {
             .build()
     }
 
-    fun provideAuthApi(ctx: Context): AuthApi = retrofit(ctx).create(AuthApi::class.java)
+
+    fun provideAuthApi(context: Context): AuthApi =
+        retrofit(context).create(AuthApi::class.java)
+
     fun providePaymentApi(ctx: Context): PaymentApi = retrofit(ctx).create(PaymentApi::class.java)
 }

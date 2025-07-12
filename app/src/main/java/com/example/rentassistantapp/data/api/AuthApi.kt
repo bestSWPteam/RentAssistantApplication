@@ -1,15 +1,18 @@
 package com.example.rentassistantapp.data.api
 
-import com.example.rentassistantapp.data.model.TelegramLoginRequest
-import com.example.rentassistantapp.data.model.TelegramLoginResponse
+import com.example.rentassistantapp.data.model.CodeResponse
+import com.example.rentassistantapp.data.model.LoginStatusResponse
 import retrofit2.Response
-import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface AuthApi {
-    @POST("auth/callback")
-    suspend fun loginWithTelegram(
-        @Body body: TelegramLoginRequest
-    ): Response<TelegramLoginResponse>
+    @POST("/auth/prepare-login")
+    suspend fun prepareLogin(): CodeResponse
+
+    @GET("/auth/check-login")
+    suspend fun checkLoginStatus(@Query("code") code: String): Response<LoginStatusResponse>
 }
+
 

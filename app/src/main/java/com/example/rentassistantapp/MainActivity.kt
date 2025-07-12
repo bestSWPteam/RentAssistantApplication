@@ -1,6 +1,7 @@
 package com.example.rentassistantapp
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -20,11 +21,15 @@ import com.example.rentassistantapp.ui.profile.UsersScreen
 import com.example.rentassistantapp.ui.subscription.SubscriptionChoosingScreen
 import com.example.rentassistantapp.ui.subscription.SubscriptionConfirmationScreen
 import com.example.rentassistantapp.ui.subscription.SuccessPurchaseScreen
+import com.example.rentassistantapp.ui.tasks.TasksScreen
 import com.example.rentassistantapp.ui.theme.RentAssistantAppTheme
 import com.example.rentassistantapp.ui.welcome.WelcomeScreen
 import com.example.rentassistantapp.util.Config
 import com.example.rentassistantapp.util.PrefsHelper
 import com.example.rentassistantapp.util.pollUntilPaid
+import kotlinx.coroutines.delay
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,16 +64,20 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("start") {
                         StartingScreen(
-                            onLogin = { /*startTelegramLogin()*/ },
+                            onLogin = { startTelegramLogin() },
                             onDocsClick = { openLink("https://user-agreement.pdf") }
                         )
                     }
                     composable("profile") {
+                        val subType = PrefsHelper.getSubscriptionType(applicationContext) ?: "Нет подписки"
+                        val isActive = subType != "Нет подписки"
+                        val subStatus = if (isActive) "Активна" else "Неактивна"
+
                         UsersScreen(
-                            surname = "",
-                            name = PrefsHelper.getFirstName(applicationContext) ?: "",
-                            subscriptionType = PrefsHelper.getSubscriptionType(applicationContext) ?: "Нет подписки",
-                            subscriptionStatus = if (PrefsHelper.getJwt(applicationContext).isNullOrBlank()) "Неактивна" else "Активна",
+                            surname = PrefsHelper.getLastName(applicationContext) ?: "—",
+                            name = PrefsHelper.getFirstName(applicationContext) ?: "—",
+                            subscriptionType = subType,
+                            subscriptionStatus = subStatus,
                             expireDate = PrefsHelper.getExpireDate(applicationContext) ?: "—",
                             onChangeProfile = {
                                 PrefsHelper.clearAll(applicationContext)
@@ -96,21 +105,38 @@ class MainActivity : ComponentActivity() {
                             isProfileSelected = true
                         )
                     }
+
                     composable("subscription") {
                         SubscriptionChoosingScreen(
-                            onPlanSelected = { plan, hours -> navController.navigate("confirm/$plan/$hours") },
+                            onPlanSelected = { plan ->
+                                val defaultHours = 2
+                                navController.navigate("confirm/$plan/$defaultHours")
+                            },
                             onBack = { navController.navigate("profile") }
                         )
                     }
+                    /*composable(
+                        "select-hours/{plan}",
+                        arguments = listOf(navArgument("plan") { type = NavType.StringType })
+                    ) { backStack ->
+                        val plan = backStack.arguments?.getString("plan") ?: return@composable
+                        SubscriptionHoursScreen(
+                            plan = plan,
+                            onHoursSelected = { hours ->
+                                navController.navigate("confirm/$plan/$hours")
+                            },
+                            onBack = { navController.popBackStack() }
+                        )
+                    }*/
                     composable(
                         "confirm/{plan}/{hours}",
                         arguments = listOf(
                             navArgument("plan") { type = NavType.StringType },
                             navArgument("hours") { type = NavType.IntType }
                         )
-                    ) { back ->
-                        val plan = back.arguments!!.getString("plan")!!
-                        val hours = back.arguments!!.getInt("hours")
+                    ) { backStack ->
+                        val plan = backStack.arguments!!.getString("plan")!!
+                        val hours = backStack.arguments!!.getInt("hours")
                         val cost = when (plan to hours) {
                             "Лайт" to 2 -> "15 000 ₽"
                             "Лайт" to 5 -> "30 000 ₽"
@@ -128,6 +154,15 @@ class MainActivity : ComponentActivity() {
                             cost = cost,
                             onEnter = { ctx -> launchPayment(plan, hours, navController, ctx) },
                             onBack = { navController.popBackStack() }
+                        )
+                    }
+                    composable("tasks") {
+                        val subType = PrefsHelper.getSubscriptionType(applicationContext)
+                        val isSubscription = !subType.isNullOrBlank() && subType != "Нет подписки"
+                        TasksScreen(
+                            isSubscription = isSubscription,
+                            onGoToSubscription = { navController.navigate("subscription") },
+                            onFilter = {}
                         )
                     }
                     composable("success") {
@@ -219,60 +254,45 @@ class MainActivity : ComponentActivity() {
             .launchUrl(this, Uri.parse(url))
     }
 
-// --- Telegram OAuth Methods (Currently Disabled) ---
-
-    /*
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        setIntent(intent)
-        Log.e("DEEPLINK", "onNewIntent triggered with intent.data=${intent.data}")
+    private fun startTelegramLogin() {
+        val retrofit = NetworkModule.provideAuthApi(this)
         lifecycleScope.launch {
-            handleDeepLink(intent)
-        }
-    }
-
-    private suspend fun handleDeepLink(intent: Intent) {
-        Log.i("DEEPLINK", "got intent.data=${intent.data}")
-        intent.data?.let { uri ->
-            if (uri.scheme == "myapp" && uri.host == "auth-callback") {
-                val userId = uri.getQueryParameter("id") ?: return
-                val firstName = uri.getQueryParameter("first_name") ?: return
-                val username = uri.getQueryParameter("username") ?: return
-                val authDate = uri.getQueryParameter("auth_date") ?: return
-                val hash = uri.getQueryParameter("hash") ?: return
-
-                val authApi = NetworkModule.provideAuthApi(this@MainActivity)
-                val resp = authApi.loginWithTelegram(
-                    TelegramLoginRequest(userId, firstName, username, authDate, hash)
-                )
-
-                if (resp.isSuccessful) {
-                    val jwt = resp.body()!!.token
-                    PrefsHelper.saveJwt(applicationContext, jwt)
-                    PrefsHelper.saveTelegramUser(applicationContext, userId, firstName, username)
-
-                    val restartIntent = Intent(this@MainActivity, MainActivity::class.java)
-                    restartIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(restartIntent)
-                    finish()
-                } else {
-                    Log.e("Auth", "Login failed: ${resp.code()} ${resp.errorBody()?.string()}")
-                }
+            try {
+                val codeResp = retrofit.prepareLogin()
+                val code = codeResp.code
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/${Config.TELEGRAM_BOT_ID}?start=$code"))
+                startActivity(intent)
+                pollLoginResult(code)
+            } catch (e: Exception) {
+                Log.e("TG_LOGIN", "Ошибка при старте логина", e)
             }
         }
     }
 
-    private fun startTelegramLogin() {
-        val url = buildTelegramAuthUrl(
-            botId = Config.TELEGRAM_BOT_ID,
-            redirect = Config.TELEGRAM_REDIRECT,
-            origin = Config.TELEGRAM_ORIGIN
-        )
-        Log.d("OAUTH_URL", "Telegram auth url: $url")
-        CustomTabsIntent.Builder().build().apply {
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-        }.launchUrl(this, Uri.parse(url))
+    private suspend fun pollLoginResult(code: String) {
+        val authApi = NetworkModule.provideAuthApi(this)
+        repeat(30) {
+            delay(2000)
+            val resp = authApi.checkLoginStatus(code)
+            if (resp.isSuccessful) {
+                val body = resp.body()!!
+                body.token?.let { token ->
+                    PrefsHelper.saveJwt(applicationContext, token)
+                    PrefsHelper.saveTelegramUser(applicationContext, body.id, body.firstName, body.username)
+                    restartToProfile()
+                }
+                return
+            }
+        }
+        Log.e("TG_LOGIN", "Не удалось авторизоваться")
     }
-    */
+
+
+    private fun restartToProfile() {
+        val intent = Intent(this@MainActivity, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
+    }
+
 }

@@ -8,11 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.navigation.NavController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -44,7 +43,6 @@ fun UsersScreen(
     isProfileSelected: Boolean
 ) {
     val avatar: Painter = painterResource(R.drawable.avatar_plug)
-    val scrollState = rememberScrollState()
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -52,7 +50,7 @@ fun UsersScreen(
             .fillMaxSize()
             .background(WhiteBase)
             .padding(top = 36.dp, bottom = 12.dp)
-            .verticalScroll(scrollState)
+            .verticalScroll(rememberScrollState())
     ) {
         Image(painter = avatar, contentDescription = "User avatar", modifier = Modifier.size(104.dp))
 
@@ -184,8 +182,8 @@ fun ButtonWithArrow(text: String, onClick: () -> Unit) {
 fun UsersScreenPreview() {
     RentAssistantAppTheme {
         UsersScreen(
-            surname = "Иванов",
-            name = "Иван",
+            surname = "Гиззатуллин",
+            name = "Камиль",
             subscriptionType = "Лайт",
             expireDate = "30.06.2025",
             subscriptionStatus = "Активна",

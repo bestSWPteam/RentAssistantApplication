@@ -74,7 +74,6 @@ fun TasksScreen(modifier: Modifier = Modifier,
             )
         }
 
-        // condition to print tasks or message about NO SUBSCRIPTION
         if (isSubscription) {
             val sampleTasks = listOf(
                 Task("12.05.25", "Выполнено", "Бронь в ресторан", "Иванова Екатерина"),

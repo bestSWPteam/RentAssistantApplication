@@ -2,6 +2,7 @@ package com.example.rentassistantapp.ui.subscription
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -9,12 +10,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,23 +31,26 @@ import com.example.rentassistantapp.ui.theme.WhiteBase
 
 @Composable
 fun SubscriptionChoosingScreen(
-    onPlanSelected: (Any?, Any?) -> Unit,
-    onBack: () -> Unit,
-    modifier: Modifier.Companion = Modifier
+    modifier: Modifier = Modifier,
+    onPlanSelected: (String) -> Unit,
+    onBack: () -> Unit
 ) {
     val scrollState = rememberScrollState()
 
-    Surface(
-        modifier = modifier
-            .fillMaxSize()
-            .background(WhiteBase),
+    Surface (
+        modifier = modifier.fillMaxSize(),
         color = WhiteBase
-    ) {
-        Column(
-            modifier = Modifier
-                .verticalScroll(scrollState)
-                .padding(bottom = 32.dp)
-        ) {
+    ){
+        Column (
+            modifier = Modifier.verticalScroll(scrollState).padding(bottom = 32.dp)
+        ){
+            Text(
+                text = "Варианты подписки",
+                fontSize = 28.sp,
+                color = Color(0xFF616163),
+                textAlign = TextAlign.Left,
+                modifier = Modifier.padding(start = 24.dp, top = 84.dp)
+            )
             Text(
                 text = "← Назад",
                 fontSize = 16.sp,
@@ -54,122 +59,111 @@ fun SubscriptionChoosingScreen(
                     .padding(start = 24.dp, top = 32.dp)
                     .clickable { onBack() }
             )
-            Text(
-                text = "Варианты подписки",
-                fontSize = 28.sp,
-                color = Grey3,
-                textAlign = TextAlign.Start,
-                modifier = Modifier
-                    .padding(start = 24.dp, top = 84.dp)
-                    .fillMaxWidth()
-            )
+            SubscriptionTypeSquare(modifier ,
+                name = "Лайт",
+                shortDescription = "для себя",
+                fullDescription = "Подходит для повседневных личных задач: записи к врачу, поиск подарков, бронирование билетов, напоминания, оформление заказов, помощь в планировании и мелких делах.",
+                variantDescription = "Варианты тарифа:\n– 15 000 ₽ / месяц — 2 часа работы в день\n– 30 000 ₽ / месяц — 5 часов работы в день\n– 50 000 ₽ / месяц — 8 часов работы в день",
+                price = "15.000",
+                onClickFunction = {onPlanSelected("Лайт")})
 
-            Spacer(modifier = Modifier.height(16.dp))
+            SubscriptionTypeSquare(modifier,
+                name = "Бизнес",
+                shortDescription = "для бизнеса",
+                fullDescription = "Подходит для бизнес-коммуникаций, аналитических запросов, организации встреч, ведения переписки, составления документов и других рабочих задач.",
+                variantDescription = "Варианты тарифа:\n– 30 000 ₽ / месяц — 2 часа работы в день\n– 60 000 ₽ / месяц — 5 часов работы в день\n– 80 000 ₽ / месяц — 8 часов работы в день",
+                price = "30.000",
+                onClickFunction = {onPlanSelected("Бизнес")})
 
-            listOf(
-                Triple("Лайт", "для себя", listOf(
-                    2 to "15 000 ₽",
-                    5 to "30 000 ₽",
-                    8 to "50 000 ₽"
-                )),
-                Triple("Бизнес", "для бизнеса", listOf(
-                    2 to "30 000 ₽",
-                    5 to "60 000 ₽",
-                    8 to "80 000 ₽"
-                )),
-                Triple("Экстра", "максимум пользы", listOf(
-                    2 to "40 000 ₽",
-                    5 to "80 000 ₽",
-                    8 to "100 000 ₽"
-                ))
-            ).forEach { (name, shortDesc, options) ->
-                options.forEach { (hours, price) ->
-                    SubscriptionTypeCard(
-                        name = name,
-                        shortDescription = shortDesc,
-                        price = price,
-                        hours = hours,
-                        onClick = { onPlanSelected(name, hours) }
-                    )
-                }
-            }
+            SubscriptionTypeSquare(modifier,
+                name = "Экстра",
+                shortDescription = "максимум пользы",
+                fullDescription = "Подходит для комплексной поддержки: бизнес-коммуникации, организация встреч, аналитика, а также личные дела — записи, напоминания, бронирования, заказы и повседневная рутина.",
+                variantDescription = "Варианты тарифа:\n– 40 000 ₽ / месяц — 2 часа работы в день\n– 80 000 ₽ / месяц — 5 часов работы в день\n– 100 000 ₽ / месяц — 8 часов работы в день",
+                price = "40.000",
+                onClickFunction = {onPlanSelected("Экстра")})
         }
     }
 }
 
 @Composable
-fun SubscriptionTypeCard(
+fun SubscriptionTypeSquare(
+    modifier: Modifier = Modifier,
     name: String,
     shortDescription: String,
+    fullDescription: String,
+    variantDescription: String,
     price: String,
-    hours: Int,
     period: String = "ежемесячно",
-    onClick: () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .padding(horizontal = 24.dp, vertical = 12.dp)
-            .fillMaxWidth()
-            .height(220.dp)
-            .clickable(onClick = onClick),
-        shape = RoundedCornerShape(16.dp),
-        border = BorderStroke(1.dp, Grey2)
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+    onClickFunction: () -> Unit
+){
+    Box(
+        modifier = modifier
+            .padding(start = 28.dp, end = 24.dp, top = 28.dp)
+            .width(340.dp)
+            .height(344.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .border(BorderStroke(1.dp, color = Color(0xD97C7C7F)), shape = RoundedCornerShape(16.dp))
+    ){
+        Column {
             Row(
-                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Column {
                     Text(
                         text = name,
-                        fontSize = 24.sp,
+                        fontSize = 28.sp,
+                        color = Red2,
                         fontWeight = FontWeight.Bold,
-                        color = Red2
+                        modifier = Modifier.padding(start = 20.dp, top = 24.dp)
                     )
                     Text(
                         text = shortDescription,
                         fontSize = 16.sp,
-                        color = Grey2
+                        color = Grey2,
+                        modifier = Modifier.padding(start = 20.dp)
                     )
                 }
-                Column(horizontalAlignment = Alignment.End) {
+                Column(
+                    modifier = Modifier.padding(top = 27.dp, end = 22.dp),
+                    horizontalAlignment = Alignment.End
+                ) {
                     Text(
-                        text = "$price",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Red2
+                        text = "от $price ₽",
+                        fontSize = 24.sp,
+                        color = Red2,
+                        fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = "$hours ч/день",
-                        fontSize = 14.sp,
+                        text = period,
+                        fontSize = 16.sp,
                         color = Grey2
                     )
                 }
             }
-
-            Spacer(modifier = Modifier.height(12.dp))
-
             Text(
-                text = getFullDescription(name),
+                text = fullDescription,
+                fontSize = 16.sp,
+                lineHeight = 16.sp,
+                color = Grey3,
+                modifier = Modifier.padding(start = 20.dp, top = 8.dp)
+            )
+            Text(
+                text = variantDescription,
                 fontSize = 14.sp,
                 color = Grey3,
-                lineHeight = 18.sp
+                lineHeight = 16.sp,
+                modifier = Modifier.padding(start = 20.dp, top = 20.dp)
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
             Button(
-                onClick = onClick,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp),
+                onClick = onClickFunction,
+                modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp, horizontal = 16.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Red2,
                     contentColor = White
                 ),
-                shape = RoundedCornerShape(24.dp)
+                shape = RoundedCornerShape(50)
             ) {
                 Text(text = "Оформить подписку", fontSize = 16.sp)
             }
@@ -177,19 +171,13 @@ fun SubscriptionTypeCard(
     }
 }
 
-private fun getFullDescription(planName: String): String {
-    return when (planName) {
-        "Лайт" -> "Подходит для повседневных личных задач: записи к врачу, поиск подарков, бронирование билетов, напоминания, оформление заказов, помощь в планировании и мелких делах."
-        "Бизнес" -> "Подходит для бизнес-коммуникаций, аналитических запросов, организации встреч, ведения переписки, составления документов и других рабочих задач."
-        "Экстра" -> "Подходит для комплексной поддержки: бизнес-коммуникации, организация встреч, аналитика, а также личные дела — записи, напоминания, бронирования, заказы и повседневная рутина."
-        else -> ""
-    }
-}
-
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun SubscriptionChoosingPreview() {
     RentAssistantAppTheme {
-        SubscriptionChoosingScreen(onPlanSelected = { _, _ -> }, onBack = {})
+        SubscriptionChoosingScreen(
+            onPlanSelected = {},
+            onBack = {}
+        )
     }
 }
