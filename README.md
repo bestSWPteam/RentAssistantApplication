@@ -9,7 +9,7 @@ This document serves as the single source of truth for the Rent Assistant projec
 ### Name and Logo
 
 **Project Name:** Rent Assistant  
-![Logo]([../docs/assets/logo.jpeg](https://github.com/bestSWPteam/RentAssistantApplication/blob/main/docs/assets/logo.jpeg))
+![Logo]([../docs/assets/logo.jpeg]([https://github.com/bestSWPteam/RentAssistantApplication/blob/main/docs/assets/logo.jpeg)](https://github.com/bestSWPteam/RentAssistantApplication/blob/main/docs/assets/logo.jpeg))
 
 ### 🔹 One-liner Description
 
