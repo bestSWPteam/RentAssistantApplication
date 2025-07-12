@@ -9,7 +9,7 @@ This document serves as the single source of truth for the Rent Assistant projec
 ### Name and Logo
 
 **Project Name:** Rent Assistant  
-![Logo](../docs/assets/logo.jpeg)
+![Logo]([../docs/assets/logo.jpeg](https://github.com/bestSWPteam/RentAssistantApplication/blob/main/docs/assets/logo.jpeg))
 
 ### 🔹 One-liner Description
 
@@ -37,15 +37,42 @@ The project aims to:
 - Integrate payments and subscriptions through YooKassa
 - Offer flexibility through both mobile and chatbot channels
 
+### Project Context Diagram
+
+![Context Diagram](https://github.com/bestSWPteam/RentAssistantApplication/raw/main/docs/architecture/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-07-13%20%D0%B2%2002.28.03.png)
+
+This diagram illustrates how different components and external actors (User, Admin, Assistant) interact with the Telegram bot, Android app, and backend system, which in turn communicates with PostgreSQL and YooKassa.
+
+### Feature Roadmap
+
+This table summarizes the status and priority of all major functionality stages in the project.
+
+| Stage                                          | Status     | Priority |
+|------------------------------------------------|------------|----------|
+| *MVP v0*                                       | ✅ delivered | Must     |
+| MVP v1                                         |            | Must     |
+| Basic bot functionality                        | ✅ delivered | Must     |
+| Developed starting app page                    | ✅ delivered | Must     |
+| MVP v2                                         |            |          |
+| App frontend pages                             | ✅ delivered | Must     |
+| Bot payment system                             | ✅ delivered | Must     |
+| MVP v3                                         |            |          |
+| App APK compiled file with basic functionality | 🚧 pending   | Must     |
+| Bot assistant dashboard & assignment logic     | 🚧 pending   | Must     |
+| MVP v4 *(beyond course)*                       |            |          |
+| Item A                                         |            |          |
+| MVP v5 *(beyond course)*                       |            |          |
+| Item B                                         |            |          |
+
 ---
 
-## Usage
+## Usage Instructions / Short User Guide
 
 ---
 
 This section explains how to launch and use the MVP v2 version of our app.
 
-### App Installation
+### Installation
 
 1. Download the APK file: [Download APK](https://disk.yandex.ru/d/gbnLd3yDOPZKYg)
 2. Install the app on your Android device.
