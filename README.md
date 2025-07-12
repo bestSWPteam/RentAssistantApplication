@@ -1,12 +1,47 @@
-The application to rent an assistant, created by Innopolis University students within the Software Project course.
+# Project Knowledge Base
 
-Used stack:
-- Kotlin
-- Jetpack Compose
+This document serves as the single source of truth for the Rent Assistant project.
+
+## Header Section
+
+---
+
+### Name and Logo
+
+**Project Name:** Rent Assistant  
+![Logo](../docs/assets/logo.jpeg)
+
+### 🔹 One-liner Description
+
+A smart task assistant that helps users create, manage, and delegate tasks to virtual assistants via Telegram bot or Android App.
+
+### 🔹 Links
+
+- ✅ **Deployed version:** [https://your-deploy-link.com](#)  
+- 🎥 **Demo Video:** [https://your-demo-link.com](#)
+
+---
+
+## Body
+
+---
+
+### Project Goal and Description
+
+Rent Assistant is a smart assistant platform designed to help users delegate personal or professional tasks through an intuitive interface.  
+It allows users to interact via a Telegram bot or Android app, making task delegation easy, fast, and accessible from anywhere.
+
+The project aims to:
+- Streamline communication between users and assistants
+- Provide a clean UI for creating and managing tasks
+- Integrate payments and subscriptions through YooKassa
+- Offer flexibility through both mobile and chatbot channels
 
 ---
 
 ## Usage
+
+---
 
 This section explains how to launch and use the MVP v2 version of our app.
 
