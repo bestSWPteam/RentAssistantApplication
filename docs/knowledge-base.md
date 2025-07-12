@@ -14,7 +14,7 @@ This document serves as the single source of truth for the Rent Assistant projec
 
 ### 🔹 One-liner Description
 
-A cross-platform app to rent personal assistants via Telegram or Android — fast, simple, and secure.
+> A smart task assistant that helps users create, manage, and delegate tasks to virtual assistants via Telegram bot or Android App.
 
 ---
 
