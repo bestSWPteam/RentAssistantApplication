@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val fakeJwt = "your-fake-jwt-token-here"
+        val fakeJwt = "your-fake-jwt-token-here" // WILL BE DELETED
         if (PrefsHelper.getJwt(applicationContext).isNullOrBlank()) {
             PrefsHelper.saveJwt(applicationContext, fakeJwt)
             Log.d("DEBUG", "Saved temporary fake JWT")
@@ -260,14 +260,18 @@ class MainActivity : ComponentActivity() {
             try {
                 val codeResp = retrofit.prepareLogin()
                 val code = codeResp.code
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/${Config.TELEGRAM_BOT_ID}?start=$code"))
+
+                val url = "https://t.me/${Config.TELEGRAM_BOT_ID}?startapp=$code"
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 startActivity(intent)
+
                 pollLoginResult(code)
             } catch (e: Exception) {
                 Log.e("TG_LOGIN", "Ошибка при старте логина", e)
             }
         }
     }
+
 
     private suspend fun pollLoginResult(code: String) {
         val authApi = NetworkModule.provideAuthApi(this)
