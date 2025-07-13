@@ -546,8 +546,8 @@ The following documentation files provide more details on specific areas of the 
 
 ### Architecture
 - [Static View](docs/architecture/static-view/component-diagram.jpeg)
-- [Dynamic View](docs/architecture/dynamic-view)
-- [Deployment View](docs/architecture/deployment-view)
+- [Dynamic View](docs/architecture/dynamic-view/subscription-sequence.png)
+- [Deployment View](docs/architecture/deployment-view/deployment_view.png)
 - [Tech Stack](docs/architecture/tech_stack.md)
 
 ---
