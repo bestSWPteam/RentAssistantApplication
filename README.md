@@ -12,15 +12,16 @@ This document serves as the single source of truth for the Rent Assistant projec
 
 ![Logo](docs/assets/logo.jpeg)
 
-### 🔹 One-liner Description
+### One-liner Description
 
 A smart task assistant that helps users create, manage, and delegate tasks to virtual assistants via Telegram bot or Android App.
 
-### 🔹 Links
+### Links
 
-- ✅ **Deployed Telegram Bot:** [https://t.me/RentAssistantBot](https://t.me/RentAssistantBot)  
-- ✅ **Deployed Android App (APK):** [https://disk.yandex.ru/d/gbnLd3yDOPZKYg](https://disk.yandex.ru/d/gbnLd3yDOPZKYg)  
-- 🎥 **Demo Video:** [https://your-demo-link.com](#)
+- **Deployed Telegram Bot:** [https://t.me/RentAssistantBot](https://t.me/RentAssistantBot)  
+- **Deployed Android App (APK):** [https://disk.yandex.ru/d/gbnLd3yDOPZKYg](https://disk.yandex.ru/d/gbnLd3yDOPZKYg)  
+- **Demo Video:** [https://your-demo-link.com](https://your-demo-link.com)
+- **GitHub Pages Docs:** [https://bestSWPteam.github.io/RentAssistantApplication](https://bestSWPteam.github.io/RentAssistantApplication)
 
 ---
 
