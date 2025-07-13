@@ -9,7 +9,8 @@ This document serves as the single source of truth for the Rent Assistant projec
 ### Name and Logo
 
 **Project Name:** Rent Assistant  
-![Logo](../docs/assets/logo.jpeg)
+
+![Logo](docs/assets/logo.jpeg)
 
 ### 🔹 One-liner Description
 
@@ -17,7 +18,8 @@ A smart task assistant that helps users create, manage, and delegate tasks to vi
 
 ### 🔹 Links
 
-- ✅ **Deployed version:** [https://your-deploy-link.com](#)  
+- ✅ **Deployed Telegram Bot:** [https://t.me/RentAssistantBot](https://t.me/RentAssistantBot)  
+- ✅ **Deployed Android App (APK):** [https://disk.yandex.ru/d/gbnLd3yDOPZKYg](https://disk.yandex.ru/d/gbnLd3yDOPZKYg)  
 - 🎥 **Demo Video:** [https://your-demo-link.com](#)
 
 ---
@@ -47,22 +49,24 @@ This diagram illustrates how different components and external actors (User, Adm
 
 This table summarizes the status and priority of all major functionality stages in the project.
 
-| Stage                                          | Status     | Priority |
-|------------------------------------------------|------------|----------|
-| *MVP v0*                                       | ✅ delivered | Must     |
-| MVP v1                                         |            | Must     |
-| Basic bot functionality                        | ✅ delivered | Must     |
-| Developed starting app page                    | ✅ delivered | Must     |
-| MVP v2                                         |            |          |
-| App frontend pages                             | ✅ delivered | Must     |
-| Bot payment system                             | ✅ delivered | Must     |
-| MVP v3                                         |            |          |
-| App APK compiled file with basic functionality | 🚧 pending   | Must     |
-| Bot assistant dashboard & assignment logic     | 🚧 pending   | Must     |
-| MVP v4 *(beyond course)*                       |            |          |
-| Item A                                         |            |          |
-| MVP v5 *(beyond course)*                       |            |          |
-| Item B                                         |            |          |
+| Stage                                                 | Status     | Priority |
+|-------------------------------------------------------|------------|----------|
+| *MVP v0*                                              | ✅ delivered | Must     |
+| MVP v1                                                |            | Must     |
+| Basic bot functionality                               | ✅ delivered | Must     |
+| Developed starting app page                           | ✅ delivered | Must     |
+| MVP v2                                                |            |          |
+| App frontend pages                                    | ✅ delivered | Must     |
+| Bot payment system                                    | ✅ delivered | Must     |
+| MVP v3                                                |            |          |
+| App APK compiled file with basic functionality        | ✅ delivered | Must     |
+| Bot assistant dashboard & assistant assignment        | ✅ delivered | Must     |
+| MVP v4 *(goes beyond this course)*                    |            |          |
+| Make better security                                  | 🚧 pending   | Must     |
+| Make better UI/UX & better requests optimization      | 🚧 pending   | Should   |
+| MVP v5 *(goes beyond this course)*                    |            |          |
+| Fix all the bugs                                      | 🚧 pending   | Must     |
+| Make even better optimization                         | 🚧 pending   | Should   |
 
 ---
 
@@ -553,3 +557,9 @@ We use GitHub Actions to build, scan, and validate our Docker image on every pus
 - **CI Workflow run results:** [GitHub Actions tab](https://github.com/bestSWPteam/RentAssistantApplication/actions)
 
 Each tool will fail the pipeline if issues are detected, ensuring that only secure and properly configured code is pushed.
+
+### Continuous Deployment
+
+We do not currently use Continuous Deployment in this project.  
+All deployments are triggered manually after testing and approval.  
+In future sprints, we may introduce CD using GitHub Actions or third-party tools like Render or Railway.
