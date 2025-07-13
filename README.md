@@ -19,8 +19,8 @@ A smart task assistant that helps users create, manage, and delegate tasks to vi
 ### Links
 
 - **Deployed Telegram Bot:** [https://t.me/RentAssistantBot](https://t.me/RentAssistantBot)  
-- **Deployed Android App (APK):** [https://disk.yandex.ru/d/gbnLd3yDOPZKYg](https://disk.yandex.ru/d/gbnLd3yDOPZKYg)  
-- **Demo Video:** [https://your-demo-link.com](https://your-demo-link.com)
+- **Deployed Android App (APK):** [https://disk.yandex.ru/d/YD8avAgZLtqx-Q)  
+- **Demo Video:** [https://drive.google.com/drive/folders/1dIf1TqIaXgvnP2BK6DwVHmYnardViYLS?usp=drive_link)
 - **GitHub Pages Docs:** [https://bestSWPteam.github.io/RentAssistantApplication](https://bestSWPteam.github.io/RentAssistantApplication)
 
 ---
@@ -98,16 +98,21 @@ This section explains how to launch and use the MVP v2 version of our app.
 ### What you can test in MVP v2.5
 
 ✅ Available Features:
-- App landing screen  
-- Telegram-based login  
-- Bot payment system flow (interface only)  
-- Frontend UI for profile & assistant assignment  
-- UI responses and navigation
+- App landing and onboarding screen
+- Fake JWT token issuing and session persistence
+- Profile screen with subscription status
+- Task list screen with UI for completed/pending tasks
+- Integration with FastAPI backend
+- Assistant statistics endpoints (GET/POST/UPDATE via admin token)
+- YooKassa payment flow via backend endpoint (/yookassa/create-payment)
+- Bot-side interface for confirming Telegram login
 
 🚧 Not yet available:
-- Actual payment processing  
-- Assistant assignment logic  
-- Data persistence after logout
+- Full assistant assignment automation
+- UI for managing tasks and clients inside the app
+- Real YooKassa payment confirmation in app
+- JWT token validation on backend side
+- Secure storage of credentials in mobile app
 
 ---
 
