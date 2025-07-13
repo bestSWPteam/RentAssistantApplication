@@ -570,3 +570,12 @@ Each tool will fail the pipeline if issues are detected, ensuring that only secu
 We do not currently use Continuous Deployment in this project.  
 All deployments are triggered manually after testing and approval.  
 In future sprints, we may introduce CD using GitHub Actions or third-party tools like Render or Railway.
+
+---
+
+## Changelog
+
+We follow the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format and Semantic Versioning (SemVer).  
+The changelog includes key updates for each release (v1.0.0, v2.0.0, v2.5.0).
+
+📄 [View CHANGELOG.md](https://github.com/bestSWPteam/RentAssistantApplication/blob/main/CHANGELOG.md)
