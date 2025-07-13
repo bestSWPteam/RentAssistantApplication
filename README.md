@@ -95,7 +95,7 @@ This section explains how to launch and use the MVP v2 version of our app.
 
 ---
 
-### What you can test in MVP v2
+### What you can test in MVP v2.5
 
 ✅ Available Features:
 - App landing screen  
