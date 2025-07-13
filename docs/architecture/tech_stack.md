@@ -54,7 +54,8 @@ This document describes the technologies used in the system: the Telegram Bot, A
   - `Navigation-Compose` for screen transitions
 - **Image loading:** `Coil` (optional)
 - **DI (if any):** likely `Hilt` or manual DI
-- **Local Storage:** minimal or none — all data comes from the backend
+- **Async:** Kotlin coroutines
+- **Local Storage:** minimal or none — all data comes from the backend(SharedPreferences)
 
 ---
 
@@ -97,22 +98,22 @@ These libraries are used in both bot and backend:
 
 ---
 
-## 7. **Deployment & Architecture Notes**
 
-- **Bot:** runs as a separate polling-based service, not tied to webhooks
-- **App:** installed on Android devices, works over HTTPS
-- **Backend:** exposed to the internet, receives requests from both
-- **Database:** hosted separately and accessed only by the backend
-- **Communication:** all inter-component interactions use secure HTTP APIs
 
 ---
 
 ## Summary
+The system consists of four main components that work together to provide task delegation, subscription management, and payment processing:
 
-| Component       | Language | Runtime     | Interfaces           | DB Access | Auth             |
-|----------------|----------|-------------|----------------------|-----------|------------------|
-| Telegram Bot   | Python   | Asyncio     | FastAPI API (httpx)  | ❌        | X-Auth-Key (admin)|
-| Android App    | Kotlin   | Jetpack     | FastAPI API (Retrofit) | ❌      | JWT              |
-| Backend (API)  | Python   | FastAPI + asyncpg | DB, Bot, App, YooKassa | ✅| JWT + Admin Key |
-| PostgreSQL     | SQL      | Cloud DB    | Async ORM            | ✅        | –                |
+## Telegram Bot
+A fully interactive interface written in Python using the aiogram framework. It serves as a primary user and admin access point, communicating with the backend API via httpx. It processes commands, validates input, handles flow logic, and performs privileged operations using a secure X-Auth-Key header. The bot does not interact with the database directly, instead delegating all persistent operations to the backend.
+
+## Android Application
+Developed in Kotlin with Jetpack Compose, the Android app provides an alternative client interface. It communicates with the backend via Retrofit over HTTPS. Authentication is handled via Telegram-based JWT login. While the app is designed to mimic the bot’s capabilities, it focuses more on user interaction and payment workflows.
+
+## Backend API (FastAPI)
+Acts as the central logic layer. Built with FastAPI and asynchronous SQLAlchemy, it manages user data, tasks, subscriptions, and payment sessions. It exposes secured endpoints for both the app and the bot, validates and executes business logic, and connects to external services such as YooKassa. Admin-level access is controlled via an X-Auth-Key, while standard clients use JWTs.
+
+## PostgreSQL Database
+A managed cloud database accessed asynchronously from the backend via asyncpg. It stores all persistent data — including users, tasks, subscriptions, assistant stats, and payment records. All read/write operations are encapsulated in a modular CRUD layer to ensure consistency and maintainability.
 
