@@ -545,7 +545,7 @@ The following documentation files provide more details on specific areas of the 
 - [Continuous Integration](docs/automation/continuous-integration.md)
 
 ### Architecture
-- [Static View](docs/architecture/static-view)
+- [Static View](docs/architecture/static-view/component-diagram.jpeg)
 - [Dynamic View](docs/architecture/dynamic-view)
 - [Deployment View](docs/architecture/deployment-view)
 - [Tech Stack](docs/architecture/tech_stack.md)
