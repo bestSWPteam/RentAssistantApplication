@@ -91,7 +91,7 @@ This section explains how to launch and use the MVP v2 version of our app.
 - The app uses **Telegram authentication**.
 - On launch, you’ll be redirected to authorize via Telegram.
 - If you encounter login issues:  
-  ⚠️ Some features may not work as expected due to current limitations in Telegram-based authentication (see [Deployment Note](https://docs.google.com/spreadsheets/d/17Lzh71TNYh9bJ2iMPZaI3bB_qQElKKTp-nbI8IE8AdA/edit?usp=sharing)).
+  ⚠️ Some features may not work as expected due to current limitations in Telegram-based authentication.
 
 ---
 
