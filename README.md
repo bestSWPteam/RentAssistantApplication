@@ -273,6 +273,13 @@ Each component is deployed independently, ensuring flexibility and scalability.
 
 ---
 
+### Tech Stack
+
+See the full tech stack in  
+[docs/architecture/tech_stack.md](docs/architecture/tech_stack.md)
+
+---
+
 ## Development
 
 ---
@@ -540,7 +547,7 @@ The following documentation files provide more details on specific areas of the 
 - [Static View](docs/architecture/static-view)
 - [Dynamic View](docs/architecture/dynamic-view)
 - [Deployment View](docs/architecture/deployment-view)
-- [Tech Stack](docs/architecture/architecture.md)
+- [Tech Stack](docs/architecture/tech_stack.md)
 
 ---
 
