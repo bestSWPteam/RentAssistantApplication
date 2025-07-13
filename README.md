@@ -573,9 +573,7 @@ In future sprints, we may introduce CD using GitHub Actions or third-party tools
 
 ---
 
-## Changelog
+## Changelog & License
 
-We follow the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format and Semantic Versioning (SemVer).  
-The changelog includes key updates for each release (v1.0.0, v2.0.0, v2.5.0).
-
-📄 [View CHANGELOG.md](https://github.com/bestSWPteam/RentAssistantApplication/blob/main/CHANGELOG.md)
+- 📄 [CHANGELOG.md](https://github.com/bestSWPteam/RentAssistantApplication/blob/main/CHANGELOG.md)
+- 📄 [LICENSE (MIT)](https://github.com/bestSWPteam/RentAssistantApplication/blob/main/LICENSE)
