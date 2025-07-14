@@ -78,7 +78,7 @@ This section explains how to launch and use the MVP v2 version of our app.
 
 ### Installation
 
-1. Download the APK file: [Download APK](https://disk.yandex.ru/d/gbnLd3yDOPZKYg)
+1. Download the APK file: [Download APK](https://disk.yandex.ru/d/YD8avAgZLtqx-Q)
 2. Install the app on your Android device.
    - You may need to enable **“Install from unknown sources”** in your device settings.
 3. Launch the app from your home screen.
