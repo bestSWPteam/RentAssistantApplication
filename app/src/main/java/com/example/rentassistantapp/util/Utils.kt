@@ -1,9 +1,10 @@
 package com.example.rentassistantapp.util
 
-import android.net.Uri
-import kotlinx.coroutines.delay
-import java.nio.charset.StandardCharsets
+import com.example.rentassistantapp.data.model.PaymentStatusResponse
 import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
+import kotlinx.coroutines.delay
+import retrofit2.Response
 
 fun buildTelegramAuthUrl(
     botId: String,
@@ -12,7 +13,7 @@ fun buildTelegramAuthUrl(
 ): String {
     val params = mutableListOf<String>().apply {
         add("bot_id=${URLEncoder.encode(botId, StandardCharsets.UTF_8.name())}")
-        add("redirect_url=${URLEncoder.encode(redirect, StandardCharsets.UTF_8.name())}")
+        add("redirect_uri=${URLEncoder.encode(redirect, StandardCharsets.UTF_8.name())}")
         origin?.let {
             add("origin=${URLEncoder.encode(it, StandardCharsets.UTF_8.name())}")
         }
@@ -29,14 +30,14 @@ fun getFullDescription(planName: String): String = when (planName) {
 }
 
 suspend fun pollUntilPaid(
-    getStatus: suspend (String) -> String,
+    getStatus: suspend (String) -> Response<PaymentStatusResponse>,
     paymentId: String,
     checkIntervalMs: Long = 3000L
 ): String {
     var status: String
     do {
         delay(checkIntervalMs)
-        status = getStatus(paymentId)
+        status = getStatus(paymentId).toString()
     } while (status != "PAID")
     return status
 }

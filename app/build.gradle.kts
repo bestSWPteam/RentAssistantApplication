@@ -40,6 +40,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.lifecycle.runtime.ktx.v262)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.okhttp)
@@ -52,6 +53,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.material3)
+    implementation(libs.material3)
+    implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.browser)
     implementation(libs.androidx.navigation.compose.android)
@@ -60,9 +63,13 @@ dependencies {
     implementation ("androidx.compose.ui:ui-tooling:1.5.0")
     implementation ("androidx.navigation:navigation-compose:2.6.0")
     implementation(libs.androidx.runtime)
+    implementation(libs.cronet.api)
+    implementation(libs.androidx.compiler)
+    implementation(libs.androidx.media3.common.ktx)
+    implementation(libs.play.services.instantapps)
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation(libs.kotlinx.coroutines.core)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.ui.test.junit4)

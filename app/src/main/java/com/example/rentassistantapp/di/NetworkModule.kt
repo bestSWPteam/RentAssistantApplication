@@ -10,20 +10,21 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object NetworkModule {
-    private const val BASE_URL = "${Config.API_BASE_URL}"
-
     private fun retrofit(ctx: Context): Retrofit {
         val client = OkHttpClient.Builder()
             .addInterceptor(JwtInterceptor(ctx))
             .build()
 
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl("https://rentassistant.ru/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
-    fun provideAuthApi(ctx: Context): AuthApi = retrofit(ctx).create(AuthApi::class.java)
+
+    fun provideAuthApi(context: Context): AuthApi =
+        retrofit(context).create(AuthApi::class.java)
+
     fun providePaymentApi(ctx: Context): PaymentApi = retrofit(ctx).create(PaymentApi::class.java)
 }

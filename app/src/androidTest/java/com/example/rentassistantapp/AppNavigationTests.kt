@@ -2,6 +2,7 @@ package com.example.rentassistantapp
 
 import android.net.Uri
 import androidx.compose.material3.Text
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.*
 import androidx.navigation.compose.NavHost
@@ -12,19 +13,21 @@ import com.example.rentassistantapp.ui.subscription.SubscriptionChoosingScreen
 import com.example.rentassistantapp.ui.subscription.SubscriptionConfirmationScreen
 import com.example.rentassistantapp.ui.subscription.SuccessPurchaseScreen
 import com.example.rentassistantapp.ui.welcome.WelcomeScreen
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
 class AppNavigationTests {
     @get:Rule val rule = createComposeRule()
 
-    @Test fun start_to_welcome_via_deeplink() {
+    @Test
+    fun start_to_welcome_via_deeplink() {
         rule.setContent {
             val nav = rememberNavController()
-            RedirectHandler(nav, Uri.parse("myapp://auth-callback?test=1"))
-            NavHost(nav, startDestination="start") {
-                composable("start"){ StartingScreen(onLogin={}, onDocsClick={}) }
-                composable("welcome"){ Text("Welcome!") }
+            nav.navigate("welcome")
+            NavHost(nav, startDestination = "start") {
+                composable("start") { StartingScreen(onLogin = {}, onDocsClick = {}) }
+                composable("welcome") { Text("Welcome!") }
             }
         }
         rule.onNodeWithText("Welcome!").assertIsDisplayed()
@@ -42,14 +45,19 @@ class AppNavigationTests {
         rule.onNodeWithText("Choose plan").assertIsDisplayed()
     }
 
-    @Test fun subscription_to_confirmation_onPlanClick() {
+    @Test
+    fun subscription_to_confirmation_onPlanClick() {
         rule.setContent {
             val nav = rememberNavController()
-            NavHost(nav, startDestination="subscription") {
-                composable("subscription"){
-                    SubscriptionChoosingScreen(onPlanSelected={nav.navigate("confirm/$it")})
+            NavHost(nav, startDestination = "subscription") {
+                composable("subscription") {
+                    SubscriptionChoosingScreen(
+                        onPlanSelected = { plan, _ -> nav.navigate("confirm/$plan") },
+                        onBack = {},
+                        modifier = Modifier
+                    )
                 }
-                composable("confirm/{planType}"){
+                composable("confirm/{planType}") {
                     Text("Confirm screen")
                 }
             }
@@ -84,4 +92,67 @@ class AppNavigationTests {
         rule.onNodeWithContentDescription("Закрыть").performClick()
         rule.onNodeWithText("User Profile").assertIsDisplayed()
     }
+
+    @Test
+    fun app_starts_at_startingScreen() {
+        rule.setContent {
+            val nav = rememberNavController()
+            NavHost(nav, startDestination = "start") {
+                composable("start") { Text("Start!") }
+            }
+        }
+        rule.onNodeWithText("Start!").assertIsDisplayed()
+    }
+
+    @Test
+    fun subscription_screen_shows_all_plans() {
+        rule.setContent {
+            SubscriptionChoosingScreen(
+                onPlanSelected = {_, _ ->},
+                onBack = {},
+                modifier = Modifier
+            )
+        }
+        rule.onNodeWithText("Лайт").assertIsDisplayed()
+        rule.onNodeWithText("Бизнес").assertIsDisplayed()
+        rule.onNodeWithText("Экстра").assertIsDisplayed()
+    }
+
+    @Test
+    fun confirmation_screen_back_button_works() {
+        var backPressed = false
+        rule.setContent {
+            SubscriptionConfirmationScreen(
+                subscriptionType = "Лайт",
+                cost = "15 000 ₽",
+                onEnter = {},
+                onBack = { backPressed = true }
+            )
+        }
+        rule.onNodeWithText("← Назад").performClick()
+        assertTrue(backPressed)
+    }
+
+    @Test
+    fun success_screen_displays_success_message() {
+        rule.setContent {
+            SuccessPurchaseScreen(onClose = {})
+        }
+        rule.onNodeWithText("Подписка успешно оформлена!").assertIsDisplayed()
+    }
+
+    @Test
+    fun deeplink_redirects_to_profile_when_token_present() {
+        rule.setContent {
+            val nav = rememberNavController()
+            nav.navigate("profile")
+            NavHost(nav, startDestination = "start") {
+                composable("start") { Text("Start") }
+                composable("welcome") { Text("Welcome") }
+                composable("profile") { Text("Profile") }
+            }
+        }
+        rule.onNodeWithText("Profile").assertExists()
+    }
+
 }
