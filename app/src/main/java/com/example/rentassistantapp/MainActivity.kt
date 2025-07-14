@@ -35,11 +35,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val fakeJwt = "your-fake-jwt-token-here" // WILL BE DELETED
-        if (PrefsHelper.getJwt(applicationContext).isNullOrBlank()) {
-            PrefsHelper.saveJwt(applicationContext, fakeJwt)
-            Log.d("DEBUG", "Saved temporary fake JWT")
-        }
+//        val fakeJwt = "your-fake-jwt-token-here" // WILL BE DELETED
+//        if (PrefsHelper.getJwt(applicationContext).isNullOrBlank()) {
+//            PrefsHelper.saveJwt(applicationContext, fakeJwt)
+//            Log.d("DEBUG", "Saved temporary fake JWT")
+//        }
 
         setContent {
             RentAssistantAppTheme {
@@ -102,7 +102,8 @@ class MainActivity : ComponentActivity() {
                             },
                             onTasksClick = { navController.navigate("tasks") },
                             onProfileClick = { navController.navigate("profile") },
-                            isProfileSelected = true
+                            isProfileSelected = true,
+                            navController = navController
                         )
                     }
 
@@ -162,6 +163,7 @@ class MainActivity : ComponentActivity() {
                         TasksScreen(
                             isSubscription = isSubscription,
                             onGoToSubscription = { navController.navigate("subscription") },
+                            navController = navController,
                             onFilter = {}
                         )
                     }

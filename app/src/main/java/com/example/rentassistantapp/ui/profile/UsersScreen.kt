@@ -21,6 +21,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
+import androidx.compose.runtime.remember
+import androidx.navigation.compose.rememberNavController
+import com.example.rentassistantapp.ui.navigationBackend.BottomNavigationBar
 
 @Composable
 fun UsersScreen(
@@ -40,103 +43,121 @@ fun UsersScreen(
     onDeleteAccount: () -> Unit,
     onTasksClick: () -> Unit,
     onProfileClick: () -> Unit,
-    isProfileSelected: Boolean
+    isProfileSelected: Boolean,
+    navController: NavController
 ) {
     val avatar: Painter = painterResource(R.drawable.avatar_plug)
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxSize()
-            .background(WhiteBase)
-            .padding(top = 36.dp, bottom = 12.dp)
-            .verticalScroll(rememberScrollState())
-    ) {
-        Image(painter = avatar, contentDescription = "User avatar", modifier = Modifier.size(104.dp))
-
-        Text(text = surname, fontSize = 24.sp, color = Grey3, modifier = Modifier.padding(top = 12.dp))
-        Text(text = name, fontSize = 24.sp, color = Grey3, modifier = Modifier.padding(top = 8.dp))
-        Text(text = "Привязан аккаунт Telegram", fontSize = 16.sp, color = Grey2, modifier = Modifier.padding(top = 8.dp))
-        Text(
-            text = "Изменить",
-            fontSize = 16.sp,
-            color = Grey2,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.clickable(onClick = onChangeProfile)
-        )
-
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(start = 24.dp, end = 26.dp, top = 28.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(text = "Мои подписки", fontSize = 24.sp, fontWeight = FontWeight.Medium, color = Grey3)
-            Text(text = subscriptionStatus, fontSize = 16.sp, color = Red2)
-        }
-
-        BoxWithSubscriptionInfo(subscriptionType = subscriptionType, expireDate = expireDate)
-
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(start = 24.dp, end = 24.dp, top = 20.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Button(
-                onClick = onUpgrade,
-                modifier = Modifier.height(36.dp).width(160.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Red2, contentColor = White),
-                shape = RoundedCornerShape(24.dp)
+    Box{
+        Scaffold(bottomBar = { BottomNavigationBar(navController)} ) { innerPadding ->
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(WhiteBase)
+                    .padding(top = 36.dp, bottom = 12.dp)
+                    .verticalScroll(rememberScrollState())
+                    .padding(innerPadding)
             ) {
-                Text(text = "Улучшить", fontSize = 18.sp, fontWeight = FontWeight.Medium)
-            }
-            Button(
-                onClick = onProlong,
-                modifier = Modifier.height(36.dp).width(160.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Red2, contentColor = White),
-                shape = RoundedCornerShape(24.dp)
-            ) {
-                Text(text = "Продлить", fontSize = 18.sp, fontWeight = FontWeight.Medium)
-            }
-        }
-
-        ButtonWithArrow("Управление подписками", onClick = onManageSubscriptions)
-        ButtonWithArrow("Поддержка", onClick = onSupport)
-        ButtonWithArrow("Документация", onClick = onDocumentation)
-        ButtonWithArrow("Telegram Бот", onClick = onTelegramBot)
-        ButtonWithArrow("О нас", onClick = onAboutUs)
-
-        Button(
-            onClick = onDeleteAccount,
-            modifier = Modifier.height(36.dp).width(200.dp).border(BorderStroke(1.dp, Grey2), shape = RoundedCornerShape(24.dp)),
-            colors = ButtonDefaults.buttonColors(containerColor = WhiteBase, contentColor = Grey2),
-            shape = RoundedCornerShape(24.dp)
-        ) {
-            Text(text = "Удалить аккаунт", fontSize = 18.sp)
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(WhiteBase)
-                .padding(bottom = 24.dp, top = 4.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.clickable(onClick = onTasksClick)) {
-                Icon(
-                    imageVector = Icons.Filled.Check,
-                    contentDescription = "Tasks",
-                    modifier = Modifier.size(24.dp)
+                Image(
+                    painter = avatar,
+                    contentDescription = "User avatar",
+                    modifier = Modifier.size(104.dp)
                 )
-                Text(text = "Задачи", fontSize = 12.sp, color = if (!isProfileSelected) Red2 else Grey3)
-            }
-            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.clickable(onClick = onProfileClick)) {
-                Icon(
-                    imageVector = Icons.Filled.Person,
-                    contentDescription = "Profile",
-                    modifier = Modifier.size(24.dp)
+
+                Text(
+                    text = surname,
+                    fontSize = 24.sp,
+                    color = Grey3,
+                    modifier = Modifier.padding(top = 12.dp)
                 )
-                Text(text = "Профиль", fontSize = 12.sp, color = if (isProfileSelected) Red2 else Grey3)
+                Text(
+                    text = name,
+                    fontSize = 24.sp,
+                    color = Grey3,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+                Text(
+                    text = "Привязан аккаунт Telegram",
+                    fontSize = 16.sp,
+                    color = Grey2,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+                Text(
+                    text = "Изменить",
+                    fontSize = 16.sp,
+                    color = Grey2,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.clickable(onClick = onChangeProfile)
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(start = 24.dp, end = 26.dp, top = 28.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "Мои подписки",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Grey3
+                    )
+                    Text(text = subscriptionStatus, fontSize = 16.sp, color = Red2)
+                }
+
+                BoxWithSubscriptionInfo(
+                    subscriptionType = subscriptionType,
+                    expireDate = expireDate
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(start = 24.dp, end = 24.dp, top = 20.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Button(
+                        onClick = onUpgrade,
+                        modifier = Modifier.height(36.dp).width(160.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Red2,
+                            contentColor = White
+                        ),
+                        shape = RoundedCornerShape(24.dp)
+                    ) {
+                        Text(text = "Улучшить", fontSize = 18.sp, fontWeight = FontWeight.Medium)
+                    }
+                    Button(
+                        onClick = onProlong,
+                        modifier = Modifier.height(36.dp).width(160.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Red2,
+                            contentColor = White
+                        ),
+                        shape = RoundedCornerShape(24.dp)
+                    ) {
+                        Text(text = "Продлить", fontSize = 18.sp, fontWeight = FontWeight.Medium)
+                    }
+                }
+
+                ButtonWithArrow("Управление подписками", onClick = onManageSubscriptions)
+                ButtonWithArrow("Поддержка", onClick = onSupport)
+                ButtonWithArrow("Документация", onClick = onDocumentation)
+                ButtonWithArrow("Telegram Бот", onClick = onTelegramBot)
+                ButtonWithArrow("О нас", onClick = onAboutUs)
+
+                Button(
+                    onClick = onDeleteAccount,
+                    modifier = Modifier.height(36.dp).width(200.dp)
+                        .border(BorderStroke(1.dp, Grey2), shape = RoundedCornerShape(24.dp)),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = WhiteBase,
+                        contentColor = Grey2
+                    ),
+                    shape = RoundedCornerShape(24.dp)
+                ) {
+                    Text(text = "Удалить аккаунт", fontSize = 18.sp)
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }
@@ -198,7 +219,8 @@ fun UsersScreenPreview() {
             onDeleteAccount = {},
             onTasksClick = {},
             onProfileClick = {},
-            isProfileSelected = true
+            isProfileSelected = true,
+            navController = rememberNavController()
         )
     }
 }
