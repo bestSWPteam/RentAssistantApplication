@@ -20,7 +20,7 @@ A smart task assistant that helps users create, manage, and delegate tasks to vi
 
 - **Deployed Telegram Bot:** [https://t.me/RentAssistantBot](https://t.me/RentAssistantBot)  
 - **Deployed Android App (APK):** https://disk.yandex.ru/d/YD8avAgZLtqx-Q
-- **Demo Video:** https://drive.google.com/drive/folders/1dIf1TqIaXgvnP2BK6DwVHmYnardViYLS?usp=drive_link
+- **Demo Video:** https://drive.google.com/drive/folders/1dIf1TqIaXgvnP2BK6DwVHmYnardViYLS?usp=sharing
   
 ---
 
