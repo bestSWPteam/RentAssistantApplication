@@ -43,7 +43,7 @@ fun DocumentsScreen() {
                     color = Red2
                 )
                 Text(
-                    text = document,
+                    text = DOCUMENT152,
                     fontSize = 20.sp,
                     color = Grey3,
                     modifier = Modifier.padding(top = 16.dp)
