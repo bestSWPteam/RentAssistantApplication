@@ -29,6 +29,7 @@ import com.example.rentassistantapp.util.PrefsHelper
 import com.example.rentassistantapp.util.pollUntilPaid
 import kotlinx.coroutines.delay
 import androidx.lifecycle.lifecycleScope
+import com.example.rentassistantapp.ui.profile.DocumentsScreen
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -65,7 +66,7 @@ class MainActivity : ComponentActivity() {
                     composable("start") {
                         StartingScreen(
                             onLogin = { startTelegramLogin() },
-                            onDocsClick = { openLink("https://user-agreement.pdf") }
+                            onDocsClick = { navController.navigate("document") }
                         )
                     }
                     composable("profile") {
@@ -90,7 +91,7 @@ class MainActivity : ComponentActivity() {
                             onProlong = { navController.navigate("subscription") },
                             onManageSubscriptions = { navController.navigate("subscription") },
                             onSupport = { openLink("https://support.com") },
-                            onDocumentation = { openLink("https://user-agreement.pdf") },
+                            onDocumentation = { navController.navigate("document") },
                             onTelegramBot = { openLink("https://t.me/${Config.TELEGRAM_BOT_ID}") },
                             onAboutUs = { openLink("https://ex.com/about") },
                             onDeleteAccount = {
@@ -173,6 +174,9 @@ class MainActivity : ComponentActivity() {
                                 popUpTo("profile") { inclusive = true }
                             }
                         })
+                    }
+                    composable("document") {
+                        DocumentsScreen()
                     }
                 }
             }
