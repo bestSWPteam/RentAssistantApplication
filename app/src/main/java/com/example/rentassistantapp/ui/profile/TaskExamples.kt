@@ -16,6 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.rentassistantapp.ui.navigationBackend.TaskExamplesBottomNavigationBar
 import com.example.rentassistantapp.ui.theme.Grey3
 import com.example.rentassistantapp.ui.theme.Red2
 import com.example.rentassistantapp.ui.theme.RentAssistantAppTheme
@@ -24,10 +27,11 @@ import com.example.rentassistantapp.ui.theme.WhiteBase
 @Composable
 fun TaskExamplesScreen(
     heading: String,
-    content: String
+    content: String,
+    navController: NavController
 ) {
     Box(modifier = Modifier.fillMaxSize()){
-        Scaffold() { innerPadding ->
+        Scaffold(bottomBar = {TaskExamplesBottomNavigationBar(navController) }) { innerPadding ->
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
@@ -63,7 +67,8 @@ fun TaskExamplesScreenPreview() {
     RentAssistantAppTheme {
         TaskExamplesScreen(
             heading = "Личные задачи",
-            content = PERSONAL
+            content = PERSONAL,
+            navController = rememberNavController()
         )
     }
 }

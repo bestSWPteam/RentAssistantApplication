@@ -29,8 +29,12 @@ import com.example.rentassistantapp.util.PrefsHelper
 import com.example.rentassistantapp.util.pollUntilPaid
 import kotlinx.coroutines.delay
 import androidx.lifecycle.lifecycleScope
+import com.example.rentassistantapp.ui.profile.AboutUsScreen
 import com.example.rentassistantapp.ui.profile.DocumentsScreen
+import com.example.rentassistantapp.ui.profile.TaskExamplesScreen
 import kotlinx.coroutines.launch
+import com.example.rentassistantapp.ui.profile.PERSONAL
+import com.example.rentassistantapp.ui.profile.BUSINESS
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -101,9 +105,7 @@ class MainActivity : ComponentActivity() {
                                     popUpTo(0)
                                 }
                             },
-                            onTasksClick = { navController.navigate("tasks") },
-                            onProfileClick = { navController.navigate("profile") },
-                            isProfileSelected = true,
+                            onTasksExamples = { navController.navigate("personal_tasks_examples") },
                             navController = navController
                         )
                     }
@@ -115,6 +117,22 @@ class MainActivity : ComponentActivity() {
                                 navController.navigate("confirm/$plan/$defaultHours")
                             },
                             onBack = { navController.navigate("profile") }
+                        )
+                    }
+
+                    composable("personal_tasks_examples") {
+                        TaskExamplesScreen(
+                            heading = "Личные задачи",
+                            content = PERSONAL,
+                            navController = navController
+                        )
+                    }
+
+                    composable("business_tasks_examples") {
+                        TaskExamplesScreen(
+                            heading = "Бизнес задачи",
+                            content = BUSINESS,
+                            navController = navController
                         )
                     }
                     /*composable(
@@ -177,6 +195,9 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("document") {
                         DocumentsScreen()
+                    }
+                    composable("about_us") {
+                        AboutUsScreen()
                     }
                 }
             }

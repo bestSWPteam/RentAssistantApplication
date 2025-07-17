@@ -41,9 +41,7 @@ fun UsersScreen(
     onTelegramBot: () -> Unit,
     onAboutUs: () -> Unit,
     onDeleteAccount: () -> Unit,
-    onTasksClick: () -> Unit,
-    onProfileClick: () -> Unit,
-    isProfileSelected: Boolean,
+    onTasksExamples: () -> Unit,
     navController: NavController
 ) {
     val avatar: Painter = painterResource(R.drawable.avatar_plug)
@@ -140,6 +138,7 @@ fun UsersScreen(
 
                 ButtonWithArrow("Управление подписками", onClick = onManageSubscriptions)
                 ButtonWithArrow("Поддержка", onClick = onSupport)
+                ButtonWithArrow("Примеры задач", onClick = onTasksExamples)
                 ButtonWithArrow("Документация", onClick = onDocumentation)
                 ButtonWithArrow("Telegram Бот", onClick = onTelegramBot)
                 ButtonWithArrow("О нас", onClick = onAboutUs)
@@ -217,9 +216,7 @@ fun UsersScreenPreview() {
             onTelegramBot = {},
             onAboutUs = {},
             onDeleteAccount = {},
-            onTasksClick = {},
-            onProfileClick = {},
-            isProfileSelected = true,
+            onTasksExamples = {},
             navController = rememberNavController()
         )
     }
