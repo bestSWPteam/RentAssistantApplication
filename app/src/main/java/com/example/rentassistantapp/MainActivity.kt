@@ -288,7 +288,7 @@ class MainActivity : ComponentActivity() {
                 val codeResp = retrofit.prepareLogin()
                 val code = codeResp.code
 
-                val url = "https://t.me/${Config.TELEGRAM_BOT_ID}?startapp=$code"
+                val url = "https://t.me/${Config.TELEGRAM_BOT_ID}?start=$code"
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 startActivity(intent)
 
