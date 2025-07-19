@@ -39,9 +39,9 @@ import androidx.compose.ui.draw.clip
 @Composable
 fun TariffChoosingScreen(
     modifier: Modifier = Modifier,
-    name: String,
+    selectedPlan: String?,
     prices: Array<String>,
-    onPlanSelected: (String) -> Unit
+    onPlanSelected: () -> Unit
 ) {
     val scrollState = rememberScrollState()
 
@@ -55,34 +55,39 @@ fun TariffChoosingScreen(
                 .padding(bottom = 32.dp)
         ){
             Text(
-                text = "Выбрано: " + name,
+                text = "Выбрано: ${selectedPlan ?: "—"}",
                 fontSize = 28.sp,
                 color = Color(0xFF616163),
                 textAlign = TextAlign.Left,
                 modifier = Modifier.padding(start = 24.dp, top = 84.dp)
             )
+
             // Lite subscription
-            TariffTypeSquare(modifier ,
-                name = "2 часа",
+            TariffTypeSquare(modifier,
+                name = "Лайт",
                 fullDescription = "Идеален для краткосрочных задач. Подходит для быстрого " +
                         "выполнения небольших проектов и эффективного использования времени.",
                 price = prices[0],
-                onClickFunction = {onPlanSelected("Лайт")})
+                onClickFunction = onPlanSelected
+            )
 
             // Business subscription
             TariffTypeSquare(modifier,
-                name = "5 часов",
+                name = "Бизнес",
                 fullDescription = "Оптимален для средних задач. Обеспечивает баланс между временем " +
                         "и стоимостью, позволяя эффективно решать задачи.",
                 price = prices[1],
-                onClickFunction = {onPlanSelected("Бизнес")})
-// Extra subscription
+                onClickFunction = onPlanSelected
+            )
+
+            // Extra subscription
             TariffTypeSquare(modifier,
-                name = "8 часов",
+                name = "Экстра",
                 fullDescription = "Подходит для крупных проектов. Обеспечивает максимальную " +
                         "продуктивность и глубокое погружение в работу для достижения результатов.",
                 price = prices[2],
-                onClickFunction = {onPlanSelected("Экстра")})
+                onClickFunction = onPlanSelected
+            )
         }
     }
 }
@@ -171,8 +176,7 @@ fun TariffTypeSquare(
                     textAlign = TextAlign.Center
                 )
             }
-
-// "Subscribe" button
+            // "Subscribe" button
             Button(
                 onClick = onClickFunction,
                 modifier = Modifier
@@ -197,8 +201,9 @@ fun TariffChoosingPreview() {
     RentAssistantAppTheme {
         TariffChoosingScreen(
             onPlanSelected = {},
-            name = "Бизнес",
-            prices = arrayOf("15 000₽", "30 000₽", "50 000₽")
+            prices = arrayOf("15 000₽", "30 000₽", "50 000₽"),
+            modifier = Modifier,
+            selectedPlan = "Лайт"
         )
     }
 }

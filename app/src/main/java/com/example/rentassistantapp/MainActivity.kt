@@ -35,16 +35,20 @@ import com.example.rentassistantapp.ui.profile.TaskExamplesScreen
 import kotlinx.coroutines.launch
 import com.example.rentassistantapp.ui.profile.PERSONAL
 import com.example.rentassistantapp.ui.profile.BUSINESS
+import com.example.rentassistantapp.ui.subscription.SubscriptionHoursScreen
+import com.example.rentassistantapp.ui.subscription.TariffChoosingScreen
+import java.util.UUID
+import androidx.compose.ui.Modifier
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        val fakeJwt = "your-fake-jwt-token-here" // WILL BE DELETED
-//        if (PrefsHelper.getJwt(applicationContext).isNullOrBlank()) {
-//            PrefsHelper.saveJwt(applicationContext, fakeJwt)
-//            Log.d("DEBUG", "Saved temporary fake JWT")
-//        }
+        val fakeJwt = "your-fake-jwt-token-here" // WILL BE DELETED
+        if (PrefsHelper.getJwt(applicationContext).isNullOrBlank()) {
+            PrefsHelper.saveJwt(applicationContext, fakeJwt)
+           Log.d("DEBUG", "Saved temporary fake JWT")
+        }
 
         setContent {
             RentAssistantAppTheme {
@@ -113,8 +117,7 @@ class MainActivity : ComponentActivity() {
                     composable("subscription") {
                         SubscriptionChoosingScreen(
                             onPlanSelected = { plan ->
-                                val defaultHours = 2
-                                navController.navigate("confirm/$plan/$defaultHours")
+                                navController.navigate("tariffs/$plan")
                             },
                             onBack = { navController.navigate("profile") }
                         )
@@ -135,11 +138,31 @@ class MainActivity : ComponentActivity() {
                             navController = navController
                         )
                     }
-                    /*composable(
-                        "select-hours/{plan}",
+
+                    composable("tariffs/{plan}",
                         arguments = listOf(navArgument("plan") { type = NavType.StringType })
-                    ) { backStack ->
-                        val plan = backStack.arguments?.getString("plan") ?: return@composable
+                    ) { back ->
+                        val plan = back.arguments!!.getString("plan")!!
+                        TariffChoosingScreen(
+                            selectedPlan = plan,
+                            prices = when (plan) {
+                                "Лайт" -> arrayOf("15000 ₽", "30000 ₽", "50000 ₽")
+                                "Бизнес" -> arrayOf("30000 ₽", "60000 ₽", "80000 ₽")
+                                "Экстра" -> arrayOf("40000 ₽", "80000 ₽", "100000 ₽")
+                                else -> arrayOf("—", "—", "—")
+                            },
+                            modifier = Modifier,
+                            onPlanSelected = {
+                                navController.navigate("hours/$plan")
+                            }
+                        )
+                    }
+
+                    composable(
+                        "hours/{plan}",
+                        arguments = listOf(navArgument("plan") { type = NavType.StringType })
+                    ) { back ->
+                        val plan = back.arguments!!.getString("plan")!!
                         SubscriptionHoursScreen(
                             plan = plan,
                             onHoursSelected = { hours ->
@@ -147,32 +170,35 @@ class MainActivity : ComponentActivity() {
                             },
                             onBack = { navController.popBackStack() }
                         )
-                    }*/
+                    }
+                    
                     composable(
                         "confirm/{plan}/{hours}",
                         arguments = listOf(
                             navArgument("plan") { type = NavType.StringType },
                             navArgument("hours") { type = NavType.IntType }
                         )
-                    ) { backStack ->
-                        val plan = backStack.arguments!!.getString("plan")!!
-                        val hours = backStack.arguments!!.getInt("hours")
-                        val cost = when (plan to hours) {
-                            "Лайт" to 2 -> "15 000 ₽"
-                            "Лайт" to 5 -> "30 000 ₽"
-                            "Лайт" to 8 -> "50 000 ₽"
-                            "Бизнес" to 2 -> "30 000 ₽"
-                            "Бизнес" to 5 -> "60 000 ₽"
-                            "Бизнес" to 8 -> "80 000 ₽"
-                            "Экстра" to 2 -> "40 000 ₽"
-                            "Экстра" to 5 -> "80 000 ₽"
-                            "Экстра" to 8 -> "100 000 ₽"
+                    ) { back ->
+                        val plan = back.arguments!!.getString("plan")!!
+                        val hours = back.arguments!!.getInt("hours")
+                        val cost = when(plan to hours) {
+                            "Лайт" to 2 -> "15000 ₽"
+                            "Лайт" to 5 -> "30000 ₽"
+                            "Лайт" to 8 -> "50000 ₽"
+                            "Бизнес" to 2 -> "30000 ₽"
+                            "Бизнес" to 5 -> "60000 ₽"
+                            "Бизнес" to 8 -> "80000 ₽"
+                            "Экстра" to 2 -> "40000 ₽"
+                            "Экстра" to 5 -> "80000 ₽"
+                            "Экстра" to 8 -> "100000 ₽"
                             else -> ""
                         }
                         SubscriptionConfirmationScreen(
                             subscriptionType = plan,
                             cost = cost,
-                            onEnter = { ctx -> launchPayment(plan, hours, navController, ctx) },
+                            onEnter = { ctx ->
+                                launchPayment(plan, hours, navController, ctx)
+                            },
                             onBack = { navController.popBackStack() }
                         )
                     }
@@ -253,7 +279,7 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        val txnId = java.util.UUID.randomUUID().toString()
+        val txnId = UUID.randomUUID().toString()
         val request = PaymentRequest(
             user_telegram_id = userId,
             plan = planKey,
