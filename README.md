@@ -94,24 +94,25 @@ This section explains how to launch and use the MVP v2 version of our app.
 
 ---
 
-### What you can test in MVP v2.5
+### What you can test in MVP v3.0
 
-✅ Available Features:
-- App landing and onboarding screen
-- Fake JWT token issuing and session persistence
-- Profile screen with subscription status
-- Task list screen with UI for completed/pending tasks
-- Integration with FastAPI backend
-- Assistant statistics endpoints (GET/POST/UPDATE via admin token)
-- YooKassa payment flow via backend endpoint (/yookassa/create-payment)
-- Bot-side interface for confirming Telegram login
+✅ Available Features
 
-🚧 Not yet available:
-- Full assistant assignment automation
-- UI for managing tasks and clients inside the app
-- Real YooKassa payment confirmation in app
-- JWT token validation on backend side
-- Secure storage of credentials in mobile app
+- Telegram bot and mobile app fully integrated  
+- App landing and onboarding screen  
+- Profile screen with subscription status  
+- Task list screen with UI for completed/pending tasks  
+- Task creation and free demo task support  
+- Assistant statistics and manager dashboard  
+- FastAPI backend with JWT session handling  
+- YooKassa payment flow via backend endpoint (`/yookassa/create-payment`)  
+- Telegram login confirmation and user avatar loading  
+- Automatic error handling and notification system  
+
+🚧 Not Yet Available
+
+- Chat with assistant inside the mobile app  
+- Official publication of the mobile app in RuStore  
 
 ---
 
