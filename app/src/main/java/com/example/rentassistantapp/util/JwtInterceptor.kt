@@ -6,12 +6,13 @@ import okhttp3.Response
 
 class JwtInterceptor(private val ctx: Context) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val token = PrefsHelper.getJwt(ctx)
-        val request = chain.request().newBuilder().apply {
-            if (!token.isNullOrEmpty()) {
-                header("X-Auth-Token", token)
-            }
-        }.build()
-        return chain.proceed(request)
+        val jwt = PrefsHelper.getJwt(ctx).orEmpty()
+        val tgId = PrefsHelper.getTelegramId(ctx).orEmpty()
+        val req = chain.request().newBuilder()
+            .addHeader("Authorization", "Bearer $jwt")
+            .addHeader("X-Telegram-ID", tgId)
+            .addHeader("X-Auth-Token", jwt)
+            .build()
+        return chain.proceed(req)
     }
 }
