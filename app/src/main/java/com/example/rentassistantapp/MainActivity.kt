@@ -43,11 +43,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val fakeJwt = "your-fake-jwt-token-here" // WILL BE DELETED
-        if (PrefsHelper.getJwt(applicationContext).isNullOrBlank()) {
-            PrefsHelper.saveJwt(applicationContext, fakeJwt)
-           Log.d("DEBUG", "Saved temporary fake JWT")
-        }
 
         setContent {
             RentAssistantAppTheme {
@@ -316,24 +311,42 @@ class MainActivity : ComponentActivity() {
 
     private suspend fun pollLoginResult(code: String) {
         val authApi = NetworkModule.provideAuthApi(this)
-        repeat(30) {
+        Log.d("TG_LOGIN", "Начинаю опрос для кода: $code") // Добавим лог
+
+        repeat(30) { iteration ->
             delay(2000)
-            val resp = authApi.checkLoginStatus(code)
-            if (resp.isSuccessful) {
-                resp.body()?.token?.let { token ->
-                    PrefsHelper.saveJwt(applicationContext, token)
-                    PrefsHelper.saveTelegramUser(
-                        applicationContext,
-                        resp.body()!!.id,
-                        resp.body()!!.firstName,
-                        resp.body()!!.username
-                    )
-                    restartToProfile()
+            Log.d("TG_LOGIN", "Попытка #${iteration + 1}") // Добавим лог
+
+            try { // Добавим try-catch на всякий случай
+                val resp = authApi.checkLoginStatus(code)
+
+                if (resp.isSuccessful) {
+                    Log.d("TG_LOGIN", "Получен успешный ответ! Код: ${resp.code()}") // Добавим лог
+                    val body = resp.body()
+                    if (body != null && body.token != null) {
+                        Log.d("TG_LOGIN", "Токен получен: ${body.token.take(10)}...") // Логируем часть токена
+                        PrefsHelper.saveJwt(applicationContext, body.token)
+                        PrefsHelper.saveTelegramUser(
+                            applicationContext,
+                            body.id,
+                            body.firstName,
+                            body.username
+                        )
+                        restartToProfile()
+                        return // ВАЖНО: выходим из функции
+                    } else {
+                        Log.w("TG_LOGIN", "Ответ 200 ОК, но тело пустое или без токена. Тело: $body")
+                    }
+                } else {
+                    // ЭТОТ БЛОК СКОРЕЕ ВСЕГО И ВЫПОЛНЯЕТСЯ
+                    val errorBody = resp.errorBody()?.string() ?: "пустое"
+                    Log.e("TG_LOGIN", "Ошибка! Код: ${resp.code()}, Тело ошибки: $errorBody")
                 }
-                return
+            } catch (e: Exception) {
+                Log.e("TG_LOGIN", "Критическая ошибка во время запроса", e)
             }
         }
-        Log.e("TG_LOGIN", "Не удалось авторизоваться")
+        Log.e("TG_LOGIN", "Не удалось авторизоваться после 30 попыток.")
     }
 
     private fun restartToProfile() {
