@@ -49,25 +49,24 @@ This diagram illustrates how different components and external actors (User, Adm
 
 This table summarizes the status and priority of all major functionality stages in the project.
 
-| Stage                                                 | Status     | Priority |
-|-------------------------------------------------------|------------|----------|
-| *MVP v0*                                              | ✅ delivered | Must     |
-| MVP v1                                                |            | Must     |
-| Basic bot functionality                               | ✅ delivered | Must     |
-| Developed starting app page                           | ✅ delivered | Must     |
-| MVP v2                                                |            |          |
-| App frontend pages                                    | ✅ delivered | Must     |
-| Bot payment system                                    | ✅ delivered | Must     |
-| MVP v3                                                |            |          |
-| App APK compiled file with basic functionality        | ✅ delivered | Must     |
-| Bot assistant dashboard & assistant assignment        | ✅ delivered | Must     |
-| MVP v4 *(goes beyond this course)*                    |            |          |
-| Make better security                                  | 🚧 pending   | Must     |
-| Make better UI/UX & better requests optimization      | 🚧 pending   | Should   |
-| MVP v5 *(goes beyond this course)*                    |            |          |
-| Fix all the bugs                                      | 🚧 pending   | Must     |
-| Make even better optimization                         | 🚧 pending   | Should   |
-
+| Stage                                                       | Status      | Priority |
+|-------------------------------------------------------------|-------------|----------|
+| *MVP v0*                                                    | ✅ delivered | Must     |
+| MVP v1                                                      |             | Must     |
+| Basic bot functionality                                     | ✅ delivered | Must     |
+| Developed starting app page                                 | ✅ delivered | Must     |
+| MVP v2                                                      |             |          |
+| App frontend pages                                          | ✅ delivered | Must     |
+| Bot payment system (YooKassa)                               | ✅ delivered | Must     |
+| MVP v3                                                      |             |          |
+| App APK compiled with basic functionality                   | ✅ delivered | Must     |
+| Assistant dashboard & assistant assignment                  | ✅ delivered | Must     |
+| MVP v4 *(goes beyond this course)*                          |             |          |
+| Add chat between client and assistant in Telegram           | 🚧 pending   | Must     |
+| Improve app UI/UX and optimize requests                     | 🚧 pending   | Should   |
+| MVP v5 *(goes beyond this course)*                          |             |          |
+| Prepare and publish the app to RuStore                      | 🚧 pending   | Must     |
+| Expand test matrix: resolutions, Android/iOS versions       | 🚧 pending   | Should   |
 ---
 
 ## Usage Instructions / Short User Guide
