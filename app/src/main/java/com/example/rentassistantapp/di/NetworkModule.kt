@@ -16,7 +16,7 @@ object NetworkModule {
             .build()
 
         return Retrofit.Builder()
-            .baseUrl("https://rentassistant.ru/")
+            .baseUrl("https://rentassistant.ru/api/v2/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

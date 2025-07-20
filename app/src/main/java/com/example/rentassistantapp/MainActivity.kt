@@ -299,11 +299,14 @@ class MainActivity : ComponentActivity() {
                 val codeResp = retrofit.prepareLogin()
                 val code = codeResp.code
 
-                val url = "https://t.me/${Config.TELEGRAM_BOT_ID}?start=$code"
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://t.me/${Config.TELEGRAM_BOT_ID}?start=$code")
+                )
                 startActivity(intent)
 
                 pollLoginResult(code)
+
             } catch (e: Exception) {
                 Log.e("TG_LOGIN", "Ошибка при старте логина", e)
             }
@@ -317,10 +320,14 @@ class MainActivity : ComponentActivity() {
             delay(2000)
             val resp = authApi.checkLoginStatus(code)
             if (resp.isSuccessful) {
-                val body = resp.body()!!
-                body.token?.let { token ->
+                resp.body()?.token?.let { token ->
                     PrefsHelper.saveJwt(applicationContext, token)
-                    PrefsHelper.saveTelegramUser(applicationContext, body.id, body.firstName, body.username)
+                    PrefsHelper.saveTelegramUser(
+                        applicationContext,
+                        resp.body()!!.id,
+                        resp.body()!!.firstName,
+                        resp.body()!!.username
+                    )
                     restartToProfile()
                 }
                 return
@@ -328,7 +335,6 @@ class MainActivity : ComponentActivity() {
         }
         Log.e("TG_LOGIN", "Не удалось авторизоваться")
     }
-
 
     private fun restartToProfile() {
         val intent = Intent(this@MainActivity, MainActivity::class.java)
