@@ -56,17 +56,13 @@
 ## 4. Feedback on the README
 
 - **Is everything clear in the README?**  
-  The customer will provide detailed written feedback later.
+  Yes, everything is clear to the customer. She liked the structure and content.
 
 - **Can the customer launch the product using the instructions?**  
   Yes.
 
 - **What additional sections would the customer like to see?**  
-  They will write their suggestions later.  
-
-  (*Already suggested questions for the README:*)  
-  - "Where should I write if I want to request changes?"  
-  - "What commands can I use in the chatbot?"
+  The customer is satisfied with the current README structure. As optional additions, they suggested including a section like “Where to write if I want to request changes?” and “What commands can I use in the chatbot?”.
 
 ---
 
