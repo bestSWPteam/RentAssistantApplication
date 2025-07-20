@@ -116,6 +116,35 @@ This section explains how to launch and use the MVP v2 version of our app.
 
 ---
 
+## Where to Write If I Want to Request Changes? (for customer)
+
+_This section is important so that the customer knows how to easily contact the team to suggest improvements or report issues._
+
+To request changes or ask questions, please contact our team lead directly on Telegram:
+
+- 💬 **Telegram:** [@arinnanan](https://t.me/arinnanan)
+
+We welcome any feedback and use it to make the product better for you.
+
+---
+
+## What Commands Can I Use in the Chatbot? (for customer)
+
+_This section is important so that the customer can try the Telegram bot without confusion and understand its main features._
+
+| Command         | Purpose                                                                 |
+|----------------|-------------------------------------------------------------------------|
+| `/start`        | Launch the bot, initialize your profile and check subscription status  |
+| `/menu`         | Same as `/start`; shows welcome message and assistant info             |
+| `/cat`          | Get a random cat photo with a cute caption                             |
+| `/exit`         | Stop the bot (admin-only, works only for Telegram ID `860597138`)      |
+| `/reg_as_staff` | Reserved for future use (not yet implemented)                          |
+| `/code`         | Generate a registration code for assistant/manager (admin-only)        |
+
+> In most cases, you can interact with the bot using buttons and menus — no need to type commands manually!
+
+---
+
 ## Architecture
 ---
 ### Static view
