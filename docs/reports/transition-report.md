@@ -3,11 +3,16 @@
 ## 1. Product Status
 
 - **Is the product complete?**  
-  Yes, the product fully meets the customer's expectations.
+  Yes, the product fully meets the customer's expectations.  
+  All core features have been implemented, and the app is already being used by the client.  
+  A few minor functions are still planned to be added based on user feedback.  
+  The only missing step is publishing the app to RuStore, which will be done soon.
 
 - **Which parts are done and which aren’t done?**  
-  All planned features have been implemented; there are no unfinished parts.
-
+  All essential features planned for this release have been implemented.  
+  Some additional improvements and minor features are planned for future updates,  
+  including publishing the app to RuStore.
+  
 - **Has the customer deployed the product on their side?**  
   Yes, the customer can successfully deploy and launch the product on their own.
 
