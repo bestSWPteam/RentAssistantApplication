@@ -84,4 +84,4 @@
 
 ## 7. Transcript and Recording
 
-*The full transcript and recording of the meeting are attached separately.*
+📎 [Watch the recording of the meeting](https://disk.yandex.com.ge/i/_k-2plrT62vhVQ)
