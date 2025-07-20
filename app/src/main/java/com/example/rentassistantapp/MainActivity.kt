@@ -38,10 +38,18 @@ import com.example.rentassistantapp.ui.profile.BUSINESS
 import com.example.rentassistantapp.ui.subscription.TariffChoosingScreen
 import java.util.UUID
 import androidx.compose.ui.Modifier
+import com.example.rentassistantapp.messager.SupportChatScreen
+import com.example.rentassistantapp.ui.tasks.AddTaskScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val fakeJwt = "your-fake-jwt-token-here" // WILL BE DELETED
+        if (PrefsHelper.getJwt(applicationContext).isNullOrBlank()) {
+            PrefsHelper.saveJwt(applicationContext, fakeJwt)
+            Log.d("DEBUG", "Saved temporary fake JWT")
+        }
 
 
         setContent {
@@ -68,7 +76,9 @@ class MainActivity : ComponentActivity() {
                     composable("start") {
                         StartingScreen(
                             onLogin = { startTelegramLogin() },
-                            onDocsClick = { navController.navigate("document") }
+                            onDocsClick = { navController.navigate("document") },
+                            onSupportClick = { navController.navigate("profile")}
+                            // TODO WARNING!!! change "profile" to "support_chat"
                         )
                     }
                     composable("profile") {
@@ -92,7 +102,7 @@ class MainActivity : ComponentActivity() {
                             onUpgrade = { navController.navigate("subscription") },
                             onProlong = { navController.navigate("subscription") },
                             onManageSubscriptions = { navController.navigate("subscription") },
-                            onSupport = { openLink("https://support.com") },
+                            onSupport = { navController.navigate("support_chat") },
                             onDocumentation = { navController.navigate("document") },
                             onTelegramBot = { openLink("https://t.me/${Config.TELEGRAM_BOT_ID}") },
                             onAboutUs = { openLink("https://ex.com/about") },
@@ -188,6 +198,7 @@ class MainActivity : ComponentActivity() {
                         TasksScreen(
                             isSubscription = isSubscription,
                             onGoToSubscription = { navController.navigate("subscription") },
+                            onCreateTask = { navController.navigate("create_task") },
                             navController = navController,
                             onFilter = {}
                         )
@@ -204,6 +215,15 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("about_us") {
                         AboutUsScreen()
+                    }
+                    composable("create_task") {
+                        AddTaskScreen(
+                            onTaskCreated = {title, description -> {}},  // TODO add creating a task in API
+                            onBack = { navController.popBackStack() }
+                        )
+                    }
+                    composable("support_chat") {
+                        SupportChatScreen()
                     }
                 }
             }

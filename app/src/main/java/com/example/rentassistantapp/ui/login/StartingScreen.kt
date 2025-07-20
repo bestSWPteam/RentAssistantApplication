@@ -24,6 +24,7 @@ import com.example.rentassistantapp.ui.theme.*
 fun StartingScreen(
     onLogin: () -> Unit,
     onDocsClick: () -> Unit,
+    onSupportClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val logotype = painterResource(R.drawable.logo)
@@ -89,7 +90,8 @@ fun StartingScreen(
                 text = "Что-то пошло не так? Напишите нам",
                 textAlign = TextAlign.Center,
                 fontSize = 16.sp,
-                color = Grey2
+                color = Grey2,
+                modifier = Modifier.clickable(onClick = onSupportClick)
             )
         }
     }
@@ -99,6 +101,7 @@ fun StartingScreen(
 @Composable
 fun StartingPreview() {
     RentAssistantAppTheme {
-        StartingScreen(onLogin = {}, onDocsClick = {})
+        StartingScreen(onLogin = {}, onDocsClick = {},
+            onSupportClick = {})
     }
 }

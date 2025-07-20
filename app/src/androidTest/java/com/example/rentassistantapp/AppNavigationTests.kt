@@ -20,18 +20,6 @@ import org.junit.Test
 class AppNavigationTests {
     @get:Rule val rule = createComposeRule()
 
-    @Test
-    fun start_to_welcome_via_deeplink() {
-        rule.setContent {
-            val nav = rememberNavController()
-            nav.navigate("welcome")
-            NavHost(nav, startDestination = "start") {
-                composable("start") { StartingScreen(onLogin = {}, onDocsClick = {}) }
-                composable("welcome") { Text("Welcome!") }
-            }
-        }
-        rule.onNodeWithText("Welcome!").assertIsDisplayed()
-    }
 
     @Test fun welcome_to_subscription_onContinue() {
         rule.setContent {

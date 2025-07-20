@@ -40,8 +40,13 @@ import com.example.rentassistantapp.ui.profile.UsersScreen
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Scaffold
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -52,6 +57,7 @@ import com.example.rentassistantapp.ui.navigationBackend.BottomNavigationBar
 fun TasksScreen(modifier: Modifier = Modifier,
                 isSubscription: Boolean,
                 onGoToSubscription: () -> Unit,
+                onCreateTask: () -> Unit,
                 navController: NavController,
                 onFilter: () -> Unit) {
     var filterImage: Painter = painterResource(R.drawable.filter)
@@ -75,6 +81,22 @@ fun TasksScreen(modifier: Modifier = Modifier,
                         color = Color(0xFF616163),
                         modifier = Modifier.padding(bottom = 12.dp)
                     )
+
+                    IconButton(
+                        onClick = onCreateTask,
+                        enabled = isSubscription, // Активна только при наличии подписки
+                        modifier = Modifier
+                            .size(32.dp)
+                            .clip(CircleShape) // Делаем ее круглой
+                            .background(if (isSubscription) Red2 else Red2.copy(alpha = 0.5f))
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "Добавить задачу",
+                            tint = White // Цвет плюса - белый
+                        )
+                    }
+
                     Image(
                         painter = filterImage,
                         contentDescription = "Filter",
@@ -121,7 +143,8 @@ fun TasksScreen(modifier: Modifier = Modifier,
                     TaskList(sampleTasks)
                 } else {
                     NoSubscriptionCard(
-                        onGoToSubscription = onGoToSubscription
+                        onGoToSubscription = onGoToSubscription,
+                        onCreateDemoTask = onCreateTask
                     )
                 }
 
@@ -216,7 +239,8 @@ fun TaskList(tasks: List<Task>) {
 @Composable
 fun NoSubscriptionCard(
     modifier: Modifier = Modifier,
-    onGoToSubscription: () -> Unit
+    onGoToSubscription: () -> Unit,
+    onCreateDemoTask: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -224,7 +248,7 @@ fun NoSubscriptionCard(
                 start = 24.dp, end = 32.dp, top = 18.dp
             )
             .fillMaxWidth()
-            .height(190.dp)
+            .height(240.dp)
             .clip(RoundedCornerShape(16.dp))
             .border(BorderStroke(1.dp, White), shape = RoundedCornerShape(16.dp))
             .background(color = White)
@@ -258,6 +282,23 @@ fun NoSubscriptionCard(
             ) {
                 Text(text = "Перейти к оформлению", fontSize = 16.sp, fontWeight = FontWeight.Medium)
             }
+
+            Button(  // Create a demoTask
+                onClick = onCreateDemoTask,
+                modifier = Modifier
+                    .height(48.dp)
+                    .fillMaxWidth()
+                    .padding(
+                        top = 8.dp
+                    ),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Red2,
+                    contentColor = White
+                ),
+                shape = RoundedCornerShape(24.dp)
+            ) {
+                Text(text = "Пробная задача", fontSize = 16.sp, fontWeight = FontWeight.Medium)
+            }
         }
     }
 }
@@ -270,8 +311,9 @@ fun TasksScreenPreview() {
         TasksScreen(
             onFilter = {},
             onGoToSubscription = {},
+            onCreateTask = {},
             navController = nav,
-            isSubscription = true
+            isSubscription = false
         )
     }
 }
