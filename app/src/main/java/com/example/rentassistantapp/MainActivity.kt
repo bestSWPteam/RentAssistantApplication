@@ -35,7 +35,6 @@ import com.example.rentassistantapp.ui.profile.TaskExamplesScreen
 import kotlinx.coroutines.launch
 import com.example.rentassistantapp.ui.profile.PERSONAL
 import com.example.rentassistantapp.ui.profile.BUSINESS
-import com.example.rentassistantapp.ui.subscription.SubscriptionHoursScreen
 import com.example.rentassistantapp.ui.subscription.TariffChoosingScreen
 import java.util.UUID
 import androidx.compose.ui.Modifier
@@ -152,23 +151,9 @@ class MainActivity : ComponentActivity() {
                                 else -> arrayOf("—", "—", "—")
                             },
                             modifier = Modifier,
-                            onPlanSelected = {
-                                navController.navigate("hours/$plan")
-                            }
-                        )
-                    }
-
-                    composable(
-                        "hours/{plan}",
-                        arguments = listOf(navArgument("plan") { type = NavType.StringType })
-                    ) { back ->
-                        val plan = back.arguments!!.getString("plan")!!
-                        SubscriptionHoursScreen(
-                            plan = plan,
-                            onHoursSelected = { hours ->
+                            onPlanSelected = { hours ->
                                 navController.navigate("confirm/$plan/$hours")
-                            },
-                            onBack = { navController.popBackStack() }
+                            }
                         )
                     }
                     

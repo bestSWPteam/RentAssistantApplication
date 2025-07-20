@@ -41,7 +41,7 @@ fun TariffChoosingScreen(
     modifier: Modifier = Modifier,
     selectedPlan: String?,
     prices: Array<String>,
-    onPlanSelected: () -> Unit
+    onPlanSelected: (Int) -> Unit
 ) {
     val scrollState = rememberScrollState()
 
@@ -61,32 +61,38 @@ fun TariffChoosingScreen(
                 textAlign = TextAlign.Left,
                 modifier = Modifier.padding(start = 24.dp, top = 84.dp)
             )
+            Text(
+                text = "Ниже указана нагрузка на ассистента в день. Чем больше " +
+                        "времени занят ассистент, тем быстрее будут выполнены задачи",
+                color = Color(0xFF616163),
+                modifier = Modifier.padding(top = 8.dp, start = 24.dp, end = 24.dp)
+            )
 
             // Lite subscription
             TariffTypeSquare(modifier,
-                name = "Лайт",
-                fullDescription = "Идеален для краткосрочных задач. Подходит для быстрого " +
+                name = "2 часа",
+                fullDescription = "Идеально для краткосрочных задач. Подходит для быстрого " +
                         "выполнения небольших проектов и эффективного использования времени.",
                 price = prices[0],
-                onClickFunction = onPlanSelected
+                onClickFunction = {onPlanSelected(2)}
             )
 
             // Business subscription
             TariffTypeSquare(modifier,
-                name = "Бизнес",
-                fullDescription = "Оптимален для средних задач. Обеспечивает баланс между временем " +
+                name = "5 часов",
+                fullDescription = "Оптимально для средних задач. Обеспечивает баланс между временем " +
                         "и стоимостью, позволяя эффективно решать задачи.",
                 price = prices[1],
-                onClickFunction = onPlanSelected
+                onClickFunction = {onPlanSelected(5)}
             )
 
             // Extra subscription
             TariffTypeSquare(modifier,
-                name = "Экстра",
+                name = "8 часов",
                 fullDescription = "Подходит для крупных проектов. Обеспечивает максимальную " +
                         "продуктивность и глубокое погружение в работу для достижения результатов.",
                 price = prices[2],
-                onClickFunction = onPlanSelected
+                onClickFunction = {onPlanSelected(8)}
             )
         }
     }
