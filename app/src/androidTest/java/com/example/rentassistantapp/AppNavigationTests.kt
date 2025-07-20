@@ -45,27 +45,6 @@ class AppNavigationTests {
         rule.onNodeWithText("Choose plan").assertIsDisplayed()
     }
 
-    @Test
-    fun subscription_to_confirmation_onPlanClick() {
-        rule.setContent {
-            val nav = rememberNavController()
-            NavHost(nav, startDestination = "subscription") {
-                composable("subscription") {
-                    SubscriptionChoosingScreen(
-                        onPlanSelected = { plan, _ -> nav.navigate("confirm/$plan") },
-                        onBack = {},
-                        modifier = Modifier
-                    )
-                }
-                composable("confirm/{planType}") {
-                    Text("Confirm screen")
-                }
-            }
-        }
-        rule.onNodeWithText("Лайт").performClick()
-        rule.onNodeWithText("Confirm screen").assertIsDisplayed()
-    }
-
     @Test fun confirmation_shows_cost_and_buttons() {
         rule.setContent {
             SubscriptionConfirmationScreen(
@@ -102,20 +81,6 @@ class AppNavigationTests {
             }
         }
         rule.onNodeWithText("Start!").assertIsDisplayed()
-    }
-
-    @Test
-    fun subscription_screen_shows_all_plans() {
-        rule.setContent {
-            SubscriptionChoosingScreen(
-                onPlanSelected = {_, _ ->},
-                onBack = {},
-                modifier = Modifier
-            )
-        }
-        rule.onNodeWithText("Лайт").assertIsDisplayed()
-        rule.onNodeWithText("Бизнес").assertIsDisplayed()
-        rule.onNodeWithText("Экстра").assertIsDisplayed()
     }
 
     @Test

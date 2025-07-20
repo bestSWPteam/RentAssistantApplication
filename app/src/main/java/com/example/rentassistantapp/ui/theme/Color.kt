@@ -21,3 +21,7 @@ val Grey3 = Color(0xFF656568)
 
 val Red1 = Color(0xFFF70404)
 val Red2 = Color(0xFFD80909)
+
+// For messages
+val BrightPink = Color(0xFFFF4081) // support
+val LightPink = Color(0xFFFFB2C1)  // user
