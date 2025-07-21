@@ -19,7 +19,7 @@ A smart task assistant that helps users create, manage, and delegate tasks to vi
 ### Links
 
 - **Deployed Telegram Bot:** [https://t.me/RentAssistantBot](https://t.me/RentAssistantBot)  
-- **Deployed Android App (APK):** https://disk.yandex.ru/d/YD8avAgZLtqx-Q
+- **Deployed Android App (APK):** [https://disk.yandex.ru/d/YD8avAgZLtqx-Q](https://disk.yandex.com.ge/d/KdfAol2LVDQPNA)
 - **Demo Video:** https://drive.google.com/drive/folders/1dIf1TqIaXgvnP2BK6DwVHmYnardViYLS?usp=sharing
   
 ---
@@ -77,7 +77,7 @@ This section explains how to launch and use the MVP v2 version of our app.
 
 ### Installation
 
-1. Download the APK file: [Download APK](https://disk.yandex.ru/d/YD8avAgZLtqx-Q)
+1. Download the APK file: [Download APK](https://disk.yandex.com.ge/d/KdfAol2LVDQPNA)
 2. Install the app on your Android device.
    - You may need to enable **“Install from unknown sources”** in your device settings.
 3. Launch the app from your home screen.
